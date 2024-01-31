@@ -1,0 +1,173 @@
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+      monospace;
+  }
+  
+  .landing-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Adjust as needed for your design */
+  }
+  
+  .logo-container {
+    width: 40%;
+    text-align: center;
+  }
+  
+  .logo {
+    width: 100%; /* Ensure the logo takes up the full width of its container */
+    min-width: 150px; /* Set the minimum width for the logo */
+    border-radius: 50%; /* Make the logo circular */
+  }
+  
+  .button-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .rounded-btn {
+    width: 150px; /* Set a fixed width for the buttons */
+    padding: 10px; /* Add padding for better appearance */
+    border: none;
+    border-radius: 20px; /* Make buttons rounded */
+    margin: 5px; /* Add some margin between buttons */
+    cursor: pointer;
+  }
+  
+  
+  /* Style your buttons as needed */
+  .signup-btn {
+    margin-right: 7px;
+    background-color: #3D30A2; /* Google Blue */
+    color: #ffffff; /* White text */
+    /* Add your button styles here */
+  }
+  .signup-btn:hover {
+    background-color: #020273; /* Google Blue */
+  }
+  .login-btn {
+    margin-right: 5px;
+    background-color: #B15EFF; /* Google Blue */
+    color: #ffffff; /* White text */
+    /* Add your button styles here */
+  }
+  .login-btn:hover {
+    background-color: #a41276; /* Google Blue */
+  }
+  .faqs-btn {
+    margin-right: 7px;
+    background-color: #FFA33C; /* Google Blue */
+    color: #ffffff; /* White text */
+    /* Add your button styles here */
+  }
+  .faqs-btn:hover {
+    background-color: #b4752e; /* Google Blue */
+  }
+  .text-container {
+    margin-top: 5px; /* Adjust as needed for spacing */
+  }
+  
+  .text {
+    font-size: 20pt;
+  }
+
+  .textWord {
+    color: #4285F4
+  }
+  .textCup {
+    color: #FFA33C
+  }
+
+  .navbar {
+    display : flex;
+    padding: 5px;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #a41276;
+    font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif;
+  }
+  .navbar-logo {
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+  }
+  .navbar h1 {
+    color: white;
+    font-size : 1.5em;
+    margin-left: 10px;
+    /* font-size: 20px; 
+    margin-left: 10px;  */
+    font-family: cursive, 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  }
+
+  .navbar-icons {
+    display: flex;
+    gap: 20px; /* Adjust the gap between icons as needed */
+    padding: 10px;
+  }
+  .icon-fa {
+    color: #FFA33C;
+    font-size: 25px;
+    /* margin-right: 10px; */
+  }
+  .center-content {
+    margin: 0 auto;
+  }
+  
+  @media (min-width: 768px) {
+    .logo-container {
+      width: 20%;
+      text-align: center;
+    }
+    .button-container {
+      flex-direction: row;
+    }
+  }
+  @media (min-width: 577px) and (max-width: 768px) {
+    .logo-container {
+      width: 30%;
+      text-align: center;
+    }
+  }
+  @media (min-width: 479px) and (max-width: 576px) {
+    .logo-container {
+      width: 40%;
+      text-align: center;
+    }
+    .navbar {
+      justify-content: flex-start;  
+    }
+  }
+  @media (min-width: 376px) and (max-width: 478px) {
+    .logo-container {
+      width: 45%;
+      text-align: center;
+    }
+    .navbar {
+      justify-content: flex-start;  
+    }
+  }
+  @media (max-width: 375px) {
+    /* CSS for mobile devices */
+    .logo-container {
+      width: 50%;
+      text-align: center;
+    }
+    .text {
+      font-size: 15pt;
+    }
+    .navbar {
+      justify-content: flex-start;  
+    }
+  }
