@@ -1,0 +1,26 @@
+
+@media (min-width: 738px) {
+  .containerDetails {
+      position: absolute;
+      display: flex;
+      height: 70%;
+      width: 30%;
+      text-align: left;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  
+  @media (max-width: 737px) {
+      .containerDetails {
+          position: absolute;
+          display: flex;
+          height: 70%;
+          width: 70%;
+          text-align: left;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+        
+    

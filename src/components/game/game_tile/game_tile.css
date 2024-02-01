@@ -1,0 +1,139 @@
+.green {
+    background-color: #6aaa64;
+    color: #ffffff;
+    border: none;
+  }
+  
+  .grey {
+    background-color: #787c7e;
+    color: #ffffff;
+    border: none;
+  }
+  
+  .yellow {
+    background-color: #c9b458;
+    color: #ffffff;
+    border: none;
+  }
+
+  /* .wordrow {
+    display: flex;
+    justify-content: center;
+    width: 80%;
+  } */
+
+  @media (max-width: 738px) { 
+    /* CSS for landscape tablets */
+    .wordrow {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+    }
+    .tile {
+      flex: 1;
+      display: flex;
+      width: 40px;
+      height: 40px;
+      font-size: 18px;
+      border-radius: 2px;
+      justify-content: center;
+      align-items: center;
+      box-sizing: border-box;
+      color: #000000;
+      text-transform: uppercase;
+      border: 2px solid #B15EFF;
+      margin: 2px;
+  }
+  }
+  
+  @media (min-width: 738px) {
+    /* CSS for landscape tablets */
+    .wordrow {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+    }
+    .tile {
+      flex: 1;
+      display: flex;
+      width: 40px;
+      height: 40px;
+      font-size: 18px;
+      border-radius: 5px;
+      justify-content: center;
+      align-items: center;
+      box-sizing: border-box;
+      color: #000000;
+      text-transform: uppercase;
+      border: 2px solid #B15EFF;
+      margin: 2px;
+  }
+    /* .wordrow {
+      display: flex;
+      justify-content: center;
+    } */
+
+    .tilezz {
+      flex: 1;
+      display: flex;
+      font-size: 28px;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 28px;
+      line-height: 2rem;
+      font-weight: bold;
+      vertical-align: middle;
+      box-sizing: border-box;
+      color: #000000;
+      text-transform: uppercase;
+      user-select: none;
+      border: 2px solid #d3d6da;
+      margin: 2px;
+      width: 50px;
+      height: 50px;
+      box-sizing: border-box;
+    }
+  }
+  
+  @media (min-width: 769px) and (max-width: 992px) {
+    /* CSS for landscape tablets */
+    .tilezz {
+      width: 44px;
+      height: 44px;
+      font-size: 28px;
+    }
+  }
+  @media (min-width: 577px) and (max-width: 768px) {
+    /* CSS for tablets */
+    .tilezz {
+      width: 38px;
+      height: 38px;
+      font-size: 24px;
+    }
+  }
+  @media (min-width: 479px) and (max-width: 576px) {
+    /* CSS for mobile devices */
+    .tilezz {
+      width: 30px;
+      height: 30px;
+      font-size: 20px;
+    }
+  }
+  @media (min-width: 376px) and (max-width: 478px) {
+    /* CSS for mobile devices */
+    .tilezz {
+      width: 24px;
+      height: 24px;
+      font-size: 18px;
+    }
+  }
+  @media (max-width: 375px) {
+    /* CSS for mobile devices */
+    .tilezz {
+      width: 18px;
+      height: 18px;
+      font-size: 14px;
+    }
+  }
+  

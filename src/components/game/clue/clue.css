@@ -1,0 +1,19 @@
+.clue {
+    font-size: 1rem;
+    font-family: 'Times New Roman', Times, serif;
+}
+.clue-container {
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+}
+.clue-num {
+    background-color: black;
+    color: #ffffff;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    margin-right: 10px;
+    padding-left: 5px;
+    padding-top: 3px;
+}

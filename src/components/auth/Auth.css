@@ -10,6 +10,7 @@
     border-radius: 4px;
     cursor: pointer;
     width: 95%;
+    text-transform: none;
   }
   .google-logo-box {
     background-color: #ffffff; /* White box */
