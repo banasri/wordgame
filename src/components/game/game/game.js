@@ -7,7 +7,7 @@ import Clue from "../clue/clue";
 import { useSelector, useDispatch } from "react-redux";
 import GameOver from "../gameover/game_over";
 import { db } from "../../../firebase";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, getCountFromServer } from "firebase/firestore";
 
 const Game = (props) => {
   const [showModal, setShowModal] = useState(true);
@@ -54,10 +54,36 @@ const Game = (props) => {
     // Convert the difference to days
     const differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
     const dateFactor = Math.floor(differenceInDays) + 1;
-    const startId = dateFactor * 3 - 2;
-    const endId = dateFactor * 3;
+    console.log("dateFactor===>", dateFactor);
+    let startId = dateFactor * 3 - 2;
+    let endId = dateFactor * 3;
+    
+   
+    
     
     const fetchData = async () => {
+      //get count of wordlist from server
+      let count = 0;
+      
+      const coll = collection(db, "wordList");
+      try {
+        const snapshot = await getCountFromServer(coll);
+        console.log('count: ', snapshot.data().count);
+        count = snapshot.data().count;
+      } catch(err) {
+        console.log("error getting count");
+      }
+      console.log("1.Step getCount ==========>", count);
+      console.log("2.Convert count to a nearest multiple of 3 ==========>");
+      const countMulti3 = (Math.ceil(count/3))*3;
+      console.log("countMulti3",countMulti3);
+      if(endId > count) {
+        console.log("endId > count", endId, count);
+        const rem = (dateFactor*3) % countMulti3;
+        startId = rem + 1;
+        endId = rem + 3;
+      }
+      console.log("3.Convert startId and endId ==========>", startId, endId );
       try {
         const q = query(collection(db, "wordList"), where("id", ">=", startId), 
                                                     where("id", "<=", endId));
