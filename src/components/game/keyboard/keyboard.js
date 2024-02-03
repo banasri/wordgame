@@ -9,6 +9,11 @@ function Keyboard() {
       console.log("inside keyboard useSelector");
       return state.game.letterColors;
     });
+    const letterNums = useSelector((state)=>{
+      console.log("inside keyboard useSelector");
+      console.log(state.game.letterNums)
+      return state.game.letterNums;
+    });
 
     const dispatch = useDispatch();
 
@@ -77,179 +82,179 @@ function Keyboard() {
    
     };
     
-  return (
-    <section className="keyboard1">
-        <div className="key-row" onClick={onEdit}>
-          <button
-            data-value="Q"
-            style={{ backgroundColor: letterColors["Q"] }}
-          >
-            Q
-          </button>
-          <button
-            data-value="W"
-            style={{ backgroundColor: letterColors["W"] }}
-          >
-            W
-          </button>
-          <button
-            data-value="E"
-            style={{ backgroundColor: letterColors["E"] }}
-          >
-            E
-          </button>
-          <button
-            data-value="R"
-            style={{ backgroundColor: letterColors["R"] }}
-          >
-            R
-          </button>
-          <button
-            data-value="T"
-            style={{ backgroundColor: letterColors["T"] }}
-          >
-            T
-          </button>
-          <button
-            data-value="Y"
-            style={{ backgroundColor: letterColors["Y"] }}
-          >
-            Y
-          </button>
-          <button
-            data-value="U"
-            style={{ backgroundColor: letterColors["U"] }}
-          >
-            U
-          </button>
-          <button
-            data-value="I"
-            style={{ backgroundColor: letterColors["I"] }}
-          >
-            I
-          </button>
-          <button
-            data-value="O"
-            style={{ backgroundColor: letterColors["O"] }}
-          >
-            O
-          </button>
-          <button
-            data-value="P"
-            style={{ backgroundColor: letterColors["P"] }}
-          >
-            P
-          </button>
-        </div>
-        <div className="key-row" onClick={onEdit}>
-          <button
-            data-value="A"
-            style={{ backgroundColor: letterColors["A"] }}
-          >
-            A
-          </button>
-          <button
-            data-value="S"
-            style={{ backgroundColor: letterColors["S"] }}
-          >
-            S
-          </button>
-          <button
-            data-value="D"
-            style={{ backgroundColor: letterColors["D"] }}
-          >
-            D
-          </button>
-          <button
-            data-value="F"
-            style={{ backgroundColor: letterColors["F"] }}
-          >
-            F
-          </button>
-          <button
-            data-value="G"
-            style={{ backgroundColor: letterColors["G"] }}
-          >
-            G
-          </button>
-          <button
-            data-value="H"
-            style={{ backgroundColor: letterColors["H"] }}
-          >
-            H
-          </button>
-          <button
-            data-value="J"
-            style={{ backgroundColor: letterColors["J"] }}
-          >
-            J
-          </button>
-          <button
-            data-value="K"
-            style={{ backgroundColor: letterColors["K"] }}
-          >
-            K
-          </button>
-          <button
-            data-value="L"
-            style={{ backgroundColor: letterColors["L"] }}
-          >
-            L
-          </button>
-        </div>
-        <div className="key-row" onClick={onEdit}>
-          <button
-            data-value="Z"
-            style={{ backgroundColor: letterColors["Z"] }}
-          >
-            Z
-          </button>
-          <button
-            data-value="X"
-            style={{ backgroundColor: letterColors["X"] }}
-          >
-            X
-          </button>
-          <button
-            data-value="C"
-            style={{ backgroundColor: letterColors["C"] }}
-          >
-            C
-          </button>
-          <button
-            data-value="V"
-            style={{ backgroundColor: letterColors["V"] }}
-          >
-            V
-          </button>
-          <button
-            data-value="B"
-            style={{ backgroundColor: letterColors["B"] }}
-          >
-            B
-          </button>
-          <button
-            data-value="N"
-            style={{ backgroundColor: letterColors["N"] }}
-          >
-            N
-          </button>
-          <button
-            data-value="M"
-            style={{ backgroundColor: letterColors["M"] }}
-          >
-            M
-          </button>
-        </div>
-        <div className="key-row" onClick={onEdit}>
-          <button data-check="\n">
-            ENTER
-          </button>
-          <button data-value=" ">Space Bar</button>
-          <button data-value="DEL">DEL</button>
-        </div>
-      </section>
-  )
+    return (
+      <section className="keyboard1">
+          <div className="key-row" onClick={onEdit}>
+            <button
+              data-value="Q"
+              style={{ backgroundColor: letterColors["Q"] }}
+            >
+              Q{letterNums["Q"]>1?<sup>{letterNums["Q"]}</sup>:null}
+            </button>
+            <button
+              data-value="W"
+              style={{ backgroundColor: letterColors["W"] }}
+            >
+              W{letterNums["W"]>1?<sup>{letterNums["W"]}</sup>:null}
+            </button>
+            <button
+              data-value="E"
+              style={{ backgroundColor: letterColors["E"] }}
+            >
+              E{letterNums["E"]>1?<sup>{letterNums["E"]}</sup>:null}
+            </button>
+            <button
+              data-value="R"
+              style={{ backgroundColor: letterColors["R"] }}
+            >
+              R{letterNums["R"]>1?<sup>{letterNums["R"]}</sup>:null}
+            </button>
+            <button
+              data-value="T"
+              style={{ backgroundColor: letterColors["T"] }}
+            >
+              T{letterNums["T"]>1?<sup>{letterNums["T"]}</sup>:null}
+            </button>
+            <button
+              data-value="Y"
+              style={{ backgroundColor: letterColors["Y"] }}
+            >
+              Y{letterNums["Y"]>1?<sup>{letterNums["Y"]}</sup>:null}
+            </button>
+            <button
+              data-value="U"
+              style={{ backgroundColor: letterColors["U"] }}
+            >
+              U{letterNums["U"]>1?<sup>{letterNums["U"]}</sup>:null}
+            </button>
+            <button
+              data-value="I"
+              style={{ backgroundColor: letterColors["I"] }}
+            >
+              I{letterNums["I"]>1?<sup>{letterNums["I"]}</sup>:null}
+            </button>
+            <button
+              data-value="O"
+              style={{ backgroundColor: letterColors["O"] }}
+            >
+              O{letterNums["O"]>1?<sup>{letterNums["O"]}</sup>:null}
+            </button>
+            <button
+              data-value="P"
+              style={{ backgroundColor: letterColors["P"] }}
+            >
+              P{letterNums["P"]>1?<sup>{letterNums["P"]}</sup>:null}
+            </button>
+          </div>
+          <div className="key-row" onClick={onEdit}>
+            <button
+              data-value="A"
+              style={{ backgroundColor: letterColors["A"] }}
+            >
+              A{letterNums["A"]>1?<sup>{letterNums["A"]}</sup>:null}
+            </button>
+            <button
+              data-value="S"
+              style={{ backgroundColor: letterColors["S"] }}
+            >
+              S{letterNums["S"]>1?<sup>{letterNums["S"]}</sup>:null}
+            </button>
+            <button
+              data-value="D"
+              style={{ backgroundColor: letterColors["D"] }}
+            >
+              D{letterNums["D"]>1?<sup>{letterNums["D"]}</sup>:null}
+            </button>
+            <button
+              data-value="F"
+              style={{ backgroundColor: letterColors["F"] }}
+            >
+              F{letterNums["F"]>1?<sup>{letterNums["F"]}</sup>:null}
+            </button>
+            <button
+              data-value="G"
+              style={{ backgroundColor: letterColors["G"] }}
+            >
+              G{letterNums["G"]>1?<sup>{letterNums["G"]}</sup>:null}
+            </button>
+            <button
+              data-value="H"
+              style={{ backgroundColor: letterColors["H"] }}
+            >
+              H{letterNums["H"]>1?<sup>{letterNums["H"]}</sup>:null}
+            </button>
+            <button
+              data-value="J"
+              style={{ backgroundColor: letterColors["J"] }}
+            >
+              J{letterNums["J"]>1?<sup>{letterNums["J"]}</sup>:null}
+            </button>
+            <button
+              data-value="K"
+              style={{ backgroundColor: letterColors["K"] }}
+            >
+              K{letterNums["K"]>1?<sup>{letterNums["K"]}</sup>:null}
+            </button>
+            <button
+              data-value="L"
+              style={{ backgroundColor: letterColors["L"] }}
+            >
+              L{letterNums["L"]>1?<sup>{letterNums["L"]}</sup>:null}
+            </button>
+          </div>
+          <div className="key-row" onClick={onEdit}>
+            <button
+              data-value="Z"
+              style={{ backgroundColor: letterColors["Z"] }}
+            >
+              Z{letterNums["Z"]>1?<sup>{letterNums["Z"]}</sup>:null}
+            </button>
+            <button
+              data-value="X"
+              style={{ backgroundColor: letterColors["X"] }}
+            >
+              X{letterNums["X"]>1?<sup>{letterNums["X"]}</sup>:null}
+            </button>
+            <button
+              data-value="C"
+              style={{ backgroundColor: letterColors["C"] }}
+            >
+              C{letterNums["C"]>1?<sup>{letterNums["C"]}</sup>:null}
+            </button>
+            <button
+              data-value="V"
+              style={{ backgroundColor: letterColors["V"] }}
+            >
+              V{letterNums["V"]>1?<sup>{letterNums["V"]}</sup>:null}
+            </button>
+            <button
+              data-value="B"
+              style={{ backgroundColor: letterColors["B"] }}
+            >
+              B{letterNums["B"]>1?<sup>{letterNums["B"]}</sup>:null}
+            </button>
+            <button
+              data-value="N"
+              style={{ backgroundColor: letterColors["N"] }}
+            >
+              N{letterNums["N"]>1?<sup>{letterNums["N"]}</sup>:null}
+            </button>
+            <button
+              data-value="M"
+              style={{ backgroundColor: letterColors["M"] }}
+            >
+              M{letterNums["M"]>1?<sup>{letterNums["M"]}</sup>:null}
+            </button>
+          </div>
+          <div className="key-row" onClick={onEdit}>
+            <button data-check="\n">
+              ENTER
+            </button>
+            <button data-value=" ">Space Bar</button>
+            <button data-value="DEL">DEL</button>
+          </div>
+        </section>
+    )
 }
 
 export default Keyboard

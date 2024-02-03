@@ -52,6 +52,34 @@ const initialState = {
         B: null,
         N: null,
         M: null,
+      },
+      letterNums : {
+        Q: 0,
+        W: 0,
+        E: 0,
+        R: 0,
+        T: 0,
+        Y: 0,
+        U: 0,
+        I: 0,
+        O: 0,
+        P: 0,
+        A: 0,
+        S: 0,
+        D: 0,
+        F: 0,
+        G: 0,
+        H: 0,
+        J: 0,
+        K: 0,
+        L: 0,
+        Z: 0,
+        X: 0,
+        C: 0,
+        V: 0,
+        B: 0,
+        N: 0,
+        M: 0,
       }
 
 };
@@ -202,14 +230,30 @@ const clueReducer = (state = initialState, action) => {
           const key = action.key;
           console.log("action.key, action.color", action.key, action.color);
           console.log("letterColors[action.key]", state.letterColors[action.key]);
+          let count = 0;
+          for(let i =0; i < state.word.length; i++){
+            console.log("state.word ", state.word);
+            if(state.word[i].toUpperCase() === key){
+              count++;
+            }
+          }
+          //console.log("the letter " + key + " appears " + count + " times." );
           if( state.letterColors[action.key] === "#6aaa64") {
             return {
-              ...state
+              ...state,
+              letterNums: {
+                ...state.letterNums,
+                [key]: count,
+              },
             };
           } else if (state.letterColors[action.key] === "#c9b458" && 
           action.color === "#787c7e") {
             return {
-              ...state
+              ...state,
+              letterNums: {
+                ...state.letterNums,
+                [key]: count,
+              },
             };
           } else {
             return {
@@ -217,6 +261,10 @@ const clueReducer = (state = initialState, action) => {
               letterColors: {
                 ...state.letterColors,
                 [key]: action.color,
+              },
+              letterNums: {
+                ...state.letterNums,
+                [key]: count,
               },
             };
           }
