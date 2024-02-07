@@ -5,11 +5,13 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from "react-redux";
 import { configureStore } from '@reduxjs/toolkit';
-import clueReducer from "./store/gameReducer"
+import clueReducer from "./store/gameReducer";
+import authReducer from "./store/authSlice";
 
 const store = configureStore({
   reducer : {
     game : clueReducer,
+    auth : authReducer,
   },
   middleware : (getDefaultMiddleware) => getDefaultMiddleware({
     serializableCheck : false

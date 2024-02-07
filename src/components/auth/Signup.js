@@ -1,36 +1,67 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import './Auth.css'; // Import the CSS file
+import { registerUser, signInWithGoogle} from '../../store/authSlice';
 
 const Signup = () => {
-  const [Fname, setFname] = useState('');
-  const [Lname, setLname] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector((state) => {
+    return state.auth.user;
+  });
+  useEffect(() => {
+    if (user) {
+      navigate("/wordcup");
+    }
+  },[user, navigate]);
+  
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-  const handleFnameChange = (e) => {
-    setFname(e.target.value);
-  };
-  const handleLnameChange = (e) => {
-    setLname(e.target.value);
-  };
-  const handleSubmit = (e) => {
+  const [formData, setFormData] = useState({
+    // Initialize form fields
+    email: '',
+    password: '',
+    firstName: '',
+    lastName : ''
+  });
+  function handleSubmit(e) {
+    console.log("In submit");
+    console.log(e);
     e.preventDefault();
-    // Perform login logic using email and password
-    console.log('Login with:', email, password);
+    signUp();
+  }
+  function handleChange(e) {
+    setFormData((prevData) => ({ ...prevData, [e.target.id]: e.target.value }));
+    //console.log(e);
+  }
+  function handleKeyPress(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault(); // Prevent form submission
+      signUp();
+    }
   };
-  const signInGoogle = () => {
+  function signUp() {
+    //console.log(e);
+    console.log(formData);
+    dispatch(registerUser(formData.email, formData.password)).then(() => {
+      console.log("after dispatch inside then signUp");
+      // navigate("/wordcup");
+    });
 
   }
 
+  function signInGoogle() {
+    dispatch(signInWithGoogle()).then((res) =>{
+      console.log("after dispatch inside then signInWithGoogle");
+      // navigate("/wordcup");
+    });
+  
+    console.log("after dispatch  signInGoogle");
+  }
+
   return (
-    <div className='form-container'>
+    <div className='form-container' onKeyDown={handleKeyPress}>
+    {/* <form className="login-form" onKeyDown={handleKeyPress}> */}
     <form className="login-form" onSubmit={handleSubmit}>
       <div className='image-container'>
         <img src="/image/WCLogo.png" alt="Logo" className="logoForm" />
@@ -47,19 +78,19 @@ const Signup = () => {
         <span className="or-text">or</span>
         <div className="bar"></div>
       </div>
-      <label>First Name:</label>
-      <input type="text" value={Fname} onChange={handleFnameChange} />
+      <label htmlFor='firstName'>First Name:</label>
+      <input type="text" id="firstName" value={formData.firstName} onChange={handleChange} />
       <br />
-      <label>Last Name:</label>
-      <input type="text" value={Lname} onChange={handleLnameChange} />
+      <label htmlFor='lastName'>Last Name:</label>
+      <input type="text" id="lastName" value={formData.lastName} onChange={handleChange} />
       <br />
-      <label>Email Address:</label>
-      <input type="email" value={email} onChange={handleEmailChange} />
+      <label htmlFor='email'>Email Address:</label>
+      <input type="email" id="email" value={formData.email} onChange={handleChange} />
       <br />
-      <label>Password:</label>
-      <input type="password" value={password} onChange={handlePasswordChange} />
+      <label htmlFor='password'>Password:</label>
+      <input type="password" id="password" value={formData.password} onChange={handleChange} />
       <br />
-      <button type="submit" className='form-button'>Sign Up</button>
+      <button type="submit" className='form-button' onClick={signUp}>Sign Up</button>
     </form>
     </div>
   );

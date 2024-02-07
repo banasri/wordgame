@@ -1,29 +1,67 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Auth.css'; // Import the CSS file
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+//import { useDispatch, useSelector } from 'react-redux';
+import { signInUser, signInWithGoogle} from '../../store/authSlice';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector((state) => {
+    return state.auth.user;
+  });
+  useEffect(() => {
+    if (user) {
+      navigate("/wordcup");
+    }
+  },[user, navigate]);
+  
+  const [formData, setFormData] = useState({
+    // Initialize form fields
+    email: '',
+    password: '' 
+  });
+  function handleChange(e) {
+    setFormData((prevData) => ({ ...prevData, [e.target.id]: e.target.value }));
+    //console.log(e);
+  }
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const handleSubmit = (e) => {
+  function handleSubmit(e) {
+    console.log("In submit");
+    console.log(e);
     e.preventDefault();
-    // Perform login logic using email and password
-    console.log('Login with:', email, password);
+    signIn(e);
+  }
+  function handleKeyPress(event) {
+    console.log("from keypress!")
+    if (event.key === 'Enter') {
+      event.preventDefault(); // Prevent form submission
+      signIn(event);
+    }
   };
-  const signInGoogle = () => {
 
+  function signIn(e) {
+    console.log("event from signIn ", e);
+    e.preventDefault();
+    dispatch(signInUser(formData.email, formData.password)).then((res) => {
+      console.log("after dispatch inside then SignIn");
+    });
+  
+    console.log("after dispatch  SignIn");
+  }
+  function signInGoogle(e) {
+    console.log("event from signInGoogle ", e);
+    dispatch(signInWithGoogle()).then((res) =>{
+      console.log("after dispatch inside then signInWithGoogle");
+    });
+  
+    console.log("after dispatch  signInGoogle");
   }
 
   return (
-    <div className='form-container'>
+    <div className='form-container' onKeyDown={handleKeyPress}>
+    {/* <form className="login-form" onKeyDown={handleKeyPress}> */}
     <form className="login-form" onSubmit={handleSubmit}>
       <div className='image-container'>
         <img src="/image/WCLogo.png" alt="Logo" className="logoForm" />
@@ -40,13 +78,13 @@ const Login = () => {
         <span className="or-text">or</span>
         <div className="bar"></div>
       </div>
-      <label>Email Address:</label>
-      <input type="email" value={email} onChange={handleEmailChange} />
+      <label htmlFor='email'>Email Address:</label>
+      <input type="email" id="email" value={formData.email} onChange={handleChange} />
       <br />
-      <label>Password:</label>
-      <input type="password" value={password} onChange={handlePasswordChange} />
+      <label htmlFor='password'>Password:</label>
+      <input type="password" id="password" value={formData.password} onChange={handleChange} />
       <br />
-      <button type="submit" className='form-button'>Log In</button>
+      <button type="submit" className='form-button' onClick={signIn}>Log In</button>
     </form>
     </div>
   );
