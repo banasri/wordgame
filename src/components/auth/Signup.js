@@ -2,19 +2,27 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import './Auth.css'; // Import the CSS file
-import { registerUser, signInWithGoogle} from '../../store/authSlice';
+import { registerUser, signInWithGoogle, fetchUserProfile, updateProfile} from '../../store/authSlice';
 
 const Signup = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((state) => {
+  const [googleLinkClicked, setGoogleLinkClicked] = useState(false);
+  let user = useSelector((state) => {
     return state.auth.user;
   });
+  let userProfileExists = useSelector((state) => {
+    return state.auth.userProfileExists;
+  });
+  let error = useSelector((state) => {
+    return state.auth.error;
+  });
   useEffect(() => {
-    if (user) {
-      navigate("/wordcup");
+    if (user && !error) {
+      updtProfile();
+      //navigate("/wordcup");
     }
-  },[user, navigate]);
+  },[user, error]);
   
 
   const [formData, setFormData] = useState({
@@ -28,7 +36,9 @@ const Signup = () => {
     console.log("In submit");
     console.log(e);
     e.preventDefault();
-    signUp();
+    if(!googleLinkClicked){
+      signUp();
+    }
   }
   function handleChange(e) {
     setFormData((prevData) => ({ ...prevData, [e.target.id]: e.target.value }));
@@ -40,24 +50,65 @@ const Signup = () => {
       signUp();
     }
   };
+  function  updtProfile() {
+    console.log("From updateProfile function!!!!");
+    console.log('user', user);
+    console.log('error', error);
+    if(!error) {
+      dispatch(fetchUserProfile(user.uid)).then(() => {
+        console.log("From updateProfile after fetch");
+        if(!error) {
+          let userDoc = {
+            username : formData.firstName + " " + formData.lastName,
+            firstName : formData.firstName,
+            lastName : formData.lastName,
+            email : formData.email
+          };
+          if(googleLinkClicked) {
+            const nameParts = user.username.trim().split(' ');
+            const firstName = nameParts.shift(); 
+            const lastName = nameParts.join(' ');
+            userDoc = {
+                      username : user.username,
+                      firstName : firstName,
+                      lastName : lastName,
+                      email : user.email
+                    };
+          }
+          console.log("userDoc", userDoc);
+          console.log("userProfileExists", userProfileExists);
+          console.log("user.uid", user.uid);
+          dispatch(updateProfile(userDoc, userProfileExists, user.uid)).then(() =>{
+            if(!error) { 
+              navigate("/wordcup");
+            }
+          });
+        }
+      })
+    }
+  }
   function signUp() {
     //console.log(e);
     console.log(formData);
     dispatch(registerUser(formData.email, formData.password)).then(() => {
       console.log("after dispatch inside then signUp");
+      console.log('user', user);
       // navigate("/wordcup");
     });
 
   }
 
   function signInGoogle() {
+    setGoogleLinkClicked(true);
     dispatch(signInWithGoogle()).then((res) =>{
       console.log("after dispatch inside then signInWithGoogle");
+      //updtProfile();
       // navigate("/wordcup");
     });
   
     console.log("after dispatch  signInGoogle");
   }
+  
 
   return (
     <div className='form-container' onKeyDown={handleKeyPress}>

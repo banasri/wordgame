@@ -1,5 +1,5 @@
-import { auth, googleProvider } from "../firebase"
-//import { getDocs, collection } from "firebase/firestore";
+import { auth, googleProvider, db } from "../firebase"
+import { doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
 import { createSlice } from '@reduxjs/toolkit';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, signInWithPopup} from "firebase/auth";
 //import { updateEmail, updatePassword, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendPasswordResetEmail} from "firebase/auth";
@@ -14,28 +14,53 @@ export const authSlice = createSlice({
     name: 'auth',
     initialState: {
         user : null,
+        username : null,
+        email : null,
         status: STATUSES.IDLE,
+        profileStatus: STATUSES.IDLE,
+        gameStatus: STATUSES.IDLE,
         isSignedIn : false,
         error : null,
+        userProfileExists : false,
+        userGameExists : false,
     },
     reducers: {
           loginUser: (state, action) => {
             console.log("in authSlice reducers: loginUser");
+            console.log(action.payload);
             state.user = action.payload;
+            state.username = action.payload.username;
+            state.email = action.payload.email;
             state.isSignedIn = true;
           },
           logoutUser: (state) => {
             console.log("in authSlice reducers: logoutUser");
             state.user = null;
+            state.username = null;
+            state.email = null;
             state.isSignedIn = false;
           },
           setStatus : (state, action) => {
             state.status = action.payload;
           },
+          setProfileStatus : (state, action) => {
+            state.profileStatus = action.payload;
+          },
+          setGameStatus : (state, action) => {
+            state.gameStatus = action.payload;
+          },
+          setUserProfileExists : (state, action) => {
+            state.userProfileExists = action.payload;
+          },
+          setError : (state, action) => {
+            state.error = action.payload;
+          },
     },
 });
 
-export const { loginUser, logoutUser, setStatus } = authSlice.actions;
+export const { loginUser, logoutUser, setStatus, 
+  setProfileStatus, setGameStatus, setUserProfileExists,
+   setError } = authSlice.actions;
 export default authSlice.reducer;
 
 // Thunks
@@ -69,6 +94,7 @@ export function signInUser(email, password) {
 export function registerUser(email, password) {
   return async function registerUserThunk(dispatch) {
       //dispatch(authSlice.actions.setStatus(STATUSES.LOADING));
+      console.log("inside register thunk");
       try {
           const res = await createUserWithEmailAndPassword(
               auth, 
@@ -76,13 +102,8 @@ export function registerUser(email, password) {
               password
           );
           console.log("res : ", res);
-          
           dispatch(
-              loginUser({
-                uid: res.uid,
-                username: res.displayName,
-                email: res.email,
-              })
+              loginUser(res.user)
             );
           dispatch(setStatus(STATUSES.IDLE));
       } catch (err) {
@@ -102,9 +123,9 @@ export function signInWithGoogle() {
           
           dispatch(
               loginUser({
-                uid: res.uid,
-                username: res.displayName,
-                email: res.email,
+                uid: res.user.uid,
+                username: res.user.displayName,
+                email: res.user.email,
               })
             );
           dispatch(setStatus(STATUSES.IDLE));
@@ -130,5 +151,51 @@ export function signout() {
       }
   };
 }
+
+export function updateProfile(profile, userProfileExists, uid) {
+  return async function updateProfileThunk(dispatch) {
+
+  console.log("name, phone, school", profile);
+  console.log("currentUser.uid", uid);
+
+  const docData = {
+    ...profile
+    };
+    try {
+      if (userProfileExists) 
+      {
+        await updateDoc(doc(db, "userProfile", uid), docData);
+      } else {
+        await setDoc(doc(db, "userProfile", uid), docData);
+      }
+    } catch(error) {
+      console.error("Error updating document:", error);
+      dispatch(setProfileStatus(STATUSES.ERROR));
+    }
+
+}
+}
+  export function fetchUserProfile(uid) {
+    return async function fetchUserProfileThunk(dispatch) {
+        dispatch(setProfileStatus(STATUSES.LOADING));
+        try {
+            const docRef = doc(db, "userProfile", uid);
+            const docSnap = await getDoc(docRef);
+            
+            if (docSnap.exists()) {
+                dispatch(setUserProfileExists(true));
+              } else {
+                console.log('No such document!');
+                dispatch(setUserProfileExists(false));
+              }
+              dispatch(setProfileStatus(STATUSES.IDLE));
+        } catch (error) {
+            //console.error('Error fetching document:', error);
+            dispatch(setError("Error fetching userProfile document"));
+            dispatch(setProfileStatus(STATUSES.ERROR));
+        }
+    };
+}
+
 
 

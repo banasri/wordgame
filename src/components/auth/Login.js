@@ -3,19 +3,29 @@ import './Auth.css'; // Import the CSS file
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 //import { useDispatch, useSelector } from 'react-redux';
-import { signInUser, signInWithGoogle} from '../../store/authSlice';
+import { signInUser, signInWithGoogle, fetchUserProfile, updateProfile} from '../../store/authSlice';
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((state) => {
+  const [googleLinkClicked, setGoogleLinkClicked] = useState(false);
+  let user = useSelector((state) => {
     return state.auth.user;
   });
+  let userProfileExists = useSelector((state) => {
+    return state.auth.userProfileExists;
+  });
+  let error = useSelector((state) => {
+    return state.auth.error;
+  });
   useEffect(() => {
-    if (user) {
-      navigate("/wordcup");
+    if (user && !error) {
+      if(googleLinkClicked){
+        updtProfile();
+      }
+      //navigate("/wordcup");
     }
-  },[user, navigate]);
+  },[user, error]);
   
   const [formData, setFormData] = useState({
     // Initialize form fields
@@ -31,7 +41,9 @@ const Login = () => {
     console.log("In submit");
     console.log(e);
     e.preventDefault();
-    signIn(e);
+    if(!googleLinkClicked){
+      signIn();
+    }
   }
   function handleKeyPress(event) {
     console.log("from keypress!")
@@ -40,10 +52,40 @@ const Login = () => {
       signIn(event);
     }
   };
-
-  function signIn(e) {
-    console.log("event from signIn ", e);
-    e.preventDefault();
+  function  updtProfile() {
+    console.log("From updateProfile function!!!!");
+    console.log('user', user);
+    console.log('error', error);
+    if(!error) {
+      dispatch(fetchUserProfile(user.uid)).then(() => {
+        console.log("From updateProfile after fetch");
+        if(!error) {
+          
+          const nameParts = user.username.trim().split(' ');
+          const firstName = nameParts.shift(); 
+          const lastName = nameParts.join(' ');
+          const userDoc = {
+                    username : user.username,
+                    firstName : firstName,
+                    lastName : lastName,
+                    email : user.email
+                  };
+          
+          console.log("userDoc", userDoc);
+          console.log("userProfileExists", userProfileExists);
+          console.log("user.uid", user.uid);
+          dispatch(updateProfile(userDoc, userProfileExists, user.uid)).then(() =>{
+            if(!error) { 
+              navigate("/wordcup");
+            }
+          });
+        }
+      })
+    }
+  }
+  function signIn() {
+    // console.log("event from signIn ", e);
+    // e.preventDefault();
     dispatch(signInUser(formData.email, formData.password)).then((res) => {
       console.log("after dispatch inside then SignIn");
     });
@@ -52,6 +94,7 @@ const Login = () => {
   }
   function signInGoogle(e) {
     console.log("event from signInGoogle ", e);
+    setGoogleLinkClicked(true);
     dispatch(signInWithGoogle()).then((res) =>{
       console.log("after dispatch inside then signInWithGoogle");
     });
