@@ -20,6 +20,7 @@ const initialState = {
       word4: "",
       word5: ""
     },
+    showHowToPlay : false,
     alert: false,
     pass: false,
     tryAgain: false,
@@ -269,6 +270,12 @@ const clueReducer = (state = initialState, action) => {
             };
           }
           
+        case "SET_QUEST_MODAL": 
+          console.log("in SET_QUEST_MODAL ...........");
+          return {
+            ...state,
+            showHowToPlay: !state.showHowToPlay,
+          };
         case "CLEAR_ALERT":
           console.log("in CLEAR_ALERT ...........");
           return {

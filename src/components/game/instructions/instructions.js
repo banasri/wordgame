@@ -6,78 +6,98 @@ const Instructions = () => {
     <div className="container">
       <section className="gameInstructions">
         <div className="close-icon">
-          <game-icon icon="close"></game-icon>
+        {/* <FontAwesomeIcon onClick={handleClick} className='icon-fa' icon={faClose} /> */}
         </div>
         <div className="instructions">
+          <h4>How to play <span className='textWord'>Word</span>
+        <span className='textCup'>Cup</span></h4>
+        <p>
+        <strong>Click anywhere to start.</strong>
+        </p>
+        <p>
+              You can play maximum 3 words in a day.         
+        </p>
           <p>
-            Guess the <strong>WORDLE</strong> in six tries.
+            Win at least one to maintain streak!
           </p>
           <p>
-            Each guess must be a valid five-letter word. Hit the enter button to
-            submit.
+            Guess each word in <strong>5</strong> tries. Each guess must be at least <strong>four-letter</strong> valid word.
           </p>
           <p>
-            After each guess, the color of the tiles will change to show how
-            close your guess was to the word.
+            After each guess, the color of the tiles will change.
           </p>
-        </div>
-
-        <hr />
-
-        <div className="examples">
+          <div className="examples">
           <p>
             <strong>Examples</strong>
           </p>
+          <hr></hr>
           <div className="example">
-            <div className="row">
-              <div style={{ backgroundColor: "#6aaa64" }}>W</div>
-              <div>E</div>
-              <div>A</div>
-              <div>R</div>
-              <div>Y</div>
+            <div className="wordInst">
+              <div className="instTile"  style={{ backgroundColor: "#6aaa64" }}>S</div>
+              <div className="instTile">N</div>
+              <div className="instTile">E</div>
+              <div className="instTile">A</div>
+              <div className="instTile">K</div>
             </div>
             <p>
-              The letter <strong>W</strong> is in the word and in the correct
+              The letter <strong>S</strong> is in the word and in the correct
               spot.
             </p>
           </div>
 
           <div className="example">
-            <div className="row">
-              <div>P</div>
-              <div style={{ backgroundColor: "#c9b458" }}>I</div>
-              <div>L</div>
-              <div>L</div>
-              <div>S</div>
+            <div className="wordInst">
+              <div className="instTile" >C</div>
+              <div className="instTile"  style={{ backgroundColor: "#c9b458" }}>H</div>
+              <div className="instTile" >O</div>
+              <div className="instTile" >R</div>
+              <div className="instTile" >E</div>
             </div>
             <p>
-              The letter <strong>I</strong> is in the word but in the wrong
+              The letter <strong>H</strong> is in the word but in the wrong
               spot.
             </p>
           </div>
 
           <div className="example">
-            <div className="row">
-              <div>V</div>
-              <div>A</div>
-              <div>G</div>
-              <div style={{ backgroundColor: "#787c7e" }}>U</div>
-              <div>E</div>
+            <div className="wordInst">
+              <div className="instTile" >B</div>
+              <div className="instTile" >R</div>
+              <div className="instTile" >A</div>
+              <div className="instTile"  style={{ backgroundColor: "#787c7e" }}>V</div>
+              <div className="instTile" >E</div>
             </div>
             <p>
-              The letter <strong>U</strong> is not in the word in any spot.
+              The letter <strong>V</strong> is not in the word in any spot.
             </p>
           </div>
 
           <hr></hr>
-
-          <p>
-            <strong>
-              You can play as many WORDLE as you like! <strong></strong>
-              Click anywhere to start.
-            </strong>
-          </p>
         </div>
+          <p>
+            The word can start from anywhere but cannot contain spaces. 
+          </p>
+          <div className="examples">
+            <p>
+              <strong>Example Word - Modest.</strong>
+            </p>
+            <div className="example">
+              <div className="wordInst">
+                <div className="instTile" >&nbsp;</div>
+                <div className="instTile" >&nbsp;</div>
+                <div className="instTile" style={{ backgroundColor: "#787c7e" }}>B</div>
+                <div className="instTile" style={{ backgroundColor: "#6aaa64" }}>E</div>
+                <div className="instTile" style={{ backgroundColor: "#6aaa64" }}>S</div>
+                <div className="instTile" style={{ backgroundColor: "#6aaa64" }}>T</div>
+              </div>
+              <p>
+                The letters E, S, T are in the word and in the correct
+                spot.
+              </p>
+            </div>
+          </div>
+        </div>
+        
       </section>
     </div>
   );

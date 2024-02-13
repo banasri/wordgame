@@ -28,7 +28,14 @@
     box-sizing: border-box;
     top: 0;
   }
-  
+  .instructions > h4 {
+    margin-bottom: 3px;
+  }
+
+  .instructions > p {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
   .container {
     position: absolute;
     display: flex;
@@ -46,7 +53,27 @@
     border: 2px solid #878a8c;
     color: #000000;
   }
-  
+
+  .wordInst {
+    display: flex;
+    width: 60%;
+    justify-content: space-between;
+  }
+  .instTile {
+    flex: 1 1;
+    display: flex;
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    color: #000000;
+    text-transform: uppercase;
+    border: 2px solid #B15EFF;
+    margin: 2px;
+}
   @media (max-width: 737px) {
     .gameInstructions{
       width: 80%;
@@ -60,4 +87,25 @@
       flex-basis: 40% !important
     }
   }
-  
+  @media (max-width: 738px) {
+    .wordInst {
+      display: flex;
+      width: 80%;
+      justify-content: space-between;
+    }
+    .tile {
+      flex: 1 1;
+      display: flex;
+      width: 40px;
+      height: 40px;
+      font-size: 18px;
+      border-radius: 2px;
+      justify-content: center;
+      align-items: center;
+      box-sizing: border-box;
+      color: #000000;
+      text-transform: uppercase;
+      border: 2px solid #B15EFF;
+      margin: 2px;
+  }
+  }

@@ -16,12 +16,13 @@ export const authSlice = createSlice({
         user : null,
         username : null,
         email : null,
+        userProfile : null,
         status: STATUSES.IDLE,
         profileStatus: STATUSES.IDLE,
         gameStatus: STATUSES.IDLE,
         isSignedIn : false,
         error : null,
-        userProfileExists : false,
+        userProfileExists : true,
         userGameExists : false,
     },
     reducers: {
@@ -177,12 +178,20 @@ export function updateProfile(profile, userProfileExists, uid) {
 }
   export function fetchUserProfile(uid) {
     return async function fetchUserProfileThunk(dispatch) {
+        console.log("From Reducer - fetchUserProfile");
         dispatch(setProfileStatus(STATUSES.LOADING));
         try {
+            console.log("From Reducer - fetchUserProfile... try");
             const docRef = doc(db, "userProfile", uid);
             const docSnap = await getDoc(docRef);
-            
+            console.log("docSnap After ... ");
+
             if (docSnap.exists()) {
+                // dispatch to set the userProfile info.
+                console.log("docSnap exists");
+                const data = docSnap.data();
+                console.log("docSnap exists - after doc.data()");
+                console.log("docSnap", data);
                 dispatch(setUserProfileExists(true));
               } else {
                 console.log('No such document!');
@@ -190,12 +199,64 @@ export function updateProfile(profile, userProfileExists, uid) {
               }
               dispatch(setProfileStatus(STATUSES.IDLE));
         } catch (error) {
-            //console.error('Error fetching document:', error);
+            console.error("Error fetching document:", error);
             dispatch(setError("Error fetching userProfile document"));
             dispatch(setProfileStatus(STATUSES.ERROR));
         }
     };
 }
 
+export function fetchNdUpdateUserProfile(uid, profile) {
+  return async function fetchNdUpdateUserProfileThunk(dispatch) {
+      console.log("From Reducer - fetchNdUpdateUserProfile");
+      dispatch(setProfileStatus(STATUSES.LOADING));
+      try {
+          console.log("From Reducer - fetchNdUpdateUserProfile... try");
+          const docRef = doc(db, "userProfile", uid);
+          const docSnap = await getDoc(docRef);
+          //console.log("docSnap After ... ");
+          const docData = {
+            ...profile
+          };
+          if (docSnap.exists()) {
+              // dispatch to set the userProfile info.
+              console.log("docSnap exists");
+              const data = docSnap.data();
+              console.log("docSnap exists - after doc.data()");
+              console.log("docSnap", data);
+              console.log("docSnap", docData);
+              // if(data.username !== docData.username ||
+              //    data.firstname !== docData.firstname ||
+              //    data.lastname !== docData.lastname ||
+              //    data.email !== data.email) {
+              //     try{
+              //       await updateDoc(doc(db, "userProfile", uid), docData);
+              //     } catch(e) {
+              //       console.log(e);
+              //       dispatch(setError("Error updating userProfile document: " + e));
+              //       dispatch(setProfileStatus(STATUSES.ERROR));
+              //     }
+              //    }
+              
+              dispatch(setUserProfileExists(true));
+            } else {
+              try{
+                await setDoc(doc(db, "userProfile", uid), docData);
+              } catch(e) {
+                console.log(e);
+                dispatch(setError("Error updating userProfile document: " + e));
+                dispatch(setProfileStatus(STATUSES.ERROR));
+              }
+              console.log('No such document!');
+              dispatch(setUserProfileExists(false));
+            }
+            dispatch(setProfileStatus(STATUSES.IDLE));
+      } catch (error) {
+          console.error("Error fetching document:", error);
+          dispatch(setError("Error fetching userProfile document: " + error));
+          dispatch(setProfileStatus(STATUSES.ERROR));
+      }
+  };
+}
 
 

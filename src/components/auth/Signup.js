@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import './Auth.css'; // Import the CSS file
-import { registerUser, signInWithGoogle, fetchUserProfile, updateProfile} from '../../store/authSlice';
+import { registerUser, signInWithGoogle, fetchNdUpdateUserProfile} from '../../store/authSlice';
 
 const Signup = () => {
   const dispatch = useDispatch();
@@ -10,9 +10,6 @@ const Signup = () => {
   const [googleLinkClicked, setGoogleLinkClicked] = useState(false);
   let user = useSelector((state) => {
     return state.auth.user;
-  });
-  let userProfileExists = useSelector((state) => {
-    return state.auth.userProfileExists;
   });
   let error = useSelector((state) => {
     return state.auth.error;
@@ -54,35 +51,31 @@ const Signup = () => {
     console.log("From updateProfile function!!!!");
     console.log('user', user);
     console.log('error', error);
+    let userDoc = {
+      username : formData.firstName + " " + formData.lastName,
+      firstName : formData.firstName,
+      lastName : formData.lastName,
+      email : formData.email
+    };
+    if(googleLinkClicked) {
+      const nameParts = user.username.trim().split(' ');
+      const firstName = nameParts.shift(); 
+      const lastName = nameParts.join(' ');
+      userDoc = {
+                username : user.username,
+                firstName : firstName,
+                lastName : lastName,
+                email : user.email
+              };
+    }
+    console.log("userDoc", userDoc);
+    console.log("user.uid", user.uid);
     if(!error) {
-      dispatch(fetchUserProfile(user.uid)).then(() => {
-        console.log("From updateProfile after fetch");
+      dispatch(fetchNdUpdateUserProfile(user.uid, userDoc)).then(() => {
+        console.log("From updateProfile after fetch and update");
+        // if the userProfile info changed, then call update. Else skip update
         if(!error) {
-          let userDoc = {
-            username : formData.firstName + " " + formData.lastName,
-            firstName : formData.firstName,
-            lastName : formData.lastName,
-            email : formData.email
-          };
-          if(googleLinkClicked) {
-            const nameParts = user.username.trim().split(' ');
-            const firstName = nameParts.shift(); 
-            const lastName = nameParts.join(' ');
-            userDoc = {
-                      username : user.username,
-                      firstName : firstName,
-                      lastName : lastName,
-                      email : user.email
-                    };
-          }
-          console.log("userDoc", userDoc);
-          console.log("userProfileExists", userProfileExists);
-          console.log("user.uid", user.uid);
-          dispatch(updateProfile(userDoc, userProfileExists, user.uid)).then(() =>{
-            if(!error) { 
-              navigate("/wordcup");
-            }
-          });
+          navigate("/wordcup");
         }
       })
     }

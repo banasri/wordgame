@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import SignedInLinks from './SignedInLinks';
 import SignedOutLinks from './SignedOutLinks';
-// import { useSelector } from 'react-redux';
+import { useDispatch} from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faUser, faCog, faSheetPlastic, faQuestionCircle, faBars, faChartSimple } from '@fortawesome/free-solid-svg-icons';
 
@@ -10,6 +10,10 @@ import { faHome, faUser, faCog, faSheetPlastic, faQuestionCircle, faBars, faChar
 const NavBar = () => {
 //   const user = useSelector((state) => state.auth.user);
 //   console.log(user);
+  const dispatch = useDispatch();
+  function handleClickQues() {
+    dispatch({type:'SET_QUEST_MODAL'});
+  }
   return (
     <div className="navbar"> 
       <div className='navbar-icons'>
@@ -26,7 +30,7 @@ const NavBar = () => {
             {/* <SignedInLinks />             
             <SignedOutLinks /> */}
         <div className='navbar-icons'>
-          <FontAwesomeIcon className='icon-fa' icon={faQuestionCircle} />
+          <FontAwesomeIcon className='icon-fa' onClick={handleClickQues} icon={faQuestionCircle} />
           <FontAwesomeIcon className='icon-fa' icon={faChartSimple} />
           <FontAwesomeIcon className='icon-fa' icon={faCog} />
         </div>

@@ -10,8 +10,15 @@ import { db } from "../../../firebase";
 import { collection, query, where, getDocs, getCountFromServer } from "firebase/firestore";
 
 const Game = (props) => {
-  const [showModal, setShowModal] = useState(true);
+  const userProfileExists = useSelector((state) => {
+    return state.auth.userProfileExists;
+  });
+  const showHowToPlay = useSelector((state) => {
+    return state.game.showHowToPlay;
+  });
+  const [showModal, setShowModal] = useState(!userProfileExists);
   const [showWord, setShowWord] = useState(true);
+  //const [howToPlay, setHowToPlay] = useState(showHowToPlay);
 
   const pass = useSelector((state)=>{
     return state.game.pass;
@@ -42,6 +49,12 @@ const Game = (props) => {
 
   useEffect(() => {
     console.log("11111111111111111111111");
+    console.log("userProfileExists ", userProfileExists );
+    //console.log("howToPlay ", howToPlay );
+    if(showHowToPlay) {
+      setShowModal(true);
+    }
+    //setShowHowToPlay(howToPlay);
     const todayWords = [];
     let dateString = process.env.REACT_APP_LIVE_DT;
     const [year, month, day] = dateString.split('-').map(Number);
@@ -100,7 +113,7 @@ const Game = (props) => {
     };
 
     fetchData();
-  }, [dispatch]);
+  }, [dispatch, userProfileExists, showHowToPlay ]);
 
   if (alert) {
     setTimeout(() => {
@@ -118,13 +131,21 @@ const Game = (props) => {
     <main
       className="game"
       onClick={() => {
+        console.log("Clicked!");
         setShowModal(false);
+        console.log(showHowToPlay);
+        // if(showHowToPlay) {
+        //   setHowToPlay(false);
+        // }
+        //setShowHowToPlay(false);
       }}
     >
       <Clue row="1"/>
       {alert ? <p className="alert">Not a valid word</p> : null}
       <GameBox />
       <Keyboard />
+      {/* {showModal && !userProfileExists ? <Instructions /> : null} */}
+      {/* {showModal || showHowToPlay ? <Instructions /> : null} */}
       {showModal ? <Instructions /> : null}
       {gameOver ? <GameOver pass={pass} /> : null}
       {gameOver & showWord &!pass ? <p className="alert">{word}</p> : null}
