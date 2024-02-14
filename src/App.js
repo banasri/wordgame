@@ -8,6 +8,7 @@ import Dashboard from './components/game/Dashboard';
 import { auth } from './firebase';
 import { STATUSES } from './store/authSlice';
 import { loginUser, setStatus, logoutUser } from "./store/authSlice";
+import PrivateRoute from './components/game/PrivateRoute';
 
 function App() {
   const dispatch = useDispatch();
@@ -41,7 +42,11 @@ function App() {
           <Route exact path="/" element={<LandingPage />}></Route>
           <Route path="/signup" element={<Signup />}></Route>
           <Route path="/login" element={<Login />}></Route>
-          <Route path="/wordcup" element={<Dashboard />}></Route>
+          <Route path="/wordcup" element={
+                    <PrivateRoute>
+                      <Dashboard />
+                    </PrivateRoute>
+                  }></Route>
         </Routes>
       </div>
     </BrowserRouter>
