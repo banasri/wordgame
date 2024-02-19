@@ -7,26 +7,36 @@ import LandingPage from './components/layout/LandingPage';
 import Dashboard from './components/game/Dashboard';
 import { auth } from './firebase';
 import { STATUSES } from './store/authSlice';
-import { loginUser, setStatus, logoutUser } from "./store/authSlice";
+import { loginUser, setStatus, logoutUser, fetchUserGame, fetchUserProfile, fetchUserGameStat } from "./store/authSlice";
 import PrivateRoute from './components/game/PrivateRoute';
 
 function App() {
   const dispatch = useDispatch();
-
   useEffect(() => {
     auth.onAuthStateChanged((authUser) => {
       console.log("From App useEffect!")
       console.log(authUser);
       if (authUser) {
         console.log(authUser);
-        dispatch(
-          loginUser({
-            uid: authUser.uid,
-            username: authUser.displayName,
-            email: authUser.email,
-          })
-        );
-        dispatch(setStatus(STATUSES.IDLE));
+        
+        Promise.all([
+          dispatch(fetchUserGame(authUser.uid)),
+          dispatch(fetchUserProfile(authUser.uid)),
+          dispatch(fetchUserGameStat(authUser.uid))
+        ])
+        .then(() => {
+          dispatch(
+            loginUser({
+              uid: authUser.uid,
+              username: authUser.displayName,
+              email: authUser.email,
+            })
+          );
+          dispatch(setStatus(STATUSES.IDLE));
+        })
+        .catch((error) =>{
+          console.log("Error from fetch/update data");
+        });
       } else {
         dispatch(logoutUser());
         dispatch(setStatus(STATUSES.IDLE));

@@ -13,6 +13,15 @@ const Game = (props) => {
   const userProfileExists = useSelector((state) => {
     return state.auth.userProfileExists;
   });
+  const userGame = useSelector((state) => {
+    return state.auth.userGame;
+  });
+  const userGameStat = useSelector((state) => {
+    return state.auth.userGameStat;
+  });
+  const userProfile = useSelector((state) => {
+    return state.auth.userProfile;
+  });
   const showHowToPlay = useSelector((state) => {
     return state.game.showHowToPlay;
   });
@@ -50,6 +59,9 @@ const Game = (props) => {
   useEffect(() => {
     console.log("11111111111111111111111");
     console.log("userProfileExists ", userProfileExists );
+    console.log("userProfile ", userProfile );
+    console.log("userGame ", userGame );
+    console.log("userGameStat ", userGameStat );
     //console.log("howToPlay ", howToPlay );
     if(showHowToPlay) {
       setShowModal(true);
@@ -113,7 +125,7 @@ const Game = (props) => {
     };
 
     fetchData();
-  }, [dispatch, userProfileExists, showHowToPlay ]);
+  }, [dispatch, showHowToPlay]);
 
   if (alert) {
     setTimeout(() => {

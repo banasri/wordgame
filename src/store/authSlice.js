@@ -3,7 +3,7 @@ import { doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
 import { createSlice } from '@reduxjs/toolkit';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, signInWithPopup} from "firebase/auth";
 //import { updateEmail, updatePassword, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendPasswordResetEmail} from "firebase/auth";
-
+import { Timestamp } from "firebase/firestore";
 export const STATUSES = Object.freeze({
     IDLE: 'idle',
     ERROR: 'error',
@@ -14,16 +14,21 @@ export const authSlice = createSlice({
     name: 'auth',
     initialState: {
         user : null,
+        //username is got only when user signs in using google
         username : null,
         email : null,
+        formData : null,
         userProfile : null,
         status: STATUSES.IDLE,
         profileStatus: STATUSES.IDLE,
         gameStatus: STATUSES.IDLE,
+        gameStatsStatus: STATUSES.IDLE,
         isSignedIn : false,
         error : null,
         userProfileExists : true,
         userGameExists : false,
+        userGame : {},
+        userGameStat : {}
     },
     reducers: {
           loginUser: (state, action) => {
@@ -41,6 +46,15 @@ export const authSlice = createSlice({
             state.email = null;
             state.isSignedIn = false;
           },
+          setUserProfile: (state, action) => {
+            state.userProfile = action.payload;
+          },
+          setUserGame: (state, action) => {
+            state.userGame = action.payload;
+          },
+          setUserGameStat: (state, action) => {
+            state.userGameStat = action.payload;
+          },
           setStatus : (state, action) => {
             state.status = action.payload;
           },
@@ -49,6 +63,9 @@ export const authSlice = createSlice({
           },
           setGameStatus : (state, action) => {
             state.gameStatus = action.payload;
+          },
+          setGameStatStatus : (state, action) => {
+            state.gameStatsStatus = action.payload;
           },
           setUserProfileExists : (state, action) => {
             state.userProfileExists = action.payload;
@@ -59,8 +76,8 @@ export const authSlice = createSlice({
     },
 });
 
-export const { loginUser, logoutUser, setStatus, 
-  setProfileStatus, setGameStatus, setUserProfileExists,
+export const { loginUser, logoutUser, setUserProfile, setUserGame, setUserGameStat, setStatus, 
+  setProfileStatus, setGameStatus, setGameStatStatus, setUserProfileExists,
    setError } = authSlice.actions;
 export default authSlice.reducer;
 
@@ -79,14 +96,15 @@ export function signInUser(email, password) {
             
             dispatch(
                 loginUser({
-                  uid: res.uid,
-                  username: res.displayName,
-                  email: res.email,
+                  uid: res.user.uid,
+                  username: res.user.displayName,
+                  email: res.user.email,
                 })
               );
             dispatch(setStatus(STATUSES.IDLE));
         } catch (err) {
             console.log(err);
+            dispatch(setError("Error Signing in: " + err));
             dispatch(setStatus(STATUSES.ERROR));
         }
     };
@@ -109,6 +127,7 @@ export function registerUser(email, password) {
           dispatch(setStatus(STATUSES.IDLE));
       } catch (err) {
           console.log(err);
+          dispatch(setError("Error Registering: " + err));
           dispatch(setStatus(STATUSES.ERROR));
       }
   };
@@ -132,6 +151,7 @@ export function signInWithGoogle() {
           dispatch(setStatus(STATUSES.IDLE));
       } catch (err) {
           console.log(err);
+          dispatch(setError("Error Google Signin: " + err));
           dispatch(setStatus(STATUSES.ERROR));
       }
   };
@@ -148,6 +168,7 @@ export function signout() {
           dispatch(setStatus(STATUSES.IDLE));
       } catch (err) {
           console.log(err);
+          dispatch(setError("Error Signing out: " + err));
           dispatch(setStatus(STATUSES.ERROR));
       }
   };
@@ -169,6 +190,7 @@ export function updateProfile(profile, userProfileExists, uid) {
       } else {
         await setDoc(doc(db, "userProfile", uid), docData);
       }
+      dispatch(setUserProfile(docData));
     } catch(error) {
       console.error("Error updating document:", error);
       dispatch(setProfileStatus(STATUSES.ERROR));
@@ -193,6 +215,7 @@ export function updateProfile(profile, userProfileExists, uid) {
                 console.log("docSnap exists - after doc.data()");
                 console.log("docSnap", data);
                 dispatch(setUserProfileExists(true));
+                dispatch(setUserProfile(data));
               } else {
                 console.log('No such document!');
                 dispatch(setUserProfileExists(false));
@@ -225,23 +248,12 @@ export function fetchNdUpdateUserProfile(uid, profile) {
               console.log("docSnap exists - after doc.data()");
               console.log("docSnap", data);
               console.log("docSnap", docData);
-              // if(data.username !== docData.username ||
-              //    data.firstname !== docData.firstname ||
-              //    data.lastname !== docData.lastname ||
-              //    data.email !== data.email) {
-              //     try{
-              //       await updateDoc(doc(db, "userProfile", uid), docData);
-              //     } catch(e) {
-              //       console.log(e);
-              //       dispatch(setError("Error updating userProfile document: " + e));
-              //       dispatch(setProfileStatus(STATUSES.ERROR));
-              //     }
-              //    }
-              
               dispatch(setUserProfileExists(true));
+              dispatch(setUserProfile(data));
             } else {
               try{
                 await setDoc(doc(db, "userProfile", uid), docData);
+                dispatch(setUserProfile(docData));
               } catch(e) {
                 console.log(e);
                 dispatch(setError("Error updating userProfile document: " + e));
@@ -259,4 +271,231 @@ export function fetchNdUpdateUserProfile(uid, profile) {
   };
 }
 
+export function fetchNdUpdateUserGame(uid, game) {
+  return async function fetchNdUpdateUserGameThunk(dispatch) {
+      console.log("From Reducer - fetchNdUpdateUserGame");
+      dispatch(setGameStatus(STATUSES.LOADING));
+      try {
+          console.log("From Reducer - fetchNdUpdateUserGame... try");
+          const docRef = doc(db, "userGame", uid);
+          const docSnap = await getDoc(docRef);
+          const docData = {
+            ...game
+          };
+          console.log("docSnap", docData);
+          if (docSnap.exists()) {
+              // dispatch to set the userProfile info.
+              console.log("docSnap exists");
+              const data = docSnap.data();
+              console.log("data", data);
+              console.log("docSnap", docData);
+              dispatch(setUserGame(data));
+            } else {
+              console.log("docSnap does not exist");
+              try{
+                await setDoc(doc(db, "userGame", uid), docData);
+                dispatch(setUserGame(docData));
+              } catch(e) {
+                console.log(e);
+                dispatch(setError("Error updating userGame document: " + e));
+                dispatch(setGameStatus(STATUSES.ERROR));
+              }
+            }
+            dispatch(setGameStatus(STATUSES.IDLE));
+      } catch (error) {
+          console.error("Error fetching document:", error);
+          dispatch(setError("Error fetching userGame document: " + error));
+          dispatch(setGameStatus(STATUSES.ERROR));
+      }
+  };
+}
 
+export function fetchUserGame(uid) {
+  return async function fetchUserGameThunk(dispatch) {
+      console.log("From Reducer - fetchUserGame");
+      dispatch(setGameStatus(STATUSES.LOADING));
+      try {
+          console.log("From Reducer - fetchUserGame... try");
+          const docRef = doc(db, "userGame", uid);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+              console.log("docSnap exists");
+              const data = docSnap.data();
+              console.log("data", data);
+              dispatch(setUserGame(data));
+            } else {
+              const docData =  {
+                LastPlayedDate : Timestamp.fromDate(new Date()),
+                CurrentGameNum : 0,
+                Word1Guess : ["", "", "", "", ""],
+                Word2Guess : ["", "", "", "", ""],
+                Word3Guess : ["", "", "", "", ""],
+                GameState : ["", "", ""]  
+              };
+              try{
+                await setDoc(doc(db, "userGame", uid), docData);
+                dispatch(setUserGame(docData));
+              } catch(e) {
+                console.log(e);
+                dispatch(setError("Error updating userGame document: " + e));
+                dispatch(setGameStatus(STATUSES.ERROR));
+              }
+            }
+            dispatch(setGameStatus(STATUSES.IDLE));
+      } catch (error) {
+          console.error("Error fetching document:", error);
+          dispatch(setError("Error fetching userGame document: " + error));
+          dispatch(setGameStatus(STATUSES.ERROR));
+      }
+  };
+}
+
+export function UpdateUserGame(uid, game, dataFromDB, dataExists) {
+  return async function UpdateUserGameThunk(dispatch) {
+      console.log("From Reducer - UpdateUserGame");
+      dispatch(setGameStatus(STATUSES.LOADING));
+      const docData = {
+        ...game
+      };
+      if (dataExists) {
+          // dispatch to set the userProfile info.
+          console.log("docSnap exists");
+          const data = dataFromDB;
+          console.log("data", data);
+          console.log("docSnap", docData);
+          try{
+            await updateDoc(doc(db, "userGame", uid), docData);
+            dispatch(setUserGame(docData));
+          } catch(e) {
+            console.log(e);
+            dispatch(setError("Error updating userGame document: " + e));
+            dispatch(setGameStatus(STATUSES.ERROR));
+          }
+        } else {
+          try{
+            await setDoc(doc(db, "userGame", uid), docData);
+            dispatch(setUserGame(docData));
+          } catch(e) {
+            console.log(e);
+            dispatch(setError("Error updating userGame document: " + e));
+            dispatch(setGameStatus(STATUSES.ERROR));
+          }
+          console.log('No such document!');
+        }
+        dispatch(setGameStatus(STATUSES.IDLE));
+  };
+}
+
+export function fetchNdUpdateUserGameStat(uid, gameStat) {
+  return async function fetchNdUpdateUserGameStatThunk(dispatch) {
+      console.log("From Reducer - fetchNdUpdateUserStatGame");
+      dispatch(setGameStatStatus(STATUSES.LOADING));
+      try {
+          console.log("From Reducer - fetchNdUpdateUserStatGame... try");
+          const docRef = doc(db, "userGameStat", uid);
+          const docSnap = await getDoc(docRef);
+          const docData = {
+            ...gameStat
+          };
+          console.log("docSnap", docData);
+          if (docSnap.exists()) {
+              // dispatch to set the userProfile info.
+              console.log("docSnap exists");
+              const data = docSnap.data();
+              console.log("data", data);
+              console.log("docSnap", docData);
+              dispatch(setUserGameStat(data));
+            } else {
+              console.log("docSnap does not exist");
+              try{
+                await setDoc(doc(db, "userGameStat", uid), docData);
+                dispatch(setUserGameStat(docData));
+              } catch(e) {
+                console.log(e);
+                dispatch(setError("Error updating userGameStat document: " + e));
+                dispatch(setGameStatStatus(STATUSES.ERROR));
+              }
+            }
+            dispatch(setGameStatStatus(STATUSES.IDLE));
+      } catch (error) {
+          console.error("Error fetching document:", error);
+          dispatch(setError("Error fetching userGameStat document: " + error));
+          dispatch(setGameStatStatus(STATUSES.ERROR));
+      }
+  };
+}
+
+export function fetchUserGameStat(uid) {
+  return async function fetchUserGameStatThunk(dispatch) {
+      console.log("From Reducer - fetchUserGameStat");
+      dispatch(setGameStatStatus(STATUSES.LOADING));
+      try {
+          console.log("From Reducer - fetchUserGameStat... try");
+          const docRef = doc(db, "userGameStat", uid);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+              console.log("docSnap exists");
+              const data = docSnap.data();
+              console.log("data", data);
+              dispatch(setUserGameStat(data));
+            } else {
+              const docData = {
+                GamesPlayed : 0,
+                NumOfGamesWon : 0,
+                CurrentStreak : 0,
+                MaxStreak : 0,
+                GuessDistribution : [0, 0, 0, 0, 0]  
+              };
+              try{
+                await setDoc(doc(db, "userGameStat", uid), docData);
+                dispatch(setUserGameStat(docData));
+              } catch(e) {
+                console.log(e);
+                dispatch(setError("Error updating userGameStat document: " + e));
+                dispatch(setGameStatStatus(STATUSES.ERROR));
+              }
+            }
+            dispatch(setGameStatStatus(STATUSES.IDLE));
+      } catch (error) {
+          console.error("Error fetching document:", error);
+          dispatch(setError("Error fetching userGame document: " + error));
+          dispatch(setGameStatStatus(STATUSES.ERROR));
+      }
+  };
+}
+
+export function UpdateUserGameStat(uid, game, dataFromDB, dataExists) {
+  return async function UpdateUserGameStatThunk(dispatch) {
+      console.log("From Reducer - UpdateUserGameStat");
+      dispatch(setGameStatStatus(STATUSES.LOADING));
+      const docData = {
+        ...game
+      };
+      if (dataExists) {
+          // dispatch to set the userProfile info.
+          console.log("docSnap exists");
+          const data = dataFromDB;
+          console.log("data", data);
+          console.log("docSnap", docData);
+          try{
+            await updateDoc(doc(db, "userGameStat", uid), docData);
+            dispatch(setUserGameStat(docData));
+          } catch(e) {
+            console.log(e);
+            dispatch(setError("Error updating userProfile document: " + e));
+            dispatch(setGameStatStatus(STATUSES.ERROR));
+          }
+        } else {
+          try{
+            await setDoc(doc(db, "userGameStat", uid), docData);
+            dispatch(setUserGameStat(docData));
+          } catch(e) {
+            console.log(e);
+            dispatch(setError("Error updating userProfile document: " + e));
+            dispatch(setGameStatStatus(STATUSES.ERROR));
+          }
+          console.log('No such document!');
+        }
+        dispatch(setGameStatStatus(STATUSES.IDLE));
+  };
+}

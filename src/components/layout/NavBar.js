@@ -23,7 +23,7 @@ const NavBar = () => {
       <div className='image-container'>
           <img src="/image/WCLogo.png" alt="Logo" className="logoForm" />
         </div>
-        <h1><span className='textWord'>Word </span>
+        <h1><span className='textWord'>Word</span>
         <span className='textCup'>Cup</span></h1>
       </div>
         

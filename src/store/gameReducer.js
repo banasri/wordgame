@@ -191,7 +191,7 @@ const clueReducer = (state = initialState, action) => {
               console.log("valid word");
               console.log("CHECK_WORD, keyyy.length, state.wordLength, keyyy",
                keyyy.length, state.wordLength, keyyy);
-              if ((keyyy.length === state.wordLength) & (keyyy === state.word.toLowerCase())) {
+              if ((keyyy.length === state.wordLength) && (keyyy === state.word.toLowerCase())) {
                 return {
                   ...state,
                   pass: true,

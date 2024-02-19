@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import './Auth.css'; // Import the CSS file
-import { registerUser, signInWithGoogle, fetchNdUpdateUserProfile} from '../../store/authSlice';
+import { registerUser, signInWithGoogle, fetchNdUpdateUserProfile, fetchNdUpdateUserGame, fetchNdUpdateUserGameStat} from '../../store/authSlice';
+import { Timestamp } from 'firebase/firestore';
 
 const Signup = () => {
   const dispatch = useDispatch();
@@ -14,12 +15,29 @@ const Signup = () => {
   let error = useSelector((state) => {
     return state.auth.error;
   });
+  let userDoc = {};
+  let userGame = {};
+  let userGameStat = {};
   useEffect(() => {
     if (user && !error) {
       updtProfile();
+      console.log("userGame", userGame);
+      Promise.all([
+        dispatch(fetchNdUpdateUserProfile(user.uid, userDoc)),
+        dispatch(fetchNdUpdateUserGame(user.uid, userGame)),
+        dispatch(fetchNdUpdateUserGameStat(user.uid, userGameStat))
+      ]) 
+      .then(() => {
+        if(!error) {
+          navigate("/wordcup");
+        }
+      })
+      .catch((error) =>{
+        console.log("Error from fetch/update data");
+      })
       //navigate("/wordcup");
     }
-  },[user, error]);
+  },[user, error, dispatch, navigate]);
   
 
   const [formData, setFormData] = useState({
@@ -37,11 +55,13 @@ const Signup = () => {
       signUp();
     }
   }
+  
   function handleChange(e) {
     setFormData((prevData) => ({ ...prevData, [e.target.id]: e.target.value }));
     //console.log(e);
   }
   function handleKeyPress(event) {
+    console.log("from keypress!");
     if (event.key === 'Enter') {
       event.preventDefault(); // Prevent form submission
       signUp();
@@ -51,7 +71,7 @@ const Signup = () => {
     console.log("From updateProfile function!!!!");
     console.log('user', user);
     console.log('error', error);
-    let userDoc = {
+    userDoc = {
       username : formData.firstName + " " + formData.lastName,
       firstName : formData.firstName,
       lastName : formData.lastName,
@@ -70,23 +90,31 @@ const Signup = () => {
     }
     console.log("userDoc", userDoc);
     console.log("user.uid", user.uid);
-    if(!error) {
-      dispatch(fetchNdUpdateUserProfile(user.uid, userDoc)).then(() => {
-        console.log("From updateProfile after fetch and update");
-        // if the userProfile info changed, then call update. Else skip update
-        if(!error) {
-          navigate("/wordcup");
-        }
-      })
+    userGame = {
+      LastPlayedDate : Timestamp.fromDate(new Date()),
+      CurrentGameNum : 0,
+      Word1Guess : ["", "", "", "", ""],
+      Word2Guess : ["", "", "", "", ""],
+      Word3Guess : ["", "", "", "", ""],
+      GameState : ["", "", ""]  
+    };
+    userGameStat = {
+      GamesPlayed : 0,
+      NumOfGamesWon : 0,
+      CurrentStreak : 0,
+      MaxStreak : 0,
+      GuessDistribution : [0, 0, 0, 0, 0]  
     }
   }
   function signUp() {
     //console.log(e);
     console.log(formData);
     dispatch(registerUser(formData.email, formData.password)).then(() => {
-      console.log("after dispatch inside then signUp");
-      console.log('user', user);
-      // navigate("/wordcup");
+      //dispatch(fetchNdUpdateUserProfile(user.uid, userDoc)).then(() => {
+        console.log("after dispatch inside then signUp");
+        console.log('user', user);
+        //navigate("/wordcup");
+      //});
     });
 
   }
@@ -134,7 +162,7 @@ const Signup = () => {
       <label htmlFor='password'>Password:</label>
       <input type="password" id="password" value={formData.password} onChange={handleChange} />
       <br />
-      <button type="submit" className='form-button' onClick={signUp}>Sign Up</button>
+      <button type="submit" className='form-button'>Sign Up</button>
     </form>
     </div>
   );

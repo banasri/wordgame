@@ -3,8 +3,8 @@ import './Auth.css'; // Import the CSS file
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 //import { useDispatch, useSelector } from 'react-redux';
-import { signInUser, signInWithGoogle, fetchNdUpdateUserProfile} from '../../store/authSlice';
-
+import { signInUser, signInWithGoogle, fetchNdUpdateUserProfile, fetchNdUpdateUserGame, fetchNdUpdateUserGameStat} from '../../store/authSlice';
+import { Timestamp } from 'firebase/firestore';
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -15,14 +15,32 @@ const Login = () => {
   let error = useSelector((state) => {
     return state.auth.error;
   });
+  let userDoc = {};
+  let userGame = {};
+  let userGameStat = {};
   useEffect(() => {
     if (user && !error) {
+      console.log("user is already logeeg in", user);
       if(googleLinkClicked){
         updtProfile();
+        console.log("userGame", userGame);
+          Promise.all([
+            dispatch(fetchNdUpdateUserProfile(user.uid, userDoc)),
+            dispatch(fetchNdUpdateUserGame(user.uid, userGame)),
+            dispatch(fetchNdUpdateUserGameStat(user.uid, userGameStat))
+          ]) 
+          .then(() => {
+            if(!error) {
+              navigate("/wordcup");
+            }
+          })
+          .catch((error) =>{
+            console.log("Error from fetch/update data");
+          })
       }
-      //navigate("/wordcup");
+        //navigate("/wordcup");
     }
-  },[user, error]);
+  },[user, error, dispatch, navigate]);
   
   const [formData, setFormData] = useState({
     // Initialize form fields
@@ -56,7 +74,7 @@ const Login = () => {
     const nameParts = user.username.trim().split(' ');
     const firstName = nameParts.shift(); 
     const lastName = nameParts.join(' ');
-    const userDoc = {
+    userDoc = {
               username : user.username,
               firstname : firstName,
               lastname : lastName,
@@ -65,14 +83,20 @@ const Login = () => {
     
     console.log("userDoc", userDoc);
     console.log("user.uid", user.uid);
-    if(!error) {
-      dispatch(fetchNdUpdateUserProfile(user.uid, userDoc)).then(() => {
-        console.log("From updateProfile after fetch and update");
-        // if the userProfile info changed, then call update. Else skip update
-        if(!error) {
-          navigate("/wordcup");
-        }
-      })
+    userGame = {
+      LastPlayedDate : Timestamp.fromDate(new Date()),
+      CurrentGameNum : 0,
+      Word1Guess : ["", "", "", "", ""],
+      Word2Guess : ["", "", "", "", ""],
+      Word3Guess : ["", "", "", "", ""],
+      GameState : ["", "", ""]  
+    };
+    userGameStat = {
+      GamesPlayed : 0,
+      NumOfGamesWon : 0,
+      CurrentStreak : 0,
+      MaxStreak : 0,
+      GuessDistribution : [0, 0, 0, 0, 0]  
     }
   }
   function signIn() {
@@ -120,7 +144,7 @@ const Login = () => {
       <label htmlFor='password'>Password:</label>
       <input type="password" id="password" value={formData.password} onChange={handleChange} />
       <br />
-      <button type="submit" className='form-button' onClick={signIn}>Log In</button>
+      <button type="submit" className='form-button'>Log In</button>
     </form>
     </div>
   );
