@@ -2,8 +2,7 @@ import { auth, googleProvider, db } from "../firebase"
 import { doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
 import { createSlice } from '@reduxjs/toolkit';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, signInWithPopup} from "firebase/auth";
-//import { updateEmail, updatePassword, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendPasswordResetEmail} from "firebase/auth";
-import { Timestamp } from "firebase/firestore";
+
 export const STATUSES = Object.freeze({
     IDLE: 'idle',
     ERROR: 'error',
@@ -73,6 +72,7 @@ export const authSlice = createSlice({
           setError : (state, action) => {
             state.error = action.payload;
           },
+          
     },
 });
 
@@ -324,13 +324,15 @@ export function fetchUserGame(uid) {
               console.log("data", data);
               dispatch(setUserGame(data));
             } else {
+              const lastPlayedDate = new Date().toISOString().slice(0, 10);
               const docData =  {
-                LastPlayedDate : Timestamp.fromDate(new Date()),
-                CurrentGameNum : 0,
-                Word1Guess : ["", "", "", "", ""],
-                Word2Guess : ["", "", "", "", ""],
-                Word3Guess : ["", "", "", "", ""],
-                GameState : ["", "", ""]  
+                LastPlayedDate : lastPlayedDate,
+                WordIndex : 0,
+                Current : 1,
+                Word1Guess : {},
+                Word2Guess : {},
+                Word3Guess : {},
+                GameState : []  
               };
               try{
                 await setDoc(doc(db, "userGame", uid), docData);
@@ -350,39 +352,24 @@ export function fetchUserGame(uid) {
   };
 }
 
-export function UpdateUserGame(uid, game, dataFromDB, dataExists) {
+export function UpdateUserGame(uid, gameData) {
   return async function UpdateUserGameThunk(dispatch) {
       console.log("From Reducer - UpdateUserGame");
       dispatch(setGameStatus(STATUSES.LOADING));
       const docData = {
-        ...game
+        ...gameData
       };
-      if (dataExists) {
-          // dispatch to set the userProfile info.
-          console.log("docSnap exists");
-          const data = dataFromDB;
-          console.log("data", data);
-          console.log("docSnap", docData);
-          try{
-            await updateDoc(doc(db, "userGame", uid), docData);
-            dispatch(setUserGame(docData));
-          } catch(e) {
-            console.log(e);
-            dispatch(setError("Error updating userGame document: " + e));
-            dispatch(setGameStatus(STATUSES.ERROR));
-          }
-        } else {
-          try{
-            await setDoc(doc(db, "userGame", uid), docData);
-            dispatch(setUserGame(docData));
-          } catch(e) {
-            console.log(e);
-            dispatch(setError("Error updating userGame document: " + e));
-            dispatch(setGameStatus(STATUSES.ERROR));
-          }
-          console.log('No such document!');
-        }
-        dispatch(setGameStatus(STATUSES.IDLE));
+      
+      console.log("docData", docData);
+      try{
+        await updateDoc(doc(db, "userGame", uid), docData);
+        dispatch(setUserGame(docData));
+      } catch(e) {
+        console.log(e);
+        dispatch(setError("Error updating userGame document: " + e));
+        dispatch(setGameStatus(STATUSES.ERROR));
+      }  
+      dispatch(setGameStatus(STATUSES.IDLE));
   };
 }
 

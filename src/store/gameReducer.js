@@ -24,6 +24,7 @@ const initialState = {
     alert: false,
     pass: false,
     tryAgain: false,
+    isGameOver: false,
     gameOver: false,
     showWord : true,
     letterColors: {
@@ -195,14 +196,14 @@ const clueReducer = (state = initialState, action) => {
                 return {
                   ...state,
                   pass: true,
-                  gameOver: true,
+                  isGameOver: true,
                   current: state.current + 1,
                 };
               } else if (keyyy.length >= 4 && keyyy.length <= state.wordLength) {
                 if (state.current === 5) {
                   return {
                     ...state,
-                    gameOver: true,
+                    isGameOver: true,
                     current: state.current + 1,
                   };
                 }
@@ -281,6 +282,12 @@ const clueReducer = (state = initialState, action) => {
           return {
             ...state,
             alert: false,
+          };
+        case "UPDATE_GAMEOVER":
+          console.log("in UPDATE_GAMEOVER ...........");
+          return {
+            ...state,
+            gameOver: true,
           };
         case "REFRESH":
           console.log("in REFRESH ...........");

@@ -8,10 +8,13 @@ import { useSelector, useDispatch } from "react-redux";
 import GameOver from "../gameover/game_over";
 import { db } from "../../../firebase";
 import { collection, query, where, getDocs, getCountFromServer } from "firebase/firestore";
-
+import { UpdateUserGame, UpdateUserGameStat} from '../../../store/authSlice';
 const Game = (props) => {
   const userProfileExists = useSelector((state) => {
     return state.auth.userProfileExists;
+  });
+  const user = useSelector((state) => {
+    return state.auth.user;
   });
   const userGame = useSelector((state) => {
     return state.auth.userGame;
@@ -32,6 +35,9 @@ const Game = (props) => {
   const pass = useSelector((state)=>{
     return state.game.pass;
    });
+  const isGameOver = useSelector((state)=>{
+    return state.game.isGameOver;
+   });
   const gameOver = useSelector((state)=>{
     return state.game.gameOver;
    });
@@ -41,6 +47,15 @@ const Game = (props) => {
   
    const word = useSelector((state)=>{
     return state.game.word;
+   });
+   const current = useSelector((state)=>{
+    return state.game.current;
+   });
+   const words = useSelector((state)=>{
+    return state.game.words;
+   });
+   const wordIndex = useSelector((state)=>{
+    return state.game.wordIndex;
    });
   //initialise the hook
   const dispatch = useDispatch();
@@ -52,8 +67,73 @@ const Game = (props) => {
   useEffect(() => {
       console.log("game.js in tryAgain");
       setShowWord(true);
-    //}
   }, []);
+  
+  useEffect(() => {
+    //update database if current or wordIndex changes
+    const lastPlayedDate = new Date().toISOString().slice(0, 10);
+    let newUserGame =  {};
+    if (userGame.LastPlayedDate === lastPlayedDate) {
+      newUserGame = {
+        ...userGame,
+        WordIndex : wordIndex,
+        Current : current,
+        LastPlayedDate : lastPlayedDate
+      }
+    } else {
+      newUserGame = {
+        LastPlayedDate : lastPlayedDate,
+        WordIndex : wordIndex,
+        Current : current,
+        Word1Guess : {},
+        Word2Guess : {},
+        Word3Guess : {},
+        GameState : []  
+      }
+    }
+    let wordInd = wordIndex+1;
+    const key = "Word" + wordInd + "Guess";
+    let win = userGameStat.NumOfGamesWon;
+    if(isGameOver){
+      if(pass) {
+        win++;
+        console.log("if pass , newUserGame.GameState",newUserGame.GameState);
+        newUserGame.GameState = [...newUserGame.GameState, "W"];
+      } else {
+        console.log("if not pass , newUserGame.GameState",newUserGame.GameState);
+        newUserGame.GameState = [...newUserGame.GameState, "L"];
+      }  
+    }
+
+    newUserGame = {
+      ...newUserGame,
+      [key] : words,
+    };
+    console.log("newUserGame :", newUserGame)
+    dispatch(UpdateUserGame(user.uid, newUserGame)).then(() => {
+        console.log("data updated successfully!");
+        if(isGameOver) {
+          let newUserGameStat = {
+            ...userGameStat,
+            GamesPlayed : userGameStat.GamesPlayed + 1,
+            NumOfGamesWon : win,
+            CurrentStreak : 0,
+            MaxStreak : 0,
+            GuessDistribution : [0, 0, 0, 0, 0]  
+          }
+          dispatch(UpdateUserGameStat(user.uid, newUserGameStat)).then(() => {
+            dispatch({ type: "UPDATE_GAMEOVER" })
+          })
+          .catch((error) =>{
+            console.log("Error from fetch/update data");
+          });
+        }
+    })
+    .catch((error) =>{
+      console.log("Error from fetch/update data");
+    })
+
+  }, [current, wordIndex]);
   
 
   useEffect(() => {
@@ -137,7 +217,22 @@ const Game = (props) => {
     setTimeout(() => {
       setShowWord(false);
     }, 1000);
+    //update database.
   }
+  
+    // Promise.all([
+    //   //dispatch(fetchNdUpdateUserProfile(user.uid, userDoc)),
+    //   dispatch(UpdateUserGame(user.uid, newUserGame)),
+    //   //dispatch(fetchNdUpdateUserGameStat(user.uid, userGameStat))
+    // ]) 
+    // .then(() => {
+    //   console.log("data updated successfully!")
+
+    // })
+    // .catch((error) =>{
+    //   console.log("Error from fetch/update data");
+    // })
+  
 
   return (
     <main

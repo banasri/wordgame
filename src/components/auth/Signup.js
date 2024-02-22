@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import './Auth.css'; // Import the CSS file
 import { registerUser, signInWithGoogle, fetchNdUpdateUserProfile, fetchNdUpdateUserGame, fetchNdUpdateUserGameStat} from '../../store/authSlice';
-import { Timestamp } from 'firebase/firestore';
 
 const Signup = () => {
   const dispatch = useDispatch();
@@ -90,13 +89,15 @@ const Signup = () => {
     }
     console.log("userDoc", userDoc);
     console.log("user.uid", user.uid);
+    const lastPlayedDate = new Date().toISOString().slice(0, 10);
     userGame = {
-      LastPlayedDate : Timestamp.fromDate(new Date()),
-      CurrentGameNum : 0,
-      Word1Guess : ["", "", "", "", ""],
-      Word2Guess : ["", "", "", "", ""],
-      Word3Guess : ["", "", "", "", ""],
-      GameState : ["", "", ""]  
+      LastPlayedDate : lastPlayedDate,
+      WordIndex : 0,
+      Current : 1,
+      Word1Guess : {},
+      Word2Guess : {},
+      Word3Guess : {},
+      GameState : []  
     };
     userGameStat = {
       GamesPlayed : 0,
