@@ -426,12 +426,23 @@ export function fetchUserGameStat(uid) {
               console.log("data", data);
               dispatch(setUserGameStat(data));
             } else {
+              //const lastPlayedDate = new Date().toISOString().slice(0, 10);
+              const currentDate = new Date();
+
+              // Subtract one day (in milliseconds)
+              const oneDayInMilliseconds = 1000 * 60 * 60 * 24;
+              const previousDate = new Date(currentDate - oneDayInMilliseconds);
+
+              // Format the date to YYYY-MM-DD
+              const previousDateString = previousDate.toISOString().slice(0, 10);
+
               const docData = {
                 GamesPlayed : 0,
                 NumOfGamesWon : 0,
+                CurrentStreakDate : previousDateString,
                 CurrentStreak : 0,
                 MaxStreak : 0,
-                GuessDistribution : [0, 0, 0, 0, 0]  
+                GuessDistribution : {}  
               };
               try{
                 await setDoc(doc(db, "userGameStat", uid), docData);

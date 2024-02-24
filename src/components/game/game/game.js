@@ -69,69 +69,117 @@ const Game = (props) => {
       setShowWord(true);
   }, []);
   
+  function dateDiff(date1, date2) {
+    const currentDate1 = new Date(date1); 
+    const currentDate2 = new Date(date2); // Current date
+
+    // Calculate the difference in milliseconds
+    const differenceInMilliseconds = currentDate2 - currentDate1;
+
+    // Convert milliseconds to days
+    const millisecondsPerDay = 1000 * 60 * 60 * 24;
+    const differenceInDays = differenceInMilliseconds / millisecondsPerDay;
+    return differenceInDays;
+  }
   useEffect(() => {
     //update database if current or wordIndex changes
     const lastPlayedDate = new Date().toISOString().slice(0, 10);
     let newUserGame =  {};
-    if (userGame.LastPlayedDate === lastPlayedDate) {
-      newUserGame = {
-        ...userGame,
-        WordIndex : wordIndex,
-        Current : current,
-        LastPlayedDate : lastPlayedDate
-      }
-    } else {
-      newUserGame = {
-        LastPlayedDate : lastPlayedDate,
-        WordIndex : wordIndex,
-        Current : current,
-        Word1Guess : {},
-        Word2Guess : {},
-        Word3Guess : {},
-        GameState : []  
-      }
-    }
-    let wordInd = wordIndex+1;
-    const key = "Word" + wordInd + "Guess";
-    let win = userGameStat.NumOfGamesWon;
-    if(isGameOver){
-      if(pass) {
-        win++;
-        console.log("if pass , newUserGame.GameState",newUserGame.GameState);
-        newUserGame.GameState = [...newUserGame.GameState, "W"];
-      } else {
-        console.log("if not pass , newUserGame.GameState",newUserGame.GameState);
-        newUserGame.GameState = [...newUserGame.GameState, "L"];
-      }  
-    }
-
-    newUserGame = {
-      ...newUserGame,
-      [key] : words,
-    };
-    console.log("newUserGame :", newUserGame)
-    dispatch(UpdateUserGame(user.uid, newUserGame)).then(() => {
-        console.log("data updated successfully!");
-        if(isGameOver) {
-          let newUserGameStat = {
-            ...userGameStat,
-            GamesPlayed : userGameStat.GamesPlayed + 1,
-            NumOfGamesWon : win,
-            CurrentStreak : 0,
-            MaxStreak : 0,
-            GuessDistribution : [0, 0, 0, 0, 0]  
-          }
-          dispatch(UpdateUserGameStat(user.uid, newUserGameStat)).then(() => {
-            dispatch({ type: "UPDATE_GAMEOVER" })
-          })
-          .catch((error) =>{
-            console.log("Error from fetch/update data");
-          });
+    console.log("game.js useEffect : userGame.LastPlayedDate", userGame.LastPlayedDate);
+    console.log("game.js useEffect : lastPlayedDate", lastPlayedDate);
+    console.log("game.js useEffect : userGame.wordIndex", userGame.WordIndex);
+    console.log("game.js useEffect : wordIndex", wordIndex);
+    console.log("game.js useEffect : userGame.current", userGame.Current);
+    console.log("game.js useEffect : current", current);
+    if(userGame.LastPlayedDate !== lastPlayedDate ||
+      userGame.WordIndex < wordIndex ||
+      (userGame.WordIndex === wordIndex && userGame.Current < current)) {
+        let DiffDate = dateDiff(lastPlayedDate, userGameStat.CurrentStreakDate);
+        let currentStreak = userGameStat.CurrentStreak;
+        let maxStreak = userGameStat.MaxStreak;
+        let currentStreakDate = userGameStat.CurrentStreakDate;
+        let guessDistribution  = userGameStat.GuessDistribution;
+      
+        if (DiffDate > 1) {
+          currentStreak = 0;
         }
-    })
-    .catch((error) =>{
-      console.log("Error from fetch/update data");
-    })
+        if (userGame.LastPlayedDate === lastPlayedDate) {
+          newUserGame = {
+            ...userGame,
+            WordIndex : wordIndex,
+            Current : current,
+            LastPlayedDate : lastPlayedDate
+          }
+        } else {
+          newUserGame = {
+            LastPlayedDate : lastPlayedDate,
+            WordIndex : wordIndex,
+            Current : current,
+            Word1Guess : {},
+            Word2Guess : {},
+            Word3Guess : {},
+            GameState : []  
+          }
+        }
+        let wordInd = wordIndex+1;
+        const key = "Word" + wordInd + "Guess";
+        let win = userGameStat.NumOfGamesWon;
+        if(isGameOver){
+          if(pass) {
+            win++;
+            let keyy = "Guess" + (current - 1);
+            let keyyVal = guessDistribution[keyy] ? guessDistribution[keyy] : 0;
+            console.log("Game.js - keyy", keyy);
+            guessDistribution = {...guessDistribution, [keyy] : ++keyyVal};
+            if(userGameStat.CurrentStreakDate !== lastPlayedDate) {
+              currentStreak++;
+              currentStreakDate = lastPlayedDate;
+              maxStreak = Math.max(maxStreak, currentStreak);
+            }
+            
+            console.log("if pass , newUserGame.GameState",newUserGame.GameState);
+            newUserGame.GameState = [...newUserGame.GameState, "W"];
+          } else {
+            console.log("if not pass , newUserGame.GameState",newUserGame.GameState);
+            newUserGame.GameState = [...newUserGame.GameState, "L"];
+          } 
+          if(wordIndex === 2) {
+            if(currentStreakDate !== lastPlayedDate) {
+              currentStreak = 0; 
+            }
+          } 
+        }
+    
+        newUserGame = {
+          ...newUserGame,
+          [key] : words,
+        };
+        console.log("newUserGame :", newUserGame)
+        dispatch(UpdateUserGame(user.uid, newUserGame)).then(() => {
+            console.log("data updated successfully!");
+            if(isGameOver) {
+              let newUserGameStat = {
+                ...userGameStat,
+                GamesPlayed : userGameStat.GamesPlayed + 1,
+                NumOfGamesWon : win,
+                CurrentStreakDate : lastPlayedDate, 
+                CurrentStreak : currentStreak,
+                MaxStreak : maxStreak,
+                GuessDistribution : guessDistribution  
+              }
+              dispatch(UpdateUserGameStat(user.uid, newUserGameStat)).then(() => {
+                dispatch({ type: "UPDATE_GAMEOVER" })
+              })
+              .catch((error) =>{
+                console.log("Error from fetch/update data");
+              });
+            }
+        })
+        .catch((error) =>{
+          console.log("Error from fetch/update data");
+        })
+    }
+    
 
   }, [current, wordIndex]);
   
