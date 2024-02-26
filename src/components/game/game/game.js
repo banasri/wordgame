@@ -9,7 +9,9 @@ import GameOver from "../gameover/game_over";
 import { db } from "../../../firebase";
 import { collection, query, where, getDocs, getCountFromServer } from "firebase/firestore";
 import { UpdateUserGame, UpdateUserGameStat} from '../../../store/authSlice';
+import GameSummary from "../game_summary/game_summary";
 const Game = (props) => {
+  const lastPlayedDate = new Date().toISOString().slice(0, 10);
   const userProfileExists = useSelector((state) => {
     return state.auth.userProfileExists;
   });
@@ -28,8 +30,12 @@ const Game = (props) => {
   const showHowToPlay = useSelector((state) => {
     return state.game.showHowToPlay;
   });
+  const showSummaryFromStore = useSelector((state) => {
+    return state.game.showSummary;
+  });
   const [showModal, setShowModal] = useState(!userProfileExists);
   const [showWord, setShowWord] = useState(true);
+  const [showSummary, setShowSummary] = useState(showSummaryFromStore);
   //const [howToPlay, setHowToPlay] = useState(showHowToPlay);
 
   const pass = useSelector((state)=>{
@@ -65,9 +71,17 @@ const Game = (props) => {
   };
 
   useEffect(() => {
-      console.log("game.js in tryAgain");
+      console.log("game.js in First Mount");
       setShowWord(true);
   }, []);
+
+  useEffect(() => {
+    //console.log("howToPlay ", howToPlay );
+    if(showHowToPlay) {
+      setShowModal(true);
+    }
+    //setShowHowToPlay(howToPlay);
+  }, [showHowToPlay]);
   
   function dateDiff(date1, date2) {
     const currentDate1 = new Date(date1); 
@@ -83,7 +97,7 @@ const Game = (props) => {
   }
   useEffect(() => {
     //update database if current or wordIndex changes
-    const lastPlayedDate = new Date().toISOString().slice(0, 10);
+    
     let newUserGame =  {};
     console.log("game.js useEffect : userGame.LastPlayedDate", userGame.LastPlayedDate);
     console.log("game.js useEffect : lastPlayedDate", lastPlayedDate);
@@ -91,9 +105,10 @@ const Game = (props) => {
     console.log("game.js useEffect : wordIndex", wordIndex);
     console.log("game.js useEffect : userGame.current", userGame.Current);
     console.log("game.js useEffect : current", current);
-    if(userGame.LastPlayedDate !== lastPlayedDate ||
+    if(wordIndex <= 2 && 
+      (userGame.LastPlayedDate !== lastPlayedDate ||
       userGame.WordIndex < wordIndex ||
-      (userGame.WordIndex === wordIndex && userGame.Current < current)) {
+      (userGame.WordIndex === wordIndex && userGame.Current < current))) {
         let DiffDate = dateDiff(lastPlayedDate, userGameStat.CurrentStreakDate);
         let currentStreak = userGameStat.CurrentStreak;
         let maxStreak = userGameStat.MaxStreak;
@@ -190,11 +205,7 @@ const Game = (props) => {
     console.log("userProfile ", userProfile );
     console.log("userGame ", userGame );
     console.log("userGameStat ", userGameStat );
-    //console.log("howToPlay ", howToPlay );
-    if(showHowToPlay) {
-      setShowModal(true);
-    }
-    //setShowHowToPlay(howToPlay);
+    
     const todayWords = [];
     let dateString = process.env.REACT_APP_LIVE_DT;
     const [year, month, day] = dateString.split('-').map(Number);
@@ -245,15 +256,28 @@ const Game = (props) => {
         querySnapshot.forEach((doc) => {
           todayWords.push(doc.data());          
         });
-        
+        dispatch({ type: "SET_USERGAME", userGame : userGame});
         dispatch({ type: "SET_WORDS", words: todayWords});
+        if(userGame.GameState.length == 3 && userGame.LastPlayedDate === lastPlayedDate){
+          setShowSummary(true);
+          dispatch({ type: "SET_GAME_SUMMARY"});
+          console.log("Show game summary");
+        }
+        // if(userGame.WordIndex <= 2){
+        //   dispatch({ type: "SET_USERGAME", userGame : userGame});
+        //   dispatch({ type: "SET_WORDS", words: todayWords});
+        // } else {
+        //   setShowSummary(true);
+        //   dispatch({ type: "SET_GAME_SUMMARY"});
+        //   console.log("Show game summary");
+        // }
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
     fetchData();
-  }, [dispatch, showHowToPlay]);
+  }, [dispatch]);
 
   if (alert) {
     setTimeout(() => {
@@ -289,21 +313,20 @@ const Game = (props) => {
         console.log("Clicked!");
         setShowModal(false);
         console.log(showHowToPlay);
-        // if(showHowToPlay) {
-        //   setHowToPlay(false);
-        // }
-        //setShowHowToPlay(false);
+
       }}
     >
-      <Clue row="1"/>
       {alert ? <p className="alert">Not a valid word</p> : null}
-      <GameBox />
-      <Keyboard />
-      {/* {showModal && !userProfileExists ? <Instructions /> : null} */}
-      {/* {showModal || showHowToPlay ? <Instructions /> : null} */}
+      {showSummary ? <GameSummary /> : 
+      <>
+        <Clue row="1"/>
+        <GameBox />
+        <Keyboard />
+        {gameOver ? <GameOver pass={pass} /> : null}
+        {gameOver & showWord &!pass ? <p className="alert">{word}</p> : null}
+      </>}
       {showModal ? <Instructions /> : null}
-      {gameOver ? <GameOver pass={pass} /> : null}
-      {gameOver & showWord &!pass ? <p className="alert">{word}</p> : null}
+      
     </main>
   );
 };

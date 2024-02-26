@@ -26,6 +26,7 @@ const initialState = {
     tryAgain: false,
     isGameOver: false,
     gameOver: false,
+    gameSummary: false,
     showWord : true,
     letterColors: {
         Q: null,
@@ -103,19 +104,58 @@ const clueReducer = (state = initialState, action) => {
   console.log("state ");
   console.log(state);
     switch(action.type) {
+        case 'SET_USERGAME' :
+            console.log(action);
+            let wordInd = action.userGame.WordIndex;
+            let gameStateCnt = action.userGame.GameState.length;
+            let current = action.userGame.Current;
+            let wordUserGame = {};
+            let currentUserGame = 1;
+            console.log("Game Reducer : gameStateCnt",gameStateCnt);
+            console.log("Game Reducer : wordInd",wordInd);
+            if(wordInd == 0 && current === 1) {
+              return {
+                ...state,
+              }
+            }
+            if(wordInd > 2) {
+              return {
+                ...state,
+                wordIndex : wordInd
+              }
+            }
+            wordUserGame = {
+              word1: "",
+              word2: "",
+              word3: "",
+              word4: "",
+              word5: ""
+             }
+            if(wordInd < gameStateCnt) {
+              wordInd++;
+              currentUserGame = 1;
+            } else {
+              if(current > 1) {
+                let keyy = "Word" + (wordInd + 1) + "Guess";
+                wordUserGame = action.userGame[keyy];
+                console.log("Game Reducer : wordUserGame",wordUserGame);
+                currentUserGame = current;
+              } 
+            }
+            return {
+              ...state,
+              words : wordUserGame,
+              current : currentUserGame,
+              wordIndex : wordInd
+            }
         case 'SET_WORDS' : 
             console.log('2222222222222222222');
             console.log(action);
             const allWords = action.words;
             const wordIndex = state.wordIndex;
-            // const clueSize = wordsClues[0]["clues"].length;
-            // console.log("clueSize", clueSize);
-            // console.log("inside clueReducer : SET_WORD");
-            // const index = Math.floor((Math.random() * clueSize));
-            // console.log("index : " + index);
-            // console.log(wordsClues[0]);
-            return { 
-                ...initialState,
+            if(wordIndex <= 2){
+              return { 
+                ...state,
                 todaysWords : allWords,
                 clue : allWords[wordIndex].clue,
                 word : allWords[wordIndex].word,
@@ -123,7 +163,14 @@ const clueReducer = (state = initialState, action) => {
                 meaning : allWords[wordIndex].meaning,
                 sentence : allWords[wordIndex].sentence,
                 wordLength : allWords[wordIndex].word.length
-            };
+              };
+            } else {
+              return { 
+                ...state,
+                todaysWords : allWords
+              };
+            }
+            
         case 'SET_WORD' :
           let index = state.wordIndex + 1;
           console.log("in SET_WORD .......");
@@ -288,6 +335,12 @@ const clueReducer = (state = initialState, action) => {
           return {
             ...state,
             gameOver: true,
+          };
+        case "SET_GAME_SUMMARY":
+          console.log("in SET_GAME_SUMMARY ...........");
+          return {
+            ...state,
+            gameSummary: true,
           };
         case "REFRESH":
           console.log("in REFRESH ...........");

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './Auth.css'; // Import the CSS file
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { signInUser, signInWithGoogle, fetchNdUpdateUserProfile, fetchNdUpdateUserGame, fetchNdUpdateUserGameStat} from '../../store/authSlice';
+import { signInUser, signInWithGoogle,fetchUserGame, fetchUserGameStat, fetchNdUpdateUserProfile, fetchNdUpdateUserGame, fetchNdUpdateUserGameStat} from '../../store/authSlice';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -37,7 +37,18 @@ const Login = () => {
             console.log("Error from fetch/update data");
           })
       } else {
-        navigate("/wordcup");
+        Promise.all([
+          dispatch(fetchUserGame(user.uid)),
+          dispatch(fetchUserGameStat(user.uid))
+        ]) 
+        .then(() => {
+          if(!error) {
+            navigate("/wordcup");
+          }
+        })
+        .catch((error) =>{
+          console.log("Error from fetch/update data");
+        })
       }
     }
   },[user, error, dispatch, navigate]);
@@ -115,7 +126,7 @@ const Login = () => {
     // e.preventDefault();
     dispatch(signInUser(formData.email, formData.password)).then((res) => {
       console.log("after dispatch inside then SignIn");
-      navigate("/wordcup");
+      //navigate("/wordcup");
     });
   
     console.log("after dispatch  SignIn");
