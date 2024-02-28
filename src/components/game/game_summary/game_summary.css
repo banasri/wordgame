@@ -1,0 +1,95 @@
+.gamesummary {
+  /* background-image: url(../../../../public/image/summaryBG.jpg);
+  background-size: cover; */
+  background-color: #ffccdd;
+  background-size : cover;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 90vh;
+}
+.gamesummary h2 {
+  margin : 0;
+  padding: 1rem;
+  text-align: center;
+  font-size: 1.2rem;
+  color: #140270;
+  font-family: cursive, 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+  .icon-fa-won {
+    color: #FFA33C;
+    font-size: 1.5rem;
+    /* margin-right: 10px; */
+  } 
+  .icon-fa-lost {
+    color: #220145;
+    font-size: 1.5rem;
+    /* margin-right: 10px; */
+  } 
+  .wordContainer {
+    margin-top: 10px;
+  }
+  .wordDetail {
+    padding: 10px;
+  }
+  .summLogo {
+    width: 100px;
+    height: 100px;
+    margin-top: 20px;
+    margin-left: 150px;
+  }
+  .alert {
+    background-color: green;
+    border-radius: 8px;
+    padding: 10px;
+    position: absolute;
+    color: #ffffff;
+  }
+  .gamebox{
+    margin-bottom: 30px;
+  }
+  .gamebox-6-7{
+    margin-bottom: 30px;
+  }
+  .gamebox-8-11 {
+    margin-bottom: 30px;
+  }
+  
+  @media (max-width: 738px) {
+    .gamebox{
+      flex-basis: 10%;
+    }
+    .gamebox-6-7{
+      flex-basis: 30%;  
+    }
+    .gamebox-8-11 {
+      flex-basis: 30%;
+    }
+  }
+  @media (min-width: 738px) {
+    .gamebox{
+      flex-basis: 30%;    
+    }
+    .gamebox-6-7{
+      flex-basis: 30%;  
+    }
+    .gamebox-8-11 {
+      flex-basis: 30%;
+    }
+  }
+  @media (max-width: 576px) {
+    /* CSS for mobile devices */
+    .gamebox{
+      flex-basis: 30%;    
+    }
+    .gamebox-6-7{
+      flex-basis: 30%;
+      width:90%;   
+    }
+    .gamebox-8-11 {
+      flex-basis: 30%;
+      width:90%; 
+    }
+  }
+  

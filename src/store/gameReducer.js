@@ -106,14 +106,16 @@ const clueReducer = (state = initialState, action) => {
     switch(action.type) {
         case 'SET_USERGAME' :
             console.log(action);
+            const lastPlayedDate = new Date().toISOString().slice(0, 10);
             let wordInd = action.userGame.WordIndex;
             let gameStateCnt = action.userGame.GameState.length;
             let current = action.userGame.Current;
+            let dbLastPlayedDate = action.userGame.LastPlayedDate;
             let wordUserGame = {};
             let currentUserGame = 1;
             console.log("Game Reducer : gameStateCnt",gameStateCnt);
             console.log("Game Reducer : wordInd",wordInd);
-            if(wordInd == 0 && current === 1) {
+            if((dbLastPlayedDate !== lastPlayedDate) || (wordInd === 0 && current === 1)) {
               return {
                 ...state,
               }

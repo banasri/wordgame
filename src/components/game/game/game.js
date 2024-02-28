@@ -308,7 +308,7 @@ const Game = (props) => {
 
   return (
     <main
-      className="game"
+      className={showSummary ? "gamesummary" : "game"}
       onClick={() => {
         console.log("Clicked!");
         setShowModal(false);
