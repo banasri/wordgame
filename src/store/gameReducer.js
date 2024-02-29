@@ -179,7 +179,8 @@ const clueReducer = (state = initialState, action) => {
           console.log(state);
           if(index === state.maxGame) {
             return {
-              ...initialState,
+              ...state,
+              wordIndex : index
             }
           }
           return { 

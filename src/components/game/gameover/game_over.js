@@ -12,13 +12,11 @@ const GameOver = (props) => {
     dispatch({type:'SET_WORD'});
     //dispatch({ type: "REFRESH" });
   };
-  const { word, clue, meaning, sentence, wordIndex } = useSelector((state) => ({
+  const { word, clue, meaning, sentence } = useSelector((state) => ({
     word: state.game.word,
-    clue: state.game.clue,
-    //clueType : state.clueType, 
+    clue: state.game.clue,   
     meaning : state.game.meaning,
-    sentence : state.game.sentence,
-    wordIndex : state.game.wordIndex
+    sentence : state.game.sentence
   }));
   
   return (
@@ -47,12 +45,12 @@ const GameOver = (props) => {
             >
               Example Sentence : {sentence}
             </p>
-            {wordIndex < 2 ? <p
+            <p
                onClick={setRefresh}
                style={{ color: "blue", textDecoration: "underline" , cursor: "pointer"}}
              >
-               Play again
-           </p> : <p>Come again tomorrow!</p>}
+               Okey dokey
+            </p>
             
           </div>
         ) : (
@@ -75,13 +73,12 @@ const GameOver = (props) => {
             >
               Example Sentence : {sentence}
             </p>
-            {wordIndex < 2 ? <p
+            <p
                onClick={setRefresh}
                style={{ color: "blue", textDecoration: "underline" , cursor: "pointer"}}
              >
-               Try again
-           </p> : <p>Come again tomorrow!</p>}
-            
+               Okey dokey
+            </p>
           </div>
         )}
       </section>

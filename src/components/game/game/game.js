@@ -105,6 +105,10 @@ const Game = (props) => {
     console.log("game.js useEffect : wordIndex", wordIndex);
     console.log("game.js useEffect : userGame.current", userGame.Current);
     console.log("game.js useEffect : current", current);
+    if(wordIndex > 2) {
+      setShowSummary(true);
+      dispatch({ type: "SET_GAME_SUMMARY"});
+    }
     if(wordIndex <= 2 && 
       (userGame.LastPlayedDate !== lastPlayedDate ||
       userGame.WordIndex < wordIndex ||
@@ -263,14 +267,6 @@ const Game = (props) => {
           dispatch({ type: "SET_GAME_SUMMARY"});
           console.log("Show game summary");
         }
-        // if(userGame.WordIndex <= 2){
-        //   dispatch({ type: "SET_USERGAME", userGame : userGame});
-        //   dispatch({ type: "SET_WORDS", words: todayWords});
-        // } else {
-        //   setShowSummary(true);
-        //   dispatch({ type: "SET_GAME_SUMMARY"});
-        //   console.log("Show game summary");
-        // }
       } catch (error) {
         console.error('Error fetching data:', error);
       }
