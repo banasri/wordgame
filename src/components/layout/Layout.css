@@ -1,0 +1,65 @@
+.profileModal {
+    position: absolute;
+    border: 1px solid rgb(39, 0, 41);
+    background-color: #3f075c;
+    color: #FFA33C;
+    overflow-y: auto;
+    /* animation: NavModal-module_SlideRight__OZJm6 200ms; */
+    max-width: 200px;
+    box-sizing: border-box;
+    width: 100%;
+    border-radius: 0px;
+    box-shadow: 3px 5px 5px rgba(0,0,0,.15);
+    height : 100px;
+    /* height: calc(100% - var(--header-height) - 1px);
+    margin-top: calc(var(--header-height) + 1px); */
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: flex-start;
+    height: 30vh; 
+  }
+  .side-menu {
+    position: fixed;
+    top: 0;
+    left: -250px; /* Hide the side menu by default */
+    width: 250px;
+    height: 100%;
+    background-color: #3f075c;
+    transition: left 2.5s; /* Smooth slide-in effect */
+    padding: 20px;
+  }
+  
+  .side-menu.open {
+    left: 0; /* Slide in */
+  }
+  
+  .profileModal a {
+    display: block;
+    color: #FFA33C;
+    padding: 15px;
+    text-decoration: none;
+  }
+  
+  .profileModal a:hover {
+    background-color: #555;
+  }
+  .btn-profile {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight:bold ;
+    color: #3f075c;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+    padding: 0;
+    background-color: #FFA33C;
+    border-radius: 50%;
+    cursor: pointer;
+    vertical-align: middle;
+    text-align: center;
+}

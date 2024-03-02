@@ -125,6 +125,11 @@ body {
     font-size: 1.2rem;
     /* margin-right: 10px; */
   }
+  .icon-x {
+    color: #FFA33C;
+    font-size: 1.2rem;
+    margin-left: auto;
+  }
   .center-content {
     margin: 0 auto;
   }

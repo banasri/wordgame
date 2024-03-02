@@ -16,7 +16,6 @@ export const authSlice = createSlice({
         //username is got only when user signs in using google
         username : null,
         email : null,
-        formData : null,
         userProfile : null,
         status: STATUSES.IDLE,
         profileStatus: STATUSES.IDLE,
@@ -25,7 +24,6 @@ export const authSlice = createSlice({
         isSignedIn : false,
         error : null,
         userProfileExists : true,
-        userGameExists : false,
         userGame : {},
         userGameStat : {}
     },
@@ -41,8 +39,12 @@ export const authSlice = createSlice({
           logoutUser: (state) => {
             console.log("in authSlice reducers: logoutUser");
             state.user = null;
+            state.userProfile = null;
+            state.userGame = {};
             state.username = null;
             state.email = null;
+            state.userGameStat = {};
+            state.userProfileExists = true;
             state.isSignedIn = false;
           },
           setUserProfile: (state, action) => {

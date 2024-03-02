@@ -103,8 +103,20 @@ const initialState = {
 const clueReducer = (state = initialState, action) => {
   console.log("state ");
   console.log(state);
+  console.log(action)
     switch(action.type) {
+        case 'SET_LOGIN' :
+          console.log(action);
+          return {
+            ...initialState,
+            isLoggedIn : action.payload
+          }
         case 'SET_USERGAME' :
+            if(!state.isLoggedIn) {
+              return {
+                ...initialState,
+              }
+            }
             console.log(action);
             const lastPlayedDate = new Date().toISOString().slice(0, 10);
             let wordInd = action.userGame.WordIndex;
@@ -153,6 +165,11 @@ const clueReducer = (state = initialState, action) => {
         case 'SET_WORDS' : 
             console.log('2222222222222222222');
             console.log(action);
+            if(!state.isLoggedIn) {
+              return {
+                ...initialState,
+              }
+            }
             const allWords = action.words;
             const wordIndex = state.wordIndex;
             if(wordIndex <= 2){
@@ -174,6 +191,11 @@ const clueReducer = (state = initialState, action) => {
             }
             
         case 'SET_WORD' :
+          if(!state.isLoggedIn) {
+            return {
+              ...initialState,
+            }
+          }
           let index = state.wordIndex + 1;
           console.log("in SET_WORD .......");
           console.log(state);
@@ -194,8 +216,14 @@ const clueReducer = (state = initialState, action) => {
             sentence : state.todaysWords[index].sentence,
             wordLength : state.todaysWords[index].word.length,
             tryAgain: !state.tryAgain,
+            isLoggedIn : state.isLoggedIn
           };               
         case 'EDIT_WORD' :
+          if(!state.isLoggedIn) {
+            return {
+              ...initialState,
+            }
+          }
           console.log("inside clueReducer : EDIT_WORD"); 
         if (!state.pass) {
             let pos = "word" + state.current;
@@ -234,6 +262,11 @@ const clueReducer = (state = initialState, action) => {
             ...state,
           };
           case "CHECK_WORD":
+            if(!state.isLoggedIn) {
+              return {
+                ...initialState,
+              }
+            }
             console.log("inside Reducer : CHECK_WORD");
             let keyyy = "word" + state.current;
             console.log("state.words", state.words)
@@ -277,6 +310,11 @@ const clueReducer = (state = initialState, action) => {
             // };
             break;
         case "SET_KEYCOLOR":
+          if(!state.isLoggedIn) {
+            return {
+              ...initialState,
+            }
+          }
           console.log("in SET_KEYCOLOR");
           console.log("action", action)
           const key = action.key;
@@ -353,6 +391,7 @@ const clueReducer = (state = initialState, action) => {
             todaysWords : state.todaysWords,
             wordIndex : newIndex,
             tryAgain: !state.tryAgain,
+            isLoggedIn : state.isLoggedIn,
           };
         default:
             return state;

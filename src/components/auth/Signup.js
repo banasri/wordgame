@@ -28,6 +28,7 @@ const Signup = () => {
       ]) 
       .then(() => {
         if(!error) {
+          dispatch({type:'SET_LOGIN', payload : true});
           navigate("/wordcup");
         }
       })

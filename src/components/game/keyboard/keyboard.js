@@ -17,53 +17,59 @@ function Keyboard() {
 
     const dispatch = useDispatch();
 
-    const detectKeydown = (event) => {
-      console.log("in keyboard useEffect");
-      console.log(event);
-      console.log(event.key);
-      if (event.key === "Enter" || event.key === " "){
-        event.preventDefault();
-      }
-      if (event.key === "Enter"){
-        dispatch({type:'CHECK_WORD'});
-      } else if (event.key === "Delete" || event.key === "Backspace" ) {
-        dispatch({type:'EDIT_WORD', payload : "DEL"});
-      } else if (
-        ((event.key === 'a') || (event.key === 'A')) ||
-        ((event.key === 'b') || (event.key === 'B')) ||
-        ((event.key === 'c') || (event.key === 'C')) ||
-        ((event.key === 'd') || (event.key === 'D')) ||
-        ((event.key === 'e') || (event.key === 'E')) ||
-        ((event.key === 'f') || (event.key === 'F')) ||
-        ((event.key === 'g') || (event.key === 'G')) ||
-        ((event.key === 'h') || (event.key === 'H')) ||
-        ((event.key === 'i') || (event.key === 'I')) ||
-        ((event.key === 'j') || (event.key === 'J')) ||
-        ((event.key === 'k') || (event.key === 'K')) ||
-        ((event.key === 'l') || (event.key === 'L')) ||
-        ((event.key === 'm') || (event.key === 'M')) ||
-        ((event.key === 'n') || (event.key === 'N')) ||
-        ((event.key === 'o') || (event.key === 'O')) ||
-        ((event.key === 'p') || (event.key === 'P')) ||
-        ((event.key === 'q') || (event.key === 'Q')) ||
-        ((event.key === 'r') || (event.key === 'R')) ||
-        ((event.key === 's') || (event.key === 'S')) ||
-        ((event.key === 't') || (event.key === 'T')) ||
-        ((event.key === 'u') || (event.key === 'U')) ||
-        ((event.key === 'v') || (event.key === 'V')) ||
-        ((event.key === 'w') || (event.key === 'W')) ||
-        ((event.key === 'x') || (event.key === 'X')) ||
-        ((event.key === 'y') || (event.key === 'Y')) ||
-        ((event.key === 'z') || (event.key === 'Z')) ||
-        (event.key === ' ')
-                )
-      {
-        console.log("when any letter is pressed");
-        dispatch({type:'EDIT_WORD', payload : event.key.toUpperCase()});
-      } 
-    }
+    
     useEffect(() => {
+      const detectKeydown = (event) => {
+        console.log("in keyboard useEffect");
+        console.log(event);
+        console.log(event.key);
+        if (event.key === "Enter" || event.key === " "){
+          event.preventDefault();
+        }
+        if (event.key === "Enter"){
+          dispatch({type:'CHECK_WORD'});
+        } else if (event.key === "Delete" || event.key === "Backspace" ) {
+          dispatch({type:'EDIT_WORD', payload : "DEL"});
+        } else if (
+          ((event.key === 'a') || (event.key === 'A')) ||
+          ((event.key === 'b') || (event.key === 'B')) ||
+          ((event.key === 'c') || (event.key === 'C')) ||
+          ((event.key === 'd') || (event.key === 'D')) ||
+          ((event.key === 'e') || (event.key === 'E')) ||
+          ((event.key === 'f') || (event.key === 'F')) ||
+          ((event.key === 'g') || (event.key === 'G')) ||
+          ((event.key === 'h') || (event.key === 'H')) ||
+          ((event.key === 'i') || (event.key === 'I')) ||
+          ((event.key === 'j') || (event.key === 'J')) ||
+          ((event.key === 'k') || (event.key === 'K')) ||
+          ((event.key === 'l') || (event.key === 'L')) ||
+          ((event.key === 'm') || (event.key === 'M')) ||
+          ((event.key === 'n') || (event.key === 'N')) ||
+          ((event.key === 'o') || (event.key === 'O')) ||
+          ((event.key === 'p') || (event.key === 'P')) ||
+          ((event.key === 'q') || (event.key === 'Q')) ||
+          ((event.key === 'r') || (event.key === 'R')) ||
+          ((event.key === 's') || (event.key === 'S')) ||
+          ((event.key === 't') || (event.key === 'T')) ||
+          ((event.key === 'u') || (event.key === 'U')) ||
+          ((event.key === 'v') || (event.key === 'V')) ||
+          ((event.key === 'w') || (event.key === 'W')) ||
+          ((event.key === 'x') || (event.key === 'X')) ||
+          ((event.key === 'y') || (event.key === 'Y')) ||
+          ((event.key === 'z') || (event.key === 'Z')) ||
+          (event.key === ' ')
+                  )
+        {
+          console.log("when any letter is pressed");
+          dispatch({type:'EDIT_WORD', payload : event.key.toUpperCase()});
+        } 
+      }
+
       document.addEventListener("keydown", detectKeydown, true);
+      
+      return () => {
+        document.removeEventListener("keydown", detectKeydown, true);
+      };
     }, []);
     
     const onEdit = (event) => {

@@ -33,6 +33,7 @@ function App() {
             })
           );
           dispatch(setStatus(STATUSES.IDLE));
+          dispatch({type:'SET_LOGIN', payload : true});
         })
         .catch((error) =>{
           console.log("Error from fetch/update data");
@@ -40,6 +41,7 @@ function App() {
       } else {
         dispatch(logoutUser());
         dispatch(setStatus(STATUSES.IDLE));
+        dispatch({type:'SET_LOGIN', payload : false});
         console.log("User is not logged in.");
       }
     });

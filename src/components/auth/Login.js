@@ -30,6 +30,7 @@ const Login = () => {
           ]) 
           .then(() => {
             if(!error) {
+              dispatch({type:'SET_LOGIN', payload : true});
               navigate("/wordcup");
             }
           })
@@ -43,6 +44,7 @@ const Login = () => {
         ]) 
         .then(() => {
           if(!error) {
+            dispatch({type:'SET_LOGIN', payload : true});
             navigate("/wordcup");
           }
         })
@@ -51,7 +53,7 @@ const Login = () => {
         })
       }
     }
-  },[user, error, dispatch, navigate]);
+  },[user, error]);
   
   const [formData, setFormData] = useState({
     // Initialize form fields
