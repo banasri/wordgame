@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './Auth.css'; // Import the CSS file
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { signInUser, signInWithGoogle,fetchUserGame, fetchUserGameStat, fetchNdUpdateUserProfile, fetchNdUpdateUserGame, fetchNdUpdateUserGameStat} from '../../store/authSlice';
+import { signInUser, signInWithGoogle, fetchUserProfile, fetchUserGame, fetchUserGameStat, fetchNdUpdateUserProfile, fetchNdUpdateUserGame, fetchNdUpdateUserGameStat} from '../../store/authSlice';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -39,6 +39,7 @@ const Login = () => {
           })
       } else {
         Promise.all([
+          dispatch(fetchUserProfile(user.uid)),
           dispatch(fetchUserGame(user.uid)),
           dispatch(fetchUserGameStat(user.uid))
         ]) 
@@ -128,7 +129,6 @@ const Login = () => {
     // e.preventDefault();
     dispatch(signInUser(formData.email, formData.password)).then((res) => {
       console.log("after dispatch inside then SignIn");
-      //navigate("/wordcup");
     });
   
     console.log("after dispatch  SignIn");

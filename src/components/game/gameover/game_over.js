@@ -12,12 +12,20 @@ const GameOver = (props) => {
     dispatch({type:'SET_WORD'});
     //dispatch({ type: "REFRESH" });
   };
-  const { word, clue, meaning, sentence } = useSelector((state) => ({
-    word: state.game.word,
-    clue: state.game.clue,   
-    meaning : state.game.meaning,
-    sentence : state.game.sentence
-  }));
+  const word = useSelector((state) => {
+    return state.game.word;
+  });
+
+  const clue = useSelector((state) => {
+    return state.game.clue; 
+  });
+
+  const meaning = useSelector((state) => { 
+    return state.game.meaning;
+  });
+  const sentence = useSelector((state) => {
+    return state.game.sentence;
+  });
   
   return (
     <div className="containerDetails">

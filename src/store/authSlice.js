@@ -1,5 +1,5 @@
 import { auth, googleProvider, db } from "../firebase"
-import { doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc, setDoc, query, where, collection, addDoc, getDocs, serverTimestamp } from "firebase/firestore";
 import { createSlice } from '@reduxjs/toolkit';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, signInWithPopup} from "firebase/auth";
 
@@ -21,6 +21,7 @@ export const authSlice = createSlice({
         profileStatus: STATUSES.IDLE,
         gameStatus: STATUSES.IDLE,
         gameStatsStatus: STATUSES.IDLE,
+        scoreStatus: STATUSES.IDLE,
         isSignedIn : false,
         error : null,
         userProfileExists : true,
@@ -68,6 +69,9 @@ export const authSlice = createSlice({
           setGameStatStatus : (state, action) => {
             state.gameStatsStatus = action.payload;
           },
+          setScoreStatus : (state, action) => {
+            state.scoreStatus = action.payload;
+          },
           setUserProfileExists : (state, action) => {
             state.userProfileExists = action.payload;
           },
@@ -79,7 +83,7 @@ export const authSlice = createSlice({
 });
 
 export const { loginUser, logoutUser, setUserProfile, setUserGame, setUserGameStat, setStatus, 
-  setProfileStatus, setGameStatus, setGameStatStatus, setUserProfileExists,
+  setProfileStatus, setGameStatus, setScoreStatus, setGameStatStatus, setUserProfileExists,
    setError } = authSlice.actions;
 export default authSlice.reducer;
 
@@ -497,5 +501,59 @@ export function UpdateUserGameStat(uid, game, dataFromDB, dataExists) {
           console.log('No such document!');
         }
         dispatch(setGameStatStatus(STATUSES.IDLE));
+  };
+}
+
+export function UpdateUserScore(uid) {
+  return async function UpdateUserScoreThunk(dispatch) {
+      console.log("From Reducer - UpdateUserScore");
+      dispatch(setScoreStatus(STATUSES.LOADING));
+      // Get today's date 
+      const today = new Date().toISOString().slice(0, 10);
+      let docData = {
+        date : today,
+        uid : uid,
+        score : 1, 
+      };
+      // Query Firestore for scores based on UID and date
+      
+      try {
+        const scoreRef = collection(db, "score");
+        const q = query(scoreRef, where("uid", "==", uid), where("date", "==", today));
+        const docSnap = await getDocs(q);
+        console.log("docSnap" , docSnap);
+        console.log("docSnap count" , docSnap.size);
+        let firstId = "";
+        let scoreDB = 0;
+        if (docSnap.size) {
+          docSnap.forEach((doc) => {
+            if(firstId === "") {
+              firstId = doc.id;
+              scoreDB = doc.data().score;
+            }
+            console.log(doc.id, ' => ', doc.data());
+          });
+          //console.log("docSnap exists docSnap.data()", docSnap.data());
+          docData = {
+            ...docData,
+            score : scoreDB + 1,
+          }
+          await updateDoc(doc(db, "score", firstId), docData);
+        } else {
+          console.log("docSnap does not exists");
+          const docRef = await addDoc(collection(db, "score"), docData);
+          firstId = docRef.id;
+        }
+        const docRef = doc(db, "score", firstId);
+        await updateDoc(docRef, {
+          timestamp: serverTimestamp()
+        });
+      }
+        catch(e) {
+        console.log(e);
+        dispatch(setError("Error updating score document: " + e));
+        dispatch(setScoreStatus(STATUSES.ERROR));
+      }  
+      dispatch(setScoreStatus(STATUSES.IDLE));
   };
 }

@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import GameOver from "../gameover/game_over";
 import { db } from "../../../firebase";
 import { collection, query, where, getDocs, getCountFromServer } from "firebase/firestore";
-import { UpdateUserGame, UpdateUserGameStat} from '../../../store/authSlice';
+import { UpdateUserGame, UpdateUserGameStat, UpdateUserScore} from '../../../store/authSlice';
 import GameSummary from "../game_summary/game_summary";
 const Game = (props) => {
   const lastPlayedDate = new Date().toISOString().slice(0, 10);
@@ -186,16 +186,29 @@ const Game = (props) => {
                 MaxStreak : maxStreak,
                 GuessDistribution : guessDistribution  
               }
-              dispatch(UpdateUserGameStat(user.uid, newUserGameStat)).then(() => {
-                dispatch({ type: "UPDATE_GAMEOVER" })
-              })
-              .catch((error) =>{
-                console.log("Error from fetch/update data");
-              });
+              if(pass) {
+                Promise.all([
+                  dispatch(UpdateUserGameStat(user.uid, newUserGameStat)),
+                  dispatch(UpdateUserScore(user.uid)),
+                ]).then(() => {
+                    dispatch({ type: "UPDATE_GAMEOVER" })
+                }).catch((error) =>{
+                  console.log("Error from fetch/update data", error);
+                });
+              } else {
+                dispatch(UpdateUserGameStat(user.uid, newUserGameStat)).then(() => {
+                  dispatch({ type: "UPDATE_GAMEOVER" })
+                })
+                .catch((error) =>{
+                  console.log("Error from fetch/update data", error);
+                });
+
+              }
+              
             }
         })
         .catch((error) =>{
-          console.log("Error from fetch/update data");
+          console.log("Error from fetch/update data", error);
         })
     }
     
