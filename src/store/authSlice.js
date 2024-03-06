@@ -235,7 +235,7 @@ export function updateProfile(profile, userProfileExists, uid) {
     };
 }
 
-export function fetchNdUpdateUserProfile(uid, profile) {
+export function fetchNdUpdateUserProfile(uid, profile, update = false) {
   return async function fetchNdUpdateUserProfileThunk(dispatch) {
       console.log("From Reducer - fetchNdUpdateUserProfile");
       dispatch(setProfileStatus(STATUSES.LOADING));
@@ -255,7 +255,12 @@ export function fetchNdUpdateUserProfile(uid, profile) {
               console.log("docSnap", data);
               console.log("docSnap", docData);
               dispatch(setUserProfileExists(true));
-              dispatch(setUserProfile(data));
+              if(update){
+                await updateDoc(docRef, docData);
+                dispatch(setUserProfile(docData));
+              } else {
+                dispatch(setUserProfile(data));
+              }
             } else {
               try{
                 await setDoc(doc(db, "userProfile", uid), docData);

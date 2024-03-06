@@ -9,6 +9,7 @@ import { auth } from './firebase';
 import { STATUSES } from './store/authSlice';
 import { loginUser, setStatus, logoutUser, fetchUserGame, fetchUserProfile, fetchUserGameStat } from "./store/authSlice";
 import PrivateRoute from './components/game/PrivateRoute';
+import UpdateProfile from './components/auth/UpdateProfile';
 
 function App() {
   const dispatch = useDispatch();
@@ -18,7 +19,6 @@ function App() {
       console.log(authUser);
       if (authUser) {
         console.log(authUser);
-        
         Promise.all([
           dispatch(fetchUserGame(authUser.uid)),
           dispatch(fetchUserProfile(authUser.uid)),
@@ -59,6 +59,11 @@ function App() {
                       <Dashboard />
                     </PrivateRoute>
                   }></Route>
+          <Route path="/updateprofile" element={
+                    <PrivateRoute>
+                      <UpdateProfile />
+                    </PrivateRoute>
+                    }></Route>
         </Routes>
       </div>
     </BrowserRouter>

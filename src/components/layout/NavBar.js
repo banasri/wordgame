@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector} from "react-redux";
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark, faUser, faCog, faSheetPlastic, faQuestionCircle, faBars, faChartSimple } from '@fortawesome/free-solid-svg-icons';
 import "./Layout.css";
@@ -48,7 +49,9 @@ const NavBar = () => {
     </div>  
       {profileClick ? <div className='profileModal'>
       <FontAwesomeIcon className='icon-x' icon={faXmark} onClick={handleClickProf} />
-        <a href="#">Profile</a>
+      <Link to="/updateprofile" >
+              Profile
+            </Link>
         <a href="#">Change Password</a>
         <a href="#" onClick={handleLogout}>Logout</a>
         </div> : null}
