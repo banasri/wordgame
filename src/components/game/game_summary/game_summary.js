@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import "./game_summary.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrophy, faBookOpenReader } from '@fortawesome/free-solid-svg-icons';
+import Stats from '../../stats/Stats';
 
 
 function GameSummary() {
@@ -28,6 +29,7 @@ function GameSummary() {
         })}
         </div>
       </main>  
+      <Stats /> 
     </div>
   )
 }
