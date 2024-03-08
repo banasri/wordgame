@@ -86,13 +86,15 @@ const Game = (props) => {
   function dateDiff(date1, date2) {
     const currentDate1 = new Date(date1); 
     const currentDate2 = new Date(date2); // Current date
-
+    console.log("currentDate1", currentDate1);
+    console.log("currentDate2", currentDate2);
     // Calculate the difference in milliseconds
-    const differenceInMilliseconds = currentDate2 - currentDate1;
+    const differenceInMilliseconds = currentDate1 - currentDate2;
 
     // Convert milliseconds to days
     const millisecondsPerDay = 1000 * 60 * 60 * 24;
     const differenceInDays = differenceInMilliseconds / millisecondsPerDay;
+    console.log("differenceInDays", differenceInDays);
     return differenceInDays;
   }
   useEffect(() => {
@@ -150,7 +152,8 @@ const Game = (props) => {
             let keyyVal = guessDistribution[keyy] ? guessDistribution[keyy] : 0;
             console.log("Game.js - keyy", keyy);
             guessDistribution = {...guessDistribution, [keyy] : ++keyyVal};
-            if(userGameStat.CurrentStreakDate !== lastPlayedDate) {
+            if(userGameStat.CurrentStreakDate !== lastPlayedDate 
+              || currentStreak === 0) {
               currentStreak++;
               currentStreakDate = lastPlayedDate;
               maxStreak = Math.max(maxStreak, currentStreak);
@@ -275,7 +278,7 @@ const Game = (props) => {
         });
         dispatch({ type: "SET_USERGAME", userGame : userGame});
         dispatch({ type: "SET_WORDS", words: todayWords});
-        if(userGame.GameState.length == 3 && userGame.LastPlayedDate === lastPlayedDate){
+        if(userGame.GameState.length === 3 && userGame.LastPlayedDate === lastPlayedDate){
           setShowSummary(true);
           dispatch({ type: "SET_GAME_SUMMARY"});
           console.log("Show game summary");

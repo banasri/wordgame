@@ -112,7 +112,21 @@
     margin-bottom: 5px;
     font-weight: bold;
   }
-
+  .profile-form select {
+    width: 95%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+  .inlineContainer {
+    display: flex;
+    flex-direction: row;
+  }
+  .inlineContainer input {
+    width: 150px;
+    margin-right: 5px;
+  }
   .login-form h3 {
     margin: 5px;
   }
@@ -203,5 +217,19 @@
     }
     .form-button {
       width: 98%;
+    }
+  }
+
+  @media (max-width: 478px) {
+    .inlineContainer {
+      display: block;
+      flex-direction: row;
+    }
+    .inlineContainer input {
+      width: 90%;
+      padding: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
     }
   }
