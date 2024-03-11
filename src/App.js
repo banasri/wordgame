@@ -10,6 +10,7 @@ import { STATUSES } from './store/authSlice';
 import { loginUser, setStatus, logoutUser, fetchUserGame, fetchUserProfile, fetchUserGameStat } from "./store/authSlice";
 import PrivateRoute from './components/game/PrivateRoute';
 import UpdateProfile from './components/auth/UpdateProfile';
+import Leaderboard from './components/game/Leaderboard';
 
 function App() {
   const dispatch = useDispatch();
@@ -52,6 +53,7 @@ function App() {
       <div className="App">
         <Routes>
           <Route exact path="/" element={<LandingPage />}></Route>
+          <Route path="/leaderboard" element={<Leaderboard />}></Route>
           <Route path="/signup" element={<Signup />}></Route>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/wordcup" element={

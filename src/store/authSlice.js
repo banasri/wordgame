@@ -1,5 +1,5 @@
 import { auth, googleProvider, db } from "../firebase"
-import { doc, getDoc, updateDoc, setDoc, query, where, collection, addDoc, getDocs, serverTimestamp } from "firebase/firestore";
+import { doc, getDoc, updateDoc, setDoc, query, where, collection, addDoc, getDocs, serverTimestamp, orderBy } from "firebase/firestore";
 import { createSlice } from '@reduxjs/toolkit';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, signInWithPopup} from "firebase/auth";
 
@@ -22,11 +22,15 @@ export const authSlice = createSlice({
         gameStatus: STATUSES.IDLE,
         gameStatsStatus: STATUSES.IDLE,
         scoreStatus: STATUSES.IDLE,
+        getAllScoreStatus: STATUSES.IDLE,
         isSignedIn : false,
+        todayScore : 0,
         error : null,
         userProfileExists : true,
         userGame : {},
-        userGameStat : {}
+        userGameStat : {},
+        scores : [],
+        scoresSet : false
     },
     reducers: {
           loginUser: (state, action) => {
@@ -48,11 +52,28 @@ export const authSlice = createSlice({
             state.userProfileExists = true;
             state.isSignedIn = false;
           },
+          setScores: (state, action) => {
+            console.log("in authSlice reducers: setScores");
+            console.log(action);
+            state.scores = action.payload;
+            state.scoresSet = true;
+          },
           setUserProfile: (state, action) => {
             state.userProfile = action.payload;
           },
           setUserGame: (state, action) => {
             state.userGame = action.payload;
+            console.log("state.userGame",state.userGame);
+            console.log("state.userGame.length",state.userGame.length);
+            let todayScore = 0;
+            for(let i =0; i< 3; i++) {
+              if (state.userGame.GameState[i] && state.userGame.GameState[i] === "W") {
+                console.log(todayScore);
+                todayScore++;
+                console.log(todayScore);
+              }
+            }
+            state.todayScore = todayScore;
           },
           setUserGameStat: (state, action) => {
             state.userGameStat = action.payload;
@@ -72,6 +93,9 @@ export const authSlice = createSlice({
           setScoreStatus : (state, action) => {
             state.scoreStatus = action.payload;
           },
+          setGetAllScoreStatus : (state, action) => {
+            state.getAllScoreStatus = action.payload;
+          },
           setUserProfileExists : (state, action) => {
             state.userProfileExists = action.payload;
           },
@@ -82,8 +106,8 @@ export const authSlice = createSlice({
     },
 });
 
-export const { loginUser, logoutUser, setUserProfile, setUserGame, setUserGameStat, setStatus, 
-  setProfileStatus, setGameStatus, setScoreStatus, setGameStatStatus, setUserProfileExists,
+export const { loginUser, logoutUser, setScores, setUserProfile, setUserGame, setUserGameStat, setStatus, 
+  setProfileStatus, setGameStatus, setScoreStatus, setGetAllScoreStatus, setGameStatStatus, setUserProfileExists,
    setError } = authSlice.actions;
 export default authSlice.reducer;
 
@@ -560,5 +584,52 @@ export function UpdateUserScore(uid) {
         dispatch(setScoreStatus(STATUSES.ERROR));
       }  
       dispatch(setScoreStatus(STATUSES.IDLE));
+  };
+}
+
+export function FetchUserScores(minScore = 1) {
+  return async function FetchUserScoresThunk(dispatch) {
+      console.log("From Reducer - UpdateUserScore");
+      dispatch(setGetAllScoreStatus(STATUSES.LOADING));
+      // Get today's date 
+      const today = new Date().toISOString().slice(0, 10);
+      const scores = [];
+      // Query Firestore for scores based on UID and date
+      
+      try {
+        const scoreRef = collection(db, "score");
+        const q = query(scoreRef, where("score", ">=", minScore), where("date", "==", today), orderBy("score", "desc"), orderBy("timestamp", "desc"));
+        const docSnap = await getDocs(q);
+        console.log("docSnap" , docSnap);
+        console.log("docSnap count" , docSnap.size);
+        if (docSnap.size) {
+          docSnap.forEach((doc) => {
+            console.log(doc.id, ' => ', doc.data()); 
+            scores.push(doc.data());           
+          });
+        } else {
+          console.log("docSnap does not exists");
+        }
+      }
+      catch(e) {
+        console.log(e);
+        dispatch(setError("Error fetching scores: " + e));
+        dispatch(setGetAllScoreStatus(STATUSES.ERROR));
+      }
+      try{
+        for(let i=0; i < scores.length; i++){
+          const docRef = doc(db, "userProfile", scores[i].uid);
+          const docSnap = await getDoc(docRef);
+          const profileData = docSnap.data();
+          scores[i] = {...scores[i], ...profileData};
+          console.log("scores[i]", scores[i]); 
+        }
+        dispatch(setScores(scores));
+      } catch(e) {
+        console.log(e);
+        dispatch(setError("Error fetching profile for scores: " + e));
+      }
+      
+      dispatch(setGetAllScoreStatus(STATUSES.IDLE));
   };
 }

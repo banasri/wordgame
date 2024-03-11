@@ -28,7 +28,7 @@ function LandingPage() {
       <div className="button-container">
       <Link to="/login"><button className="rounded-btn login-btn">Login</button></Link>
       <Link to="/signup"> <button className="rounded-btn signup-btn">Signup</button></Link>
-      <Link to="/"><button className="rounded-btn faqs-btn">How to play</button></Link>
+      <Link to="/leaderboard"><button className="rounded-btn faqs-btn">Hall of Fame</button></Link>
       </div>
     </div>
   );

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector} from "react-redux";
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faXmark, faUser, faCog, faSheetPlastic, faQuestionCircle, faBars, faChartSimple } from '@fortawesome/free-solid-svg-icons';
+import { faXmark, faCog, faRankingStar, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import "./Layout.css";
 import { signout } from '../../store/authSlice';
 
@@ -43,7 +43,7 @@ const NavBar = () => {
             <SignedOutLinks /> */}
         <div className='navbar-icons'>
           <FontAwesomeIcon className='icon-fa' onClick={handleClickQues} icon={faQuestionCircle} />
-          <FontAwesomeIcon className='icon-fa' icon={faChartSimple} />
+          <Link to="/leaderboard"><FontAwesomeIcon className='icon-fa' icon={faRankingStar} /></Link>
           <FontAwesomeIcon className='icon-fa' icon={faCog} />
         </div>
     </div>  
@@ -53,7 +53,7 @@ const NavBar = () => {
               Profile
             </Link>
         <a href="#">Change Password</a>
-        <a href="#" onClick={handleLogout}>Logout</a>
+        <a href="/" onClick={handleLogout}>Logout</a>
         </div> : null}
     </>
     

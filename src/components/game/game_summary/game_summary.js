@@ -13,10 +13,15 @@ function GameSummary() {
   const todaysWords = useSelector((state) => {
     return state.game.todaysWords;
   });
+  const todayScore = useSelector((state) => {
+    return state.auth.todayScore;
+  });
+
   return (
     <div>
       <main>
         <h2>Quick Recap</h2>
+        <h3>Today's Score - { todayScore } <FontAwesomeIcon className='icon-fa-won' icon={faTrophy} /></h3>
         <div className='wordContainer'>
         {console.log("today's word", todaysWords)}
         {todaysWords.map((item, index) => {

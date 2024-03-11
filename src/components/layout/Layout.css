@@ -63,3 +63,46 @@
     vertical-align: middle;
     text-align: center;
 }
+
+.lb-heading {
+  align-items: center;
+  text-align: center;
+}
+.student-list {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.student-list th, .student-list td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.student-list thead {
+  background-color: #f2f2f2;
+}
+
+/* Style for even rows */
+.student-list tr:nth-child(even) {
+  background-color: #fbd5a9;
+}
+
+/* Style for odd rows */
+.student-list tr:nth-child(odd) {
+  background-color: #ffc079;
+}
+
+.student-list th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  background-color: #4285F4;
+  color: white;
+}
+
+.student-list td:first-child {
+  max-width: 100px; /* Adjust according to your preference */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* white-space: nowrap; */
+}

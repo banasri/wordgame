@@ -335,7 +335,7 @@ const Game = (props) => {
         <GameBox />
         <Keyboard />
         {gameOver ? <GameOver pass={pass} /> : null}
-        {gameOver & showWord &!pass ? <p className="alert">{word}</p> : null}
+        {/* {gameOver & showWord &!pass ? <p className="alert">{word}</p> : null} */}
       </>}
       {showModal ? <Instructions /> : null}
       

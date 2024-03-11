@@ -9,11 +9,11 @@
     list-style: none;
 }
 .ul-stats li {
-    margin: 0 15px;
+    margin: 5px 15px;
     max-width: 40px;
 }
 .listNum {
-    font-size: 44px;
+    font-size: 34px;
     font-weight: 500;
 }
 .listText {
