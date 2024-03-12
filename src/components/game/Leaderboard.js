@@ -3,6 +3,9 @@ import { useSelector, useDispatch} from "react-redux";
 import NavBar from '../layout/NavBar';
 import "../layout/Layout.css";
 import { FetchUserScores, STATUSES} from '../../store/authSlice';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencil } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 function Leaderboard() {
   const user = useSelector((state) => state.auth.user);
@@ -19,7 +22,7 @@ function Leaderboard() {
 
   return (
     <>
-    {user ? <NavBar /> : 
+    {user ? <NavBar fromPage="Leaderboard"/> : 
     <div className="navbar"> 
       <div className='navbar-logo'>
       <div className='image-container'>
@@ -36,16 +39,21 @@ function Leaderboard() {
         <tr>
             <th>Name</th>
             <th>Score</th>
-            <th>School, Class</th>
+            <th>Institute, Division</th>
         </tr>
     </thead>
     <tbody>
     {scores.map((item, index) => {
      return (<tr key={index}>
-            <td>{scores[index].firstName} {scores[index].lastName}</td>
+            <td>{scores[index].firstName} {scores[index].lastName}
+            </td>
             <td>{scores[index].score}</td>
-            <td>{scores[index].school}, Class - {scores[index].class}</td>
-      </tr>)
+            {scores[index].school ?  (scores[index].class ? <td>{scores[index].school} , Division - {scores[index].class} </td> : <td>{scores[index].school}</td> )  
+            : (scores[index].class ? <td>Division - {scores[index].class}</td> : 
+            <td>{ user && user.uid === scores[index].uid ? 
+            <Link to="/updateprofile"><FontAwesomeIcon icon={faPencil} /></Link> : null}</td>
+            ) }
+            </tr>)
     })}
     </tbody>
 </table>
