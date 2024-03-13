@@ -598,7 +598,7 @@ export function FetchUserScores(minScore = 1) {
       
       try {
         const scoreRef = collection(db, "score");
-        const q = query(scoreRef, where("score", ">=", minScore), where("date", "==", today), orderBy("score", "desc"), orderBy("timestamp", "desc"));
+        const q = query(scoreRef, where("score", ">=", minScore), where("date", "==", today), orderBy("score", "desc"), orderBy("timestamp", "asc"));
         const docSnap = await getDocs(q);
         console.log("docSnap" , docSnap);
         console.log("docSnap count" , docSnap.size);

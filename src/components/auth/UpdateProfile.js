@@ -319,7 +319,7 @@ function UpdateProfile() {
         state : '',
       });
     useEffect(() => {
-        setFormData((prevData) => ({ ...prevData, ... userProfile}));
+        setFormData((prevData) => ({...prevData, ...userProfile}));
     }, [userProfile]);
     // const handleSelect = (option) => {
     //   setSelectedOption(option);

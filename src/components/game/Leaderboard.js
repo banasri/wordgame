@@ -37,6 +37,7 @@ function Leaderboard() {
     <table className="student-list">
     <thead>
         <tr>
+            <th>Rank</th>
             <th>Name</th>
             <th>Score</th>
             <th>Institute, Division</th>
@@ -45,6 +46,7 @@ function Leaderboard() {
     <tbody>
     {scores.map((item, index) => {
      return (<tr key={index}>
+            <td>{index + 1}</td>
             <td>{scores[index].firstName} {scores[index].lastName}
             </td>
             <td>{scores[index].score}</td>
