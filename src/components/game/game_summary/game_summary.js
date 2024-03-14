@@ -28,7 +28,16 @@ function GameSummary() {
           console.log("item , index", item, index);
           return (
               <div className='wordDetail' key={index}>
-              <strong>{item.word} :</strong> - {item.meaning} {userGame.GameState[index] === "W" ? <FontAwesomeIcon className='icon-fa-won' icon={faTrophy} /> : <FontAwesomeIcon className='icon-fa-lost' icon={faBookOpenReader} />}
+              <div>
+              <strong>Clue : {item.clue} Answer : {item.word}</strong> {userGame.GameState[index] === "W" ? <FontAwesomeIcon className='icon-fa-won' icon={faTrophy} /> : <FontAwesomeIcon className='icon-fa-lost' icon={faBookOpenReader} />}
+              </div>
+              <div>
+              <strong>Meaning</strong> - {item.meaning} 
+              </div>
+              {item.sentence ? 
+                <div>
+              <strong>Sentence</strong> - {item.sentence} 
+              </div> : null}
               </div>
           )
         })}

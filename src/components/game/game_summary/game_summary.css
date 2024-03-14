@@ -41,14 +41,14 @@
       align-items: center;
     }
   }
-  @media (min-width: 479px) and (max-width: 576px) {
+  /* @media (min-width: 479px) and (max-width: 576px) {
     .wordDetail {
       font-size: 20px;
     }
-  }
-  @media (min-width: 376px) and (max-width: 478px) {
+  } */
+  @media (min-width: 376px) and (max-width: 576px) {
     .wordDetail {
-      font-size: 16px;
+      font-size: 14px;
     }
   }
   @media (max-width: 375px) {
