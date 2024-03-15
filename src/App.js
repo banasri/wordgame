@@ -11,6 +11,7 @@ import { loginUser, setStatus, logoutUser, fetchUserGame, fetchUserProfile, fetc
 import PrivateRoute from './components/game/PrivateRoute';
 import UpdateProfile from './components/auth/UpdateProfile';
 import Leaderboard from './components/game/Leaderboard';
+import ChangePassword from './components/auth/ChangePassword';
 
 function App() {
   const dispatch = useDispatch();
@@ -27,11 +28,12 @@ function App() {
         ])
         .then(() => {
           dispatch(
-            loginUser({
-              uid: authUser.uid,
-              username: authUser.displayName,
-              email: authUser.email,
-            })
+            loginUser(authUser)
+            // loginUser({
+            //   uid: authUser.uid,
+            //   username: authUser.displayName,
+            //   email: authUser.email,
+            // })
           );
           dispatch(setStatus(STATUSES.IDLE));
           dispatch({type:'SET_LOGIN', payload : true});
@@ -56,6 +58,7 @@ function App() {
           <Route path="/leaderboard" element={<Leaderboard />}></Route>
           <Route path="/signup" element={<Signup />}></Route>
           <Route path="/login" element={<Login />}></Route>
+          <Route path="/changePassword" element={<ChangePassword />}></Route>
           <Route path="/wordcup" element={
                     <PrivateRoute>
                       <Dashboard />

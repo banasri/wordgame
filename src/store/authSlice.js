@@ -1,7 +1,7 @@
 import { auth, googleProvider, db } from "../firebase"
 import { doc, getDoc, updateDoc, setDoc, query, where, collection, addDoc, getDocs, serverTimestamp, orderBy } from "firebase/firestore";
 import { createSlice } from '@reduxjs/toolkit';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, signInWithPopup} from "firebase/auth";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, signInWithPopup, updatePassword} from "firebase/auth";
 
 export const STATUSES = Object.freeze({
     IDLE: 'idle',
@@ -18,6 +18,7 @@ export const authSlice = createSlice({
         email : null,
         userProfile : null,
         status: STATUSES.IDLE,
+        changePasswordStatus : STATUSES.IDLE,
         profileStatus: STATUSES.IDLE,
         gameStatus: STATUSES.IDLE,
         gameStatsStatus: STATUSES.IDLE,
@@ -75,6 +76,9 @@ export const authSlice = createSlice({
             }
             state.todayScore = todayScore;
           },
+          setChangePasswordStatus : (state, action) => {
+            state.changePasswordStatus = action.payload;
+          },
           setUserGameStat: (state, action) => {
             state.userGameStat = action.payload;
           },
@@ -107,7 +111,7 @@ export const authSlice = createSlice({
 });
 
 export const { loginUser, logoutUser, setScores, setUserProfile, setUserGame, setUserGameStat, setStatus, 
-  setProfileStatus, setGameStatus, setScoreStatus, setGetAllScoreStatus, setGameStatStatus, setUserProfileExists,
+  setChangePasswordStatus, setProfileStatus, setGameStatus, setScoreStatus, setGetAllScoreStatus, setGameStatStatus, setUserProfileExists,
    setError } = authSlice.actions;
 export default authSlice.reducer;
 
@@ -125,11 +129,12 @@ export function signInUser(email, password) {
             console.log("res : ", res);
             
             dispatch(
-                loginUser({
-                  uid: res.user.uid,
-                  username: res.user.displayName,
-                  email: res.user.email,
-                })
+                loginUser(res.user)
+                // loginUser({
+                //   uid: res.user.uid,
+                //   username: res.user.displayName,
+                //   email: res.user.email,
+                // })
               );
             dispatch(setStatus(STATUSES.IDLE));
         } catch (err) {
@@ -162,6 +167,25 @@ export function registerUser(email, password) {
       }
   };
 }
+export function updtPassword(user, password) {
+  return async function updtPasswordThunk(dispatch) {
+      //dispatch(authSlice.actions.setStatus(STATUSES.LOADING));
+      console.log("inside updtPassword thunk");
+      dispatch(setChangePasswordStatus(STATUSES.LOADING));
+      try {
+          const res = await updatePassword(
+              user, 
+              password
+          );
+          console.log("res : ", res);
+          dispatch(setChangePasswordStatus(STATUSES.IDLE));
+      } catch (err) {
+          console.log(err);
+          dispatch(setError("Error Registering: " + err));
+          dispatch(setChangePasswordStatus(STATUSES.ERROR));
+      }
+  };
+}
 
 export function signInWithGoogle() {
   return async function signInWithGoogleThunk(dispatch) {
@@ -172,11 +196,12 @@ export function signInWithGoogle() {
           console.log("res : ", res);
           
           dispatch(
-              loginUser({
-                uid: res.user.uid,
-                username: res.user.displayName,
-                email: res.user.email,
-              })
+              loginUser(res.user)
+              // loginUser({
+              //   uid: res.user.uid,
+              //   username: res.user.displayName,
+              //   email: res.user.email,
+              // })
             );
           dispatch(setStatus(STATUSES.IDLE));
       } catch (err) {

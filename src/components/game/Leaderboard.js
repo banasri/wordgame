@@ -14,6 +14,21 @@ function Leaderboard() {
   const scoresSet = useSelector((state) => state.auth.scoresSet);
   //const getAllScoreStatus = useSelector((state) => state.auth.getAllScoreStatus);
   const dispatch = useDispatch();
+  
+  function splitAndTruncateString(inputString) {
+    // Split the input string based on commas or spaces
+    const parts = inputString.split(/[,\s]+/);
+  
+    // Iterate over each part and truncate if length is greater than 10 characters
+    const truncatedParts = parts.map(part =>
+      part.length > 15 ? `${part.slice(0, 15)}...` : part
+    );
+  
+    // Join the truncated parts with spaces
+    const result = truncatedParts.join(' ');
+  
+    return result;
+  }
 
   useEffect(() => {
     dispatch(FetchUserScores());
@@ -37,7 +52,7 @@ function Leaderboard() {
     <table className="student-list">
     <thead>
         <tr>
-            <th>Rank</th>
+            <th></th>
             <th>Name</th>
             <th>Score</th>
             <th>Institute, Division</th>
@@ -50,8 +65,8 @@ function Leaderboard() {
             <td>{scores[index].firstName} {scores[index].lastName}
             </td>
             <td>{scores[index].score}</td>
-            {scores[index].school ?  (scores[index].class ? <td>{scores[index].school} , Division - {scores[index].class} </td> : <td>{scores[index].school}</td> )  
-            : (scores[index].class ? <td>Division - {scores[index].class}</td> : 
+            {scores[index].school ?  (scores[index].class ? <td>{splitAndTruncateString(scores[index].school)} , Division - {splitAndTruncateString(scores[index].class)} </td> : <td>{splitAndTruncateString(scores[index].school)}</td> )  
+            : (scores[index].class ? <td>Division - {splitAndTruncateString(scores[index].class)}</td> : 
             <td>{ user && user.uid === scores[index].uid ? 
             <Link to="/updateprofile"><FontAwesomeIcon icon={faPencil} /></Link> : null}</td>
             ) }

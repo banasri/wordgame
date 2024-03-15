@@ -50,7 +50,7 @@ const NavBar = ({fromPage}) => {
             <div className='navbar-icons'>
               <FontAwesomeIcon className='icon-fa' onClick={handleClickQues} icon={faQuestionCircle} />
               <Link to="/leaderboard"><FontAwesomeIcon className='icon-fa' icon={faRankingStar} /></Link>
-              <FontAwesomeIcon className='icon-fa' icon={faCog} />
+              {/* <FontAwesomeIcon className='icon-fa' icon={faCog} /> */}
             </div>
             }
         
@@ -60,7 +60,7 @@ const NavBar = ({fromPage}) => {
       <Link to="/updateprofile" >
               Profile
             </Link>
-        <a href="#">Change Password</a>
+        <a href="/changePassword">Change Password</a>
         <a href="/" onClick={handleLogout}>Logout</a>
         </div> : null}
     </>

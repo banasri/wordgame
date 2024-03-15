@@ -100,8 +100,8 @@
   color: white;
 }
 
-.student-list td:first-child {
-  max-width: 100px; /* Adjust according to your preference */
+.student-list td {
+  max-width: 90px; /* Adjust according to your preference */
   overflow: hidden;
   text-overflow: ellipsis;
   /* white-space: nowrap; */

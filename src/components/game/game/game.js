@@ -324,7 +324,7 @@ const Game = (props) => {
       onClick={() => {
         console.log("Clicked!");
         setShowModal(false);
-        dispatch({type:'SET_QUEST_MODAL'});
+        dispatch({type:'SET_QUEST_MODAL_F'});
         console.log(showHowToPlay);
 
       }}

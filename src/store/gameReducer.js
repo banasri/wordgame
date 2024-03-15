@@ -363,7 +363,13 @@ const clueReducer = (state = initialState, action) => {
           console.log("in SET_QUEST_MODAL ...........");
           return {
             ...state,
-            showHowToPlay: !state.showHowToPlay,
+            showHowToPlay: true,
+          };
+        case "SET_QUEST_MODAL_F": 
+          console.log("in SET_QUEST_MODAL_F ...........");
+          return {
+            ...state,
+            showHowToPlay: false,
           };
         case "CLEAR_ALERT":
           console.log("in CLEAR_ALERT ...........");
