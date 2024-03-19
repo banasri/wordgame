@@ -41,6 +41,7 @@ export const authSlice = createSlice({
             state.username = action.payload.username;
             state.email = action.payload.email;
             state.isSignedIn = true;
+            state.error = null;
           },
           logoutUser: (state) => {
             console.log("in authSlice reducers: logoutUser");
@@ -52,6 +53,7 @@ export const authSlice = createSlice({
             state.userGameStat = {};
             state.userProfileExists = true;
             state.isSignedIn = false;
+            state.error = null;
           },
           setScores: (state, action) => {
             console.log("in authSlice reducers: setScores");

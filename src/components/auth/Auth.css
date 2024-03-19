@@ -43,6 +43,14 @@
     margin: 0 10px;
     color: #B15EFF;
   }
+  .error-container {
+    background-color: #f90c0c; /* White box */
+    padding: 6px 4px; /* Adjust padding as needed */
+    border-radius: 4px; /* Add border-radius for rounded corners */
+    margin-bottom: 5px;
+    width:94%;
+    color:white;
+  }
   .form-container {
     display: flex;
     min-height: 100vh;

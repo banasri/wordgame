@@ -8,6 +8,7 @@ const Signup = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [googleLinkClicked, setGoogleLinkClicked] = useState(false);
+  const [uiError, setUiError] = useState("");
   let user = useSelector((state) => {
     return state.auth.user;
   });
@@ -18,6 +19,24 @@ const Signup = () => {
   let userGame = {};
   let userGameStat = {};
   useEffect(() => {
+    setUiError("");
+    console.log(error)
+    if(error){
+      if(error.indexOf("weak-password") !== -1){
+        setUiError("Password should be at least 6 characters");
+      } else
+      if(error.indexOf("missing-password") !== -1){
+        setUiError("Password is missing");
+      } else  
+      if(error.indexOf("invalid-email") !== -1){
+        setUiError("Invalid email");
+      } else 
+      if(error.indexOf("email-already-in-use") !== -1){
+        setUiError("Email is already registed");
+      } else {
+        setUiError("An error has happened");
+      }
+    }
     if (user && !error) {
       updtProfile();
       console.log("userGame", userGame);
@@ -50,6 +69,7 @@ const Signup = () => {
   function handleSubmit(e) {
     console.log("In submit");
     console.log(e);
+    setUiError("");
     e.preventDefault();
     if(!googleLinkClicked){
       signUp();
@@ -57,11 +77,13 @@ const Signup = () => {
   }
   
   function handleChange(e) {
+    setUiError("");
     setFormData((prevData) => ({ ...prevData, [e.target.id]: e.target.value }));
     //console.log(e);
   }
   function handleKeyPress(event) {
     console.log("from keypress!");
+    setUiError("");
     if (event.key === 'Enter') {
       event.preventDefault(); // Prevent form submission
       signUp();
@@ -120,6 +142,7 @@ const Signup = () => {
   }
   function signUp() {
     //console.log(e);
+    setUiError("");
     console.log(formData);
     dispatch(registerUser(formData.email, formData.password)).then(() => {
       //dispatch(fetchNdUpdateUserProfile(user.uid, userDoc)).then(() => {
@@ -132,6 +155,7 @@ const Signup = () => {
   }
 
   function signInGoogle() {
+    setUiError("");
     setGoogleLinkClicked(true);
     dispatch(signInWithGoogle()).then((res) =>{
       console.log("after dispatch inside then signInWithGoogle");
@@ -151,6 +175,7 @@ const Signup = () => {
         <img src="/image/WCLogo.png" alt="Logo" className="logoForm" />
       </div>
       <h3>Sign Up</h3>
+      {uiError && <div className='error-container'>{uiError}</div>}
       <button onClick={signInGoogle} className="google-button">
         <div className="google-logo-box">
         <img src="/image/googleIcon.png" alt="Google Logo" className="google-logo" />
@@ -163,16 +188,16 @@ const Signup = () => {
         <div className="bar"></div>
       </div>
       <label htmlFor='firstName'>First Name:</label>
-      <input type="text" id="firstName" value={formData.firstName} onChange={handleChange} />
+      <input type="text" id="firstName" required={true} value={formData.firstName} onChange={handleChange} />
       <br />
       <label htmlFor='lastName'>Last Name:</label>
-      <input type="text" id="lastName" value={formData.lastName} onChange={handleChange} />
+      <input type="text" id="lastName" required={true} value={formData.lastName} onChange={handleChange} />
       <br />
       <label htmlFor='email'>Email Address:</label>
-      <input type="email" id="email" value={formData.email} onChange={handleChange} />
+      <input type="email" id="email" required={true} value={formData.email} onChange={handleChange} />
       <br />
       <label htmlFor='password'>Password:</label>
-      <input type="password" id="password" value={formData.password} onChange={handleChange} />
+      <input type="password" id="password" required={true} value={formData.password} onChange={handleChange} />
       <br />
       <button type="submit" className='form-button'>Sign Up</button>
     </form>

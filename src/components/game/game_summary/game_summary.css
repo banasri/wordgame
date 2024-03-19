@@ -1,4 +1,7 @@
 .gamesummary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   background-color: #ffccdd;
   background-size : cover;
   justify-content: flex-start;
@@ -34,24 +37,16 @@
     margin-top: 20px;
     margin-left: 150px;
   }
-  @media (min-width: 577px) {
-    .gamesummary {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-  }
-  /* @media (min-width: 479px) and (max-width: 576px) {
-    .wordDetail {
-      font-size: 20px;
-    }
-  } */
+  
   @media (min-width: 376px) and (max-width: 576px) {
     .wordDetail {
       font-size: 14px;
     }
   }
   @media (max-width: 375px) {
+    .gamesummary {
+      height: 95vh;
+    }
     .wordDetail {
       font-size: 12px;
     }

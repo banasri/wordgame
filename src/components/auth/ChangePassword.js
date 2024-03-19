@@ -56,7 +56,7 @@ function ChangePassword() {
         <img src="/image/WCLogo.png" alt="Logo" className="logoForm" />
       </div>
       <h3>Change Password</h3>
-      {uiError && <div>{uiError}</div>}
+      {uiError && <div className='error-container'>{uiError}</div>}
       <label htmlFor='email'>Email Address</label>
       <input type="email" id="email" value={formData.email} disabled={true} />
       <br />
