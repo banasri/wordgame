@@ -106,11 +106,11 @@ const Login = () => {
     console.log("From updateProfile function!!!!");
     console.log('user', user);
     console.log('error', error);
-    const nameParts = user.username.trim().split(' ');
+    const nameParts = user.displayName.trim().split(' ');
     const firstName = nameParts.shift(); 
     const lastName = nameParts.join(' ');
     userDoc = {
-              username : user.username,
+              username : user.displayName,
               firstname : firstName,
               lastname : lastName,
               email : user.email

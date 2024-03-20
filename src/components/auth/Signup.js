@@ -100,11 +100,11 @@ const Signup = () => {
       email : formData.email
     };
     if(googleLinkClicked) {
-      const nameParts = user.username.trim().split(' ');
+      const nameParts = user.displayName.trim().split(' ');
       const firstName = nameParts.shift(); 
       const lastName = nameParts.join(' ');
       userDoc = {
-                username : user.username,
+                username : user.displayName,
                 firstName : firstName,
                 lastName : lastName,
                 email : user.email

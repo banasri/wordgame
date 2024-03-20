@@ -122,6 +122,7 @@ export default authSlice.reducer;
 export function signInUser(email, password) {
     return async function signInUserThunk(dispatch) {
         //dispatch(authSlice.actions.setStatus(STATUSES.LOADING));
+        dispatch(setError(""));
         try {
             const res = await signInWithEmailAndPassword(
                 auth, 
@@ -150,6 +151,7 @@ export function signInUser(email, password) {
 export function registerUser(email, password) {
   return async function registerUserThunk(dispatch) {
       //dispatch(authSlice.actions.setStatus(STATUSES.LOADING));
+      dispatch(setError(""));
       console.log("inside register thunk");
       try {
           const res = await createUserWithEmailAndPassword(
@@ -174,6 +176,7 @@ export function updtPassword(user, password) {
       //dispatch(authSlice.actions.setStatus(STATUSES.LOADING));
       console.log("inside updtPassword thunk");
       dispatch(setChangePasswordStatus(STATUSES.LOADING));
+      dispatch(setError(""));
       try {
           const res = await updatePassword(
               user, 
@@ -192,6 +195,7 @@ export function updtPassword(user, password) {
 export function signInWithGoogle() {
   return async function signInWithGoogleThunk(dispatch) {
       dispatch(authSlice.actions.setStatus(STATUSES.LOADING));
+      dispatch(setError(""));
       try {
           //const res = await signInWithRedirect(auth, googleProvider);
           const res = await signInWithPopup(auth, googleProvider);
@@ -217,6 +221,7 @@ export function signInWithGoogle() {
 export function signout() {
   return async function signoutThunk(dispatch) {
       //dispatch(authSlice.actions.setStatus(STATUSES.LOADING));
+      dispatch(setError(""));
       try {
           const res = await signOut(auth);
           console.log("res : ", res);
@@ -236,7 +241,7 @@ export function updateProfile(profile, userProfileExists, uid) {
 
   console.log("name, phone, school", profile);
   console.log("currentUser.uid", uid);
-
+  dispatch(setError(""));
   const docData = {
     ...profile
     };
@@ -250,15 +255,16 @@ export function updateProfile(profile, userProfileExists, uid) {
       dispatch(setUserProfile(docData));
     } catch(error) {
       console.error("Error updating document:", error);
+      dispatch(setError("Error updating document: " + error));
       dispatch(setProfileStatus(STATUSES.ERROR));
     }
-
 }
 }
   export function fetchUserProfile(uid) {
     return async function fetchUserProfileThunk(dispatch) {
         console.log("From Reducer - fetchUserProfile");
         dispatch(setProfileStatus(STATUSES.LOADING));
+        dispatch(setError(""));
         try {
             console.log("From Reducer - fetchUserProfile... try");
             const docRef = doc(db, "userProfile", uid);
@@ -280,7 +286,7 @@ export function updateProfile(profile, userProfileExists, uid) {
               dispatch(setProfileStatus(STATUSES.IDLE));
         } catch (error) {
             console.error("Error fetching document:", error);
-            dispatch(setError("Error fetching userProfile document"));
+            dispatch(setError("Error fetching userProfile document - " + error));
             dispatch(setProfileStatus(STATUSES.ERROR));
         }
     };
@@ -290,6 +296,7 @@ export function fetchNdUpdateUserProfile(uid, profile, update = false) {
   return async function fetchNdUpdateUserProfileThunk(dispatch) {
       console.log("From Reducer - fetchNdUpdateUserProfile");
       dispatch(setProfileStatus(STATUSES.LOADING));
+      dispatch(setError(""));
       try {
           console.log("From Reducer - fetchNdUpdateUserProfile... try");
           const docRef = doc(db, "userProfile", uid);
@@ -337,6 +344,7 @@ export function fetchNdUpdateUserGame(uid, game) {
   return async function fetchNdUpdateUserGameThunk(dispatch) {
       console.log("From Reducer - fetchNdUpdateUserGame");
       dispatch(setGameStatus(STATUSES.LOADING));
+      dispatch(setError(""));
       try {
           console.log("From Reducer - fetchNdUpdateUserGame... try");
           const docRef = doc(db, "userGame", uid);
@@ -376,6 +384,7 @@ export function fetchUserGame(uid) {
   return async function fetchUserGameThunk(dispatch) {
       console.log("From Reducer - fetchUserGame");
       dispatch(setGameStatus(STATUSES.LOADING));
+      dispatch(setError(""));
       try {
           console.log("From Reducer - fetchUserGame... try");
           const docRef = doc(db, "userGame", uid);
@@ -418,6 +427,7 @@ export function UpdateUserGame(uid, gameData) {
   return async function UpdateUserGameThunk(dispatch) {
       console.log("From Reducer - UpdateUserGame");
       dispatch(setGameStatus(STATUSES.LOADING));
+      dispatch(setError(""));
       const docData = {
         ...gameData
       };
@@ -439,6 +449,7 @@ export function fetchNdUpdateUserGameStat(uid, gameStat) {
   return async function fetchNdUpdateUserGameStatThunk(dispatch) {
       console.log("From Reducer - fetchNdUpdateUserStatGame");
       dispatch(setGameStatStatus(STATUSES.LOADING));
+      dispatch(setError(""));
       try {
           console.log("From Reducer - fetchNdUpdateUserStatGame... try");
           const docRef = doc(db, "userGameStat", uid);
@@ -478,6 +489,7 @@ export function fetchUserGameStat(uid) {
   return async function fetchUserGameStatThunk(dispatch) {
       console.log("From Reducer - fetchUserGameStat");
       dispatch(setGameStatStatus(STATUSES.LOADING));
+      dispatch(setError(""));
       try {
           console.log("From Reducer - fetchUserGameStat... try");
           const docRef = doc(db, "userGameStat", uid);
@@ -528,6 +540,7 @@ export function UpdateUserGameStat(uid, game, dataFromDB, dataExists) {
   return async function UpdateUserGameStatThunk(dispatch) {
       console.log("From Reducer - UpdateUserGameStat");
       dispatch(setGameStatStatus(STATUSES.LOADING));
+      dispatch(setError(""));
       const docData = {
         ...game
       };
@@ -564,6 +577,7 @@ export function UpdateUserScore(uid) {
   return async function UpdateUserScoreThunk(dispatch) {
       console.log("From Reducer - UpdateUserScore");
       dispatch(setScoreStatus(STATUSES.LOADING));
+      dispatch(setError(""));
       // Get today's date 
       const today = new Date().toISOString().slice(0, 10);
       let docData = {
@@ -618,6 +632,7 @@ export function FetchUserScores(minScore = 1) {
   return async function FetchUserScoresThunk(dispatch) {
       console.log("From Reducer - UpdateUserScore");
       dispatch(setGetAllScoreStatus(STATUSES.LOADING));
+      dispatch(setError(""));
       // Get today's date 
       const today = new Date().toISOString().slice(0, 10);
       const scores = [];

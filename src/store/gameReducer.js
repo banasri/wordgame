@@ -267,6 +267,11 @@ const clueReducer = (state = initialState, action) => {
                 ...initialState,
               }
             }
+            if(state.gameOver) {
+              return {
+                ...state,
+              }
+            }
             console.log("inside Reducer : CHECK_WORD");
             let keyyy = "word" + state.current;
             console.log("state.words", state.words)
