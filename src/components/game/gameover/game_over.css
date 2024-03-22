@@ -1,14 +1,36 @@
-
+.gameOver-btn {
+    background-color: #121fa4;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 5px 
+}
 @media (min-width: 738px) {
   .containerDetails {
       position: absolute;
       display: flex;
       height: 70%;
       width: 30%;
-      text-align: left;
+      text-align: center;
       align-items: center;
       justify-content: center;
     }
+  .gameOver {
+    width: 60%;
+    background-color: #3ff3e4;
+    box-shadow: 0 4px 23px 0 rgb(0 0 0 / 20%);
+    border-radius: 8px;
+    border: 1px solid var(--color-tone-6);
+    color: #024a17;
+    max-height: 90%;
+    overflow-y: auto;
+    padding: 16px;
+    box-sizing: border-box;
+    top: 0;
+  }
+  
   }
   
   @media (max-width: 737px) {
@@ -17,9 +39,23 @@
           display: flex;
           height: 70%;
           width: 70%;
-          text-align: left;
+          text-align: center;
           align-items: center;
           justify-content: center;
+        }
+        .gameOver{
+          width: 80%;
+          width: 60%;
+          background-color: #3ff3e4;
+          box-shadow: 0 4px 23px 0 rgb(0 0 0 / 20%);
+          border-radius: 8px;
+          border: 1px solid var(--color-tone-6);
+          color: #024a17;
+          max-height: 90%;
+          overflow-y: auto;
+          padding: 16px;
+          box-sizing: border-box;
+          top: 0;
         }
       }
         

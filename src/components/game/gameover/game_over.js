@@ -20,16 +20,10 @@ const GameOver = (props) => {
     return state.game.clue; 
   });
 
-  const meaning = useSelector((state) => { 
-    return state.game.meaning;
-  });
-  const sentence = useSelector((state) => {
-    return state.game.sentence;
-  });
   
   return (
     <div className="containerDetails">
-      <section className="gameInstructions" style={{ width: "100%" }}>
+      <section className="gameOver" style={{ width: "100%" }}>
         {props.pass ? (
           <div style={{ color: "green" }}>
             <p>
@@ -43,22 +37,8 @@ const GameOver = (props) => {
             >
               Ans : {word}
             </p>
-            <p
-              style={{ color: "blue"}}
-            >
-              Meaning : {meaning}
-            </p>
-            <p
-              style={{ color: "blue"}}
-            >
-              Example Sentence : {sentence}
-            </p>
-            <p
-               onClick={setRefresh}
-               style={{ color: "blue", textDecoration: "underline" , cursor: "pointer"}}
-             >
-               Okey dokey
-            </p>
+            
+            <button onClick={setRefresh} className='gameOver-btn'>Okey dokey</button>
             
           </div>
         ) : (
@@ -66,27 +46,17 @@ const GameOver = (props) => {
             <p>
               <strong>Ooops! Sorry, you lost.</strong>
             </p>
+            <p style={{ color : "blue"}}>
+              Clue : {clue}
+            </p>
             <p
-              style={{ color: "blue", textDecoration: "underline"}}
+              style={{ color: "blue"}}
             >
               Ans : {word}
             </p>
-            <p
-              style={{ color: "blue"}}
-            >
-              Meaning : {meaning}
-            </p>
-            <p
-              style={{ color: "blue"}}
-            >
-              Example Sentence : {sentence}
-            </p>
-            <p
-               onClick={setRefresh}
-               style={{ color: "blue", textDecoration: "underline" , cursor: "pointer"}}
-             >
-               Okey dokey
-            </p>
+            
+            <button onClick={setRefresh} className='gameOver-btn'>Okey dokey</button>
+         
           </div>
         )}
       </section>

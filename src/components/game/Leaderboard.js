@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch} from "react-redux";
 import NavBar from '../layout/NavBar';
 import "../layout/Layout.css";
-import { FetchUserScores, STATUSES} from '../../store/authSlice';
+import { FetchUserScores} from '../../store/authSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
@@ -10,11 +10,15 @@ import { Link } from 'react-router-dom';
 function Leaderboard() {
   const user = useSelector((state) => state.auth.user);
   const scores = useSelector((state) => state.auth.scores);
-  const getAllScoreStatus = useSelector((state) => state.auth.getAllScoreStatus);
+  //const getAllScoreStatus = useSelector((state) => state.auth.getAllScoreStatus);
   const scoresSet = useSelector((state) => state.auth.scoresSet);
   //const getAllScoreStatus = useSelector((state) => state.auth.getAllScoreStatus);
   const dispatch = useDispatch();
-  
+  const today = new Date().toISOString().slice(0, 10);
+  const yestday = new Date();
+  yestday.setDate(yestday.getDate() - 1);
+  const yesterday = yestday.toISOString().slice(0, 10);
+  const [lbDate, setLbDate] = useState(today); 
   function splitAndTruncateString(inputString) {
     // Split the input string based on commas or spaces
     const parts = inputString.split(/[,\s]+/);
@@ -31,9 +35,17 @@ function Leaderboard() {
   }
 
   useEffect(() => {
-    dispatch(FetchUserScores());
+    // console.log("From useEffect lbDate", lbDate);
+    // console.log("From useEffect score", scores);
+    // console.log("From useEffect score.length", scores.length);
+    // console.log("From useEffect scoresSet", scoresSet);
+    dispatch(FetchUserScores(1, lbDate));
+    if(scoresSet && scores.length === 0)
+    {
+      setLbDate(yesterday);
+    }
     console.log("scores", scores);
-  }, [scoresSet]);
+  }, [scoresSet, lbDate]);
 
   return (
     <>
@@ -48,7 +60,8 @@ function Leaderboard() {
       </div>
     </div>  
     } 
-    <h2 className='lb-heading'>Today's Leaderboard</h2> 
+    { lbDate === today ? <h2 className='lb-heading'>Today's Leaderboard</h2> :
+    <h2 className='lb-heading'>Yesterday's Leaderboard</h2> }
     <table className="student-list">
     <thead>
         <tr>

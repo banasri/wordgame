@@ -628,20 +628,23 @@ export function UpdateUserScore(uid) {
   };
 }
 
-export function FetchUserScores(minScore = 1) {
+export function FetchUserScores(minScore = 1, today) {
   return async function FetchUserScoresThunk(dispatch) {
-      console.log("From Reducer - UpdateUserScore");
+      console.log("From Reducer - FetchUserScores");
+      console.log("today !!!!", today);
       dispatch(setGetAllScoreStatus(STATUSES.LOADING));
       dispatch(setError(""));
       // Get today's date 
-      const today = new Date().toISOString().slice(0, 10);
+      // const today = new Date().toISOString().slice(0, 10);
       const scores = [];
       // Query Firestore for scores based on UID and date
       
       try {
         const scoreRef = collection(db, "score");
         const q = query(scoreRef, where("score", ">=", minScore), where("date", "==", today), orderBy("score", "desc"), orderBy("timestamp", "asc"));
+        console.log("Before docSnap");
         const docSnap = await getDocs(q);
+        console.log("After docSnap");
         console.log("docSnap" , docSnap);
         console.log("docSnap count" , docSnap.size);
         if (docSnap.size) {
