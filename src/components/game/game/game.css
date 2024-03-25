@@ -27,7 +27,15 @@
   .gamebox-8-11 {
     margin-bottom: 30px;
   }
-  
+  .container {
+    position: "absolute";
+    top : 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: "#29313d";
+  }
+
   @media (max-width: 738px) {
     .gamebox{
       flex-basis: 10%;

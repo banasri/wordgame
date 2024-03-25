@@ -10,8 +10,19 @@ import { db } from "../../../firebase";
 import { collection, query, where, getDocs, getCountFromServer } from "firebase/firestore";
 import { UpdateUserGame, UpdateUserGameStat, UpdateUserScore} from '../../../store/authSlice';
 import GameSummary from "../game_summary/game_summary";
+import ConfettiExplosion from "react-confetti-explosion";
+
 const Game = (props) => {
   const lastPlayedDate = new Date().toISOString().slice(0, 10);
+  const [isExploding, setIsExploding] = useState(false);
+  const bigExplodeProps = {
+    force: 0.6,
+    duration: 5000,
+    particleCount: 200,
+    floorHeight: 1600,
+    floorWidth: 1600
+  };
+
   const userProfileExists = useSelector((state) => {
     return state.auth.userProfileExists;
   });
@@ -314,6 +325,15 @@ const Game = (props) => {
       }, 1000);
     }
   }, [alert]);
+
+  useEffect(() =>{
+    if (pass) {
+      setIsExploding(true);
+      setTimeout(() => {
+        setIsExploding(false);
+      }, 3000);
+    }
+  }, [pass]);
   
 
   if (gameOver) {
@@ -351,6 +371,11 @@ const Game = (props) => {
       {alert ? <p className="alert">{alertMsg}</p> : null}
       {showSummary ? <GameSummary /> : 
       showAll ? <>
+      {isExploding && (
+          <div className="source">
+            <ConfettiExplosion {...bigExplodeProps} />
+          </div>
+        )}
         <Clue row="1"/>
         <GameBox />
         <Keyboard />

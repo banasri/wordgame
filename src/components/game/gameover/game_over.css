@@ -7,6 +7,9 @@
     cursor: pointer;
     margin-top: 5px 
 }
+.gameOver-btn:hover {
+  background-color: #460363; 
+}
 @media (min-width: 738px) {
   .containerDetails {
       position: absolute;
