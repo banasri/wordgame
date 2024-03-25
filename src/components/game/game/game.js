@@ -15,6 +15,7 @@ const Game = (props) => {
   const userProfileExists = useSelector((state) => {
     return state.auth.userProfileExists;
   });
+  
   const user = useSelector((state) => {
     return state.auth.user;
   });
@@ -33,8 +34,12 @@ const Game = (props) => {
   const showSummaryFromStore = useSelector((state) => {
     return state.game.showSummary;
   });
+  const clue = useSelector((state) => {
+    return state.game.clue;
+  });
   const [showModal, setShowModal] = useState(!userProfileExists);
   const [showWord, setShowWord] = useState(true);
+  const [showAll, setShowAll] = useState(false);
   const [showSummary, setShowSummary] = useState(showSummaryFromStore);
   //const [howToPlay, setHowToPlay] = useState(showHowToPlay);
 
@@ -49,6 +54,9 @@ const Game = (props) => {
    });
   const alert = useSelector((state)=>{
     return state.game.alert;
+   });
+  const alertMsg = useSelector((state)=>{
+    return state.game.alertMsg;
    });
   
    const word = useSelector((state)=>{
@@ -74,6 +82,14 @@ const Game = (props) => {
       console.log("game.js in First Mount");
       setShowWord(true);
   }, []);
+  useEffect(() => {
+      if(clue) {
+        console.log("clue", clue);
+        setShowAll(true);
+      } else {
+        setShowAll(false);
+      }
+  }, [clue]);
 
   useEffect(() => {
     //console.log("howToPlay ", howToPlay );
@@ -291,11 +307,14 @@ const Game = (props) => {
     fetchData();
   }, [dispatch]);
 
-  if (alert) {
-    setTimeout(() => {
-      onChangeAlert();
-    }, 1000);
-  }
+  useEffect(() =>{
+    if (alert) {
+      setTimeout(() => {
+        onChangeAlert();
+      }, 1000);
+    }
+  }, [alert]);
+  
 
   if (gameOver) {
     setTimeout(() => {
@@ -329,15 +348,15 @@ const Game = (props) => {
 
       }}
     >
-      {alert ? <p className="alert">Not a valid word</p> : null}
+      {alert ? <p className="alert">{alertMsg}</p> : null}
       {showSummary ? <GameSummary /> : 
-      <>
+      showAll ? <>
         <Clue row="1"/>
         <GameBox />
         <Keyboard />
         {gameOver ? <GameOver pass={pass} /> : null}
         {/* {gameOver & showWord &!pass ? <p className="alert">{word}</p> : null} */}
-      </>}
+      </> : null}
       {showModal ? <Instructions /> : null}
       
     </main>

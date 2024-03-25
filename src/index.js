@@ -8,6 +8,11 @@ import { configureStore } from '@reduxjs/toolkit';
 import clueReducer from "./store/gameReducer";
 import authReducer from "./store/authSlice";
 
+const mode = process.env.REACT_APP_ENV;
+  if(mode === "PROD") {
+    console.log = function() {}
+  } 
+
 const store = configureStore({
   reducer : {
     game : clueReducer,

@@ -22,6 +22,7 @@ const initialState = {
     },
     showHowToPlay : false,
     alert: false,
+    alertMsg : "",
     pass: false,
     tryAgain: false,
     isGameOver: false,
@@ -276,6 +277,13 @@ const clueReducer = (state = initialState, action) => {
             let keyyy = "word" + state.current;
             console.log("state.words", state.words)
             keyyy = state.words[keyyy].toLowerCase().trim();
+            if(keyyy.length < 4) {
+              return {
+                ...state,
+                alert: true,
+                alertMsg : "Word too short"
+              };
+            }
             if (validWords[0]["words"].includes(keyyy)) {
               console.log("valid word");
               console.log("CHECK_WORD, keyyy.length, state.wordLength, keyyy",
@@ -306,6 +314,7 @@ const clueReducer = (state = initialState, action) => {
               return {
                 ...state,
                 alert: true,
+                alertMsg : "Word not in list"
               };
             };
             // console.log("here 222222222222222222");
