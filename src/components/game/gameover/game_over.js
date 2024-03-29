@@ -1,6 +1,8 @@
 import React from "react";
 import { useSelector, useDispatch} from "react-redux";
 import "../gameover/game_over.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrophy, faBookOpenReader } from '@fortawesome/free-solid-svg-icons';
 
 const GameOver = (props) => {
   console.log("in game over!!!!");
@@ -27,7 +29,7 @@ const GameOver = (props) => {
         {props.pass ? (
           <div style={{ color: "green" }}>
             <p>
-              <strong>YOU WON!</strong>
+              <strong>YOU WON!</strong> <FontAwesomeIcon className='icon-fa-won' icon={faTrophy} />
             </p>
             <p style={{ color : "blue"}}>
               Clue : {clue}

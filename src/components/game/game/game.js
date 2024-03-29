@@ -331,7 +331,7 @@ const Game = (props) => {
       setIsExploding(true);
       setTimeout(() => {
         setIsExploding(false);
-      }, 3000);
+      }, 1500);
     }
   }, [pass]);
   

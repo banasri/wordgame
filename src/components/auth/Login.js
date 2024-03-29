@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Auth.css'; // Import the CSS file
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { signInUser, signInWithGoogle, fetchUserProfile, fetchUserGame, fetchUserGameStat, fetchNdUpdateUserProfile, fetchNdUpdateUserGame, fetchNdUpdateUserGameStat} from '../../store/authSlice';
 
 const Login = () => {
@@ -167,6 +167,7 @@ const Login = () => {
   }
 
   return (
+    <>
     <div className='form-container' onKeyDown={handleKeyPress}>
     <form className="login-form" onSubmit={handleSubmit}>
       <div className='image-container'>
@@ -190,10 +191,17 @@ const Login = () => {
       <br />
       <label htmlFor='password'>Password:</label>
       <input type="password" id="password" required={true} value={formData.password} onChange={handleChange} />
+      <div className="smallFont">
+        <Link to="/resetPassword">Forgot Password?</Link>
+      </div>
       <br />
       <button type="submit" className='form-button'>Log In</button>
+      <div className='smallFont'>
+        Need an account? <Link to="/signup">Sign Up</Link>
+      </div>
     </form>
     </div>
+    </>
   );
 };
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import './Auth.css'; // Import the CSS file
 import { registerUser, signInWithGoogle, fetchNdUpdateUserProfile, fetchNdUpdateUserGame, fetchNdUpdateUserGameStat} from '../../store/authSlice';
 
@@ -200,6 +200,9 @@ const Signup = () => {
       <input type="password" id="password" required={true} value={formData.password} onChange={handleChange} />
       <br />
       <button type="submit" className='form-button'>Sign Up</button>
+      <div className='smallFont'>
+      Already have an account? <Link to="/login">Log In</Link>
+    </div>
     </form>
     </div>
   );

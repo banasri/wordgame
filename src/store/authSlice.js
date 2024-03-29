@@ -1,7 +1,7 @@
 import { auth, googleProvider, db } from "../firebase"
 import { doc, getDoc, updateDoc, setDoc, query, where, collection, addDoc, getDocs, serverTimestamp, orderBy } from "firebase/firestore";
 import { createSlice } from '@reduxjs/toolkit';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, signInWithPopup, updatePassword} from "firebase/auth";
+import { sendPasswordResetEmail ,signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, signInWithPopup, updatePassword} from "firebase/auth";
 
 export const STATUSES = Object.freeze({
     IDLE: 'idle',
@@ -231,6 +231,21 @@ export function signout() {
       } catch (err) {
           console.log(err);
           dispatch(setError("Error Signing out: " + err));
+          dispatch(setStatus(STATUSES.ERROR));
+      }
+  };
+}
+export function resetPassword(email) {
+  return async function resetPasswordThunk(dispatch) {
+      //dispatch(authSlice.actions.setStatus(STATUSES.LOADING));
+      dispatch(setError(""));
+      try {
+          const res = await sendPasswordResetEmail(auth, email);
+          console.log("res : ", res);
+          dispatch(setStatus(STATUSES.IDLE));
+      } catch (err) {
+          console.log(err);
+          dispatch(setError("Error sending reset password email: " + err));
           dispatch(setStatus(STATUSES.ERROR));
       }
   };

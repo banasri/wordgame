@@ -51,6 +51,18 @@
     width:94%;
     color:white;
   }
+  .message-container {
+    background-color: rgb(19, 206, 19); /* White box */
+    padding: 6px 4px; /* Adjust padding as needed */
+    border-radius: 4px; /* Add border-radius for rounded corners */
+    margin-bottom: 5px;
+    width:94%;
+    color:black;
+  }
+  .smallFont {
+    font-size: small;
+  }
+
   .form-container {
     display: flex;
     min-height: 100vh;
@@ -95,12 +107,13 @@
   .login-form input {
     width: 90%;
     padding: 8px;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
   }
   .login-form label {
     margin-bottom: 5px;
+    margin-top: 10px;
     font-weight: bold;
   }
   .profile-form label {
