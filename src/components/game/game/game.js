@@ -273,6 +273,7 @@ const Game = (props) => {
     
     
     const fetchData = async () => {
+      console.log("From fetchData game.js wsxy");
       //get count of wordlist from server
       let count = 0;
       
@@ -316,7 +317,7 @@ const Game = (props) => {
     };
 
     fetchData();
-  }, [dispatch]);
+  }, []);
 
   useEffect(() =>{
     if (alert) {

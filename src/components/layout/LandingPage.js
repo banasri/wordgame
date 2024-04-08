@@ -1,6 +1,7 @@
 import React, { useEffect} from 'react'
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import { setError } from '../../store/authSlice';
 
 function LandingPage() {
   const user = useSelector((state) => {
@@ -10,10 +11,14 @@ function LandingPage() {
     return state.auth.error;
   });
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   useEffect(() => {
     if (user && !error) {
       navigate("/wordcup");
     }
+    console.log("inside landing page");
+    console.log("inside landing page - error", error);
+    dispatch(setError(null));
   }, [user, error, navigate]);
   return (
     <div className="landing-page">

@@ -1,6 +1,6 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { resetPassword } from '../../store/authSlice';
 
 
@@ -8,17 +8,10 @@ function ForgotPassword() {
     let error = useSelector((state) => {
         return state.auth.error;
     });
-    let message = useSelector((state) => {
-        return state.auth.message;
-    });
     
     const [uiError, setUiError ] = useState("");
     const [uiMsg, setUiMsg ] = useState("");
     const dispatch = useDispatch();
-    const navigate = useNavigate();
-    // useEffect(() => {
-    //     setUiMsg(message);
-    // }, [message]);
 
     const [formData, setFormData] = useState({
         // Initialize form fields
@@ -35,16 +28,20 @@ function ForgotPassword() {
         console.log(e);
         e.preventDefault();
         setUiError("");
+        if(formData.email === "") {
+            setUiMsg("Email id is required");
+        } else {
+            dispatch(resetPassword(formData.email)).then(() => {
+                if(!error) {
+                    setUiMsg("Check your inbox for further instructions");
+                }
+            })
+            .catch((error) =>{
+                console.log("Error from reset password", error);
+                setUiError(error);
+            })
+        }
         
-        dispatch(resetPassword(formData.email)).then(() => {
-            if(!error) {
-                setUiMsg("Check your inbox for further instructions");
-            }
-        })
-        .catch((error) =>{
-            console.log("Error from reset password", error);
-            setUiError(error);
-        })
     }
   return (
     <div className='form-container'>
@@ -56,7 +53,7 @@ function ForgotPassword() {
       {uiError && <div className='error-container'>{uiError}</div>}
       {uiMsg && <div className='message-container'>{uiMsg}</div>}
       <label htmlFor='email'>Email Address</label>
-      <input type="email" id="email" value={formData.email} onChange={handleChange}/>
+      <input type="email" id="email" value={formData.email} required={true} onChange={handleChange}/>
       <br />
       <button type="submit" className='form-button'>Reset Password</button>
       <div className='smallFont'>

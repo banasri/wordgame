@@ -6,6 +6,7 @@ import { FetchUserScores} from '../../store/authSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+import { initScores } from '../../store/authSlice';
 
 function Leaderboard() {
   const user = useSelector((state) => state.auth.user);
@@ -35,10 +36,14 @@ function Leaderboard() {
   }
 
   useEffect(() => {
+    dispatch(initScores());
+  }, []);
+  
+  useEffect(() => {
     // console.log("From useEffect lbDate", lbDate);
     // console.log("From useEffect score", scores);
-    // console.log("From useEffect score.length", scores.length);
-    // console.log("From useEffect scoresSet", scoresSet);
+    console.log("From useEffect score.length", scores.length);
+    console.log("From useEffect scoresSet", scoresSet);
     dispatch(FetchUserScores(1, lbDate));
     if(scoresSet && scores.length === 0)
     {

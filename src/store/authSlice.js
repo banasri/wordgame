@@ -61,6 +61,11 @@ export const authSlice = createSlice({
             state.scores = action.payload;
             state.scoresSet = true;
           },
+          initScores: (state) => {
+            console.log("in authSlice reducers: setScores");
+            state.scores = [];
+            state.scoresSet = false;
+          },
           setUserProfile: (state, action) => {
             state.userProfile = action.payload;
           },
@@ -106,13 +111,15 @@ export const authSlice = createSlice({
             state.userProfileExists = action.payload;
           },
           setError : (state, action) => {
+            console.log('state', state);
+            console.log('action', action);
             state.error = action.payload;
           },
           
     },
 });
 
-export const { loginUser, logoutUser, setScores, setUserProfile, setUserGame, setUserGameStat, setStatus, 
+export const { loginUser, logoutUser, setScores, initScores, setUserProfile, setUserGame, setUserGameStat, setStatus, 
   setChangePasswordStatus, setProfileStatus, setGameStatus, setScoreStatus, setGetAllScoreStatus, setGameStatStatus, setUserProfileExists,
    setError } = authSlice.actions;
 export default authSlice.reducer;
