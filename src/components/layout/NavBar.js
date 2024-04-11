@@ -44,7 +44,7 @@ const NavBar = ({fromPage}) => {
             <SignedOutLinks /> */}
             {(fromPage && fromPage === "Leaderboard") ?  
             <div className='navbar-icons'>
-              <Link to="/wordcup"><FontAwesomeIcon className='icon-fa' icon={faHome} /></Link>
+              <Link to="/game"><FontAwesomeIcon className='icon-fa' icon={faHome} /></Link>
             </div>     
             :
             <div className='navbar-icons'>

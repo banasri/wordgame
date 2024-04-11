@@ -49,7 +49,7 @@ const Login = () => {
           .then(() => {
             if(!error) {
               dispatch({type:'SET_LOGIN', payload : true});
-              navigate("/wordcup");
+              navigate("/game");
             }
           })
           .catch((error) =>{
@@ -64,7 +64,7 @@ const Login = () => {
         .then(() => {
           if(!error) {
             dispatch({type:'SET_LOGIN', payload : true});
-            navigate("/wordcup");
+            navigate("/game");
           }
         })
         .catch((error) =>{

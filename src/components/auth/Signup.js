@@ -48,13 +48,13 @@ const Signup = () => {
       .then(() => {
         if(!error) {
           dispatch({type:'SET_LOGIN', payload : true});
-          navigate("/wordcup");
+          navigate("/game");
         }
       })
       .catch((error) =>{
         console.log("Error from fetch/update data");
       })
-      //navigate("/wordcup");
+      //navigate("/game");
     }
   },[user, error, dispatch, navigate]);
   
@@ -148,7 +148,7 @@ const Signup = () => {
       //dispatch(fetchNdUpdateUserProfile(user.uid, userDoc)).then(() => {
         console.log("after dispatch inside then signUp");
         console.log('user', user);
-        //navigate("/wordcup");
+        //navigate("/game");
       //});
     });
 
@@ -160,7 +160,7 @@ const Signup = () => {
     dispatch(signInWithGoogle()).then((res) =>{
       console.log("after dispatch inside then signInWithGoogle");
       //updtProfile();
-      // navigate("/wordcup");
+      // navigate("/game");
     });
   
     console.log("after dispatch  signInGoogle");

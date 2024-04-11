@@ -61,7 +61,7 @@ function App() {
           <Route path="/login" element={<Login />}></Route>
           <Route path="/changePassword" element={<ChangePassword />}></Route>
           <Route path="/resetPassword" element={<ForgotPassword />}></Route>
-          <Route path="/wordcup" element={
+          <Route path="/game" element={
                     <PrivateRoute>
                       <Dashboard />
                     </PrivateRoute>

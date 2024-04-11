@@ -14,7 +14,7 @@ function LandingPage() {
   const dispatch = useDispatch();
   useEffect(() => {
     if (user && !error) {
-      navigate("/wordcup");
+      navigate("/game");
     }
     console.log("inside landing page");
     console.log("inside landing page - error", error);

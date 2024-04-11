@@ -335,7 +335,7 @@ function UpdateProfile() {
         dispatch(fetchNdUpdateUserProfile(user.uid, formData, true)) 
           .then(() => {
             if(!error) {
-              navigate("/wordcup");
+              navigate("/game");
             }
           })
           .catch((error) =>{
