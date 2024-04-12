@@ -89,10 +89,10 @@ const Game = (props) => {
     dispatch({ type: "CLEAR_ALERT" })
   };
 
-  useEffect(() => {
-      console.log("game.js in First Mount");
-      setShowWord(true);
-  }, []);
+  // useEffect(() => {
+  //     console.log("game.js in First Mount");
+  //     setShowWord(true);
+  // }, []);
   useEffect(() => {
       if(clue) {
         console.log("clue", clue);
@@ -337,12 +337,12 @@ const Game = (props) => {
   }, [pass]);
   
 
-  if (gameOver) {
-    setTimeout(() => {
-      setShowWord(false);
-    }, 1000);
-    //update database.
-  }
+  // if (gameOver) {
+  //   setTimeout(() => {
+  //     setShowWord(false);
+  //   }, 1000);
+  //   //update database.
+  // }
   
     // Promise.all([
     //   //dispatch(fetchNdUpdateUserProfile(user.uid, userDoc)),

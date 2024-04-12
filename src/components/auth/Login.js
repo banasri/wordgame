@@ -91,6 +91,7 @@ const Login = () => {
     setUiError("");
     e.preventDefault();
     if(!googleLinkClicked){
+      setGoogleLinkClicked(false);
       signIn();
     }
   }
@@ -99,6 +100,7 @@ const Login = () => {
     setUiError("");
     if (event.key === 'Enter') {
       event.preventDefault(); // Prevent form submission
+      setGoogleLinkClicked(false);
       signIn(event);
     }
   };
@@ -149,6 +151,7 @@ const Login = () => {
     // console.log("event from signIn ", e);
     // e.preventDefault();
     setUiError("");
+    setGoogleLinkClicked(false);
     dispatch(signInUser(formData.email, formData.password)).then((res) => {
       console.log("after dispatch inside then SignIn");
     });

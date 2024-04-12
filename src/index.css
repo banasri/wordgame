@@ -30,8 +30,13 @@ body {
     width: 100%; /* Ensure the logo takes up the full width of its container */
     min-width: 150px; /* Set the minimum width for the logo */
     border-radius: 50%; /* Make the logo circular */
+    animation: shakeLogo 1.5s ease-in-out 0s infinite alternate-reverse ;
   }
   
+  @keyframes shakeLogo {
+    from { rotate: -30deg;}
+    to  { rotate: 30deg;}
+  } 
   .button-container {
     display: flex;
     flex-direction: column;

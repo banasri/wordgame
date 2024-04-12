@@ -72,6 +72,7 @@ const Signup = () => {
     setUiError("");
     e.preventDefault();
     if(!googleLinkClicked){
+      setGoogleLinkClicked(false);
       signUp();
     }
   }
@@ -86,6 +87,7 @@ const Signup = () => {
     setUiError("");
     if (event.key === 'Enter') {
       event.preventDefault(); // Prevent form submission
+      setGoogleLinkClicked(false);
       signUp();
     }
   };
@@ -143,6 +145,7 @@ const Signup = () => {
   function signUp() {
     //console.log(e);
     setUiError("");
+    setGoogleLinkClicked(false);
     console.log(formData);
     dispatch(registerUser(formData.email, formData.password)).then(() => {
       //dispatch(fetchNdUpdateUserProfile(user.uid, userDoc)).then(() => {
