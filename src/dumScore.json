@@ -1,0 +1,388 @@
+[
+  {
+      "scores": [
+        [
+          {
+            "firstName" : "Aditya",
+            "lastName"  : "Verma",
+            "score"     : "3",
+            "school"    : "Narayana School, Marathahalli Bangalore",
+            "class"     : "6"
+          },
+          {
+            "firstName" : "Ishaan",
+            "lastName"  : "Das",
+            "score"     : "3",
+            "school"    : "Ryan International School, Bangalore",
+            "class"     : "5"
+          },
+          {
+            "firstName" : "Jayant",
+            "lastName"  : "Rai",
+            "score"     : "3",
+            "school"    : "Narayana School, HSR Layout Bangalore",
+            "class"     : "6"
+          },
+          {
+            "firstName" : "Aditi",
+            "lastName"  : "Sahoo",
+            "score"     : "3",
+            "school"    : "Ryan International School, Bannerghatta, Bangalore",
+            "class"     : "5"
+          },
+          {
+            "firstName" : "Shreya",
+            "lastName"  : "Reddy",
+            "score"     : "3",
+            "school"    : "Narayana School, Bangalore",
+            "class"     : "4"
+          }
+        ],
+        [
+          {
+            "firstName" : "Aditi",
+            "lastName"  : "Sahoo",
+            "score"     : "3",
+            "school"    : "Ryan International School, Bannerghatta, Bangalore",
+            "class"     : "5"
+          },
+          {
+            "firstName" : "Piyush",
+            "lastName"  : "Hiremath",
+            "score"     : "3",
+            "school"    : "Narayana School, Bangalore",
+            "class"     : "5"
+          },
+          {
+            "firstName" : "Shreya",
+            "lastName"  : "Reddy",
+            "score"     : "3",
+            "school"    : "Narayana School, Bangalore",
+            "class"     : "4"
+          },
+          {
+            "firstName" : "Jayant",
+            "lastName"  : "Rai",
+            "score"     : "3",
+            "school"    : "Narayana School, HSR Layout Bangalore",
+            "class"     : "6"
+          }
+        ],
+        [
+          {
+            "firstName" : "Shreya",
+            "lastName"  : "Reddy",
+            "score"     : "3",
+            "school"    : "Narayana School, Bangalore",
+            "class"     : "4"
+          },
+          {
+            "firstName" : "Ishaan",
+            "lastName"  : "Das",
+            "score"     : "3",
+            "school"    : "Ryan International School, Bangalore",
+            "class"     : "5"
+          },
+          {
+            "firstName" : "Shweta",
+            "lastName"  : "Jha",
+            "score"     : "3",
+            "school"    : "Ryan International School, Bannerghatta, Bangalore",
+            "class"     : "6"
+          },
+          {
+            "firstName" : "Gaurav",
+            "lastName"  : "Raj",
+            "score"     : "3",
+            "school"    : "Narayana School, Marathahalli Bangalore",
+            "class"     : "5"
+          }
+        ],
+        [
+          {
+            "firstName" : "Aditya",
+            "lastName"  : "Verma",
+            "score"     : "3",
+            "school"    : "Narayana School, Marathahalli Bangalore",
+            "class"     : "6"
+          },
+          {
+            "firstName" : "Shweta",
+            "lastName"  : "Jha",
+            "score"     : "3",
+            "school"    : "Ryan International School, Bannerghatta, Bangalore",
+            "class"     : "6"
+          },
+          {
+            "firstName" : "Janhvi",
+            "lastName"  : "Sinha",
+            "score"     : "3",
+            "school"    : "Ryan International School, Bangalore",
+            "class"     : "5"
+          },
+          {
+            "firstName" : "Ramana",
+            "lastName"  : "Venkat",
+            "score"     : "3",
+            "school"    : "Narayana School, HSR Layout Bangalore",
+            "class"     : "7"
+          }
+        ],
+        [
+          {
+            "firstName" : "Gaurav",
+            "lastName"  : "Raj",
+            "score"     : "3",
+            "school"    : "Narayana School, Marathahalli Bangalore",
+            "class"     : "5"
+          },
+          {
+            "firstName" : "Rishi",
+            "lastName"  : "Arora",
+            "score"     : "3",
+            "school"    : "Ryan International School, Bannerghatta, Bangalore",
+            "class"     : "5"
+          },
+          {
+            "firstName" : "Shreya",
+            "lastName"  : "Reddy",
+            "score"     : "3",
+            "school"    : "Narayana School, Bangalore",
+            "class"     : "4"
+          },
+          {
+            "firstName" : "Piyush",
+            "lastName"  : "Hiremath",
+            "score"     : "3",
+            "school"    : "Narayana School, Bangalore",
+            "class"     : "5"
+          }
+
+        ],
+        [
+          {
+            "firstName" : "Anand",
+            "lastName"  : "S",
+            "score"     : "3",
+            "school"    : "Narayana School, Thubrahalli, Bangalore",
+            "class"     : "6"
+          },
+          {
+            "firstName" : "Javed",
+            "lastName"  : "Khan",
+            "score"     : "3",
+            "school"    : "Narayana School, Marathahalli, Bangalore",
+            "class"     : "6"
+          },
+          {
+            "firstName" : "Deepak",
+            "lastName"  : "Joshi",
+            "score"     : "3",
+            "school"    : "Narayana School, Marathahalli, Bangalore",
+            "class"     : "5"
+          }
+        ],
+        [
+          {
+            "firstName" : "Shweta",
+            "lastName"  : "Jha",
+            "score"     : "3",
+            "school"    : "Ryan International School, Bannerghatta, Bangalore",
+            "class"     : "6"
+          },
+          {
+            "firstName" : "Janhvi",
+            "lastName"  : "Sinha",
+            "score"     : "3",
+            "school"    : "Ryan International School, Bangalore",
+            "class"     : "5"
+          },
+          {
+            "firstName" : "Ramana",
+            "lastName"  : "Venkat",
+            "score"     : "3",
+            "school"    : "Narayana School, HSR Layout Bangalore",
+            "class"     : "7"
+          }
+        ],
+        [
+          {
+            "firstName" : "Ishaan",
+            "lastName"  : "Das",
+            "score"     : "3",
+            "school"    : "Ryan International School, Bangalore",
+            "class"     : "5"
+          },
+          {
+            "firstName" : "Shweta",
+            "lastName"  : "Jha",
+            "score"     : "3",
+            "school"    : "Ryan International School, Bannerghatta, Bangalore",
+            "class"     : "6"
+          },
+	        {
+            "firstName" : "Janhvi",
+            "lastName"  : "Sinha",
+            "score"     : "3",
+            "school"    : "Ryan International School, Bangalore",
+            "class"     : "5"
+          },
+          {
+            "firstName" : "Ramana",
+            "lastName"  : "Venkat",
+            "score"     : "3",
+            "school"    : "Narayana School, HSR Layout Bangalore",
+            "class"     : "7"
+          }
+        ],
+        [
+          {
+            "firstName" : "Jayant",
+            "lastName"  : "Rai",
+            "score"     : "3",
+            "school"    : "Narayana School, HSR Layout Bangalore",
+            "class"     : "6"
+          },
+          {
+            "firstName" : "Piyush",
+            "lastName"  : "Hiremath",
+            "score"     : "3",
+            "school"    : "Narayana School, Bangalore",
+            "class"     : "5"
+          },
+          {
+            "firstName" : "Shreya",
+            "lastName"  : "Reddy",
+            "score"     : "3",
+            "school"    : "Narayana School, Bangalore",
+            "class"     : "4"
+          }
+        ],
+        [
+          {
+            "firstName" : "Ramana",
+            "lastName"  : "Venkat",
+            "score"     : "3",
+            "school"    : "Narayana School, HSR Layout Bangalore",
+            "class"     : "7"
+          },
+          {
+            "firstName" : "Janhvi",
+            "lastName"  : "Sinha",
+            "score"     : "3",
+            "school"    : "Ryan International School, Bangalore",
+            "class"     : "5"
+          }
+        ],
+        [
+          {
+            "firstName" : "Piyush",
+            "lastName"  : "Hiremath",
+            "score"     : "3",
+            "school"    : "Narayana School, Bangalore",
+            "class"     : "5"
+          },
+          {
+            "firstName" : "Ishaan",
+            "lastName"  : "Das",
+            "score"     : "3",
+            "school"    : "Ryan International School, Bangalore",
+            "class"     : "5"
+          }
+        ],
+        [
+          {
+            "firstName" : "Ramana",
+            "lastName"  : "Venkat",
+            "score"     : "3",
+            "school"    : "Narayana School, HSR Layout Bangalore",
+            "class"     : "7"
+          },
+          {
+            "firstName" : "Rishi",
+            "lastName"  : "Arora",
+            "score"     : "3",
+            "school"    : "Ryan International School, Bannerghatta, Bangalore",
+            "class"     : "5"
+          },
+          {
+            "firstName" : "Anand",
+            "lastName"  : "S",
+            "score"     : "3",
+            "school"    : "Narayana School, Thubrahalli, Bangalore",
+            "class"     : "6"
+          }
+        ],
+        [
+          {
+            "firstName" : "Piyush",
+            "lastName"  : "Hiremath",
+            "score"     : "3",
+            "school"    : "Narayana School, Bangalore",
+            "class"     : "5"
+          },
+          {
+            "firstName" : "Aditi",
+            "lastName"  : "Sahoo",
+            "score"     : "3",
+            "school"    : "Ryan International School, Bannerghatta, Bangalore",
+            "class"     : "5"
+          },
+          {
+            "firstName" : "Gaurav",
+            "lastName"  : "Raj",
+            "score"     : "3",
+            "school"    : "Narayana School, Marathahalli Bangalore",
+            "class"     : "5"
+          }
+        ],
+        [
+          {
+            "firstName" : "Sruti",
+            "lastName"  : "Singh",
+            "score"     : "3",
+            "school"    : "Ryan International School, Bangalore",
+            "class"     : "7"
+          },
+          {
+            "firstName" : "Shreya",
+            "lastName"  : "Reddy",
+            "score"     : "3",
+            "school"    : "Narayana School, Bangalore",
+            "class"     : "4"
+          },
+          {
+            "firstName" : "Anand",
+            "lastName"  : "S",
+            "score"     : "3",
+            "school"    : "Narayana School, Thubrahalli, Bangalore",
+            "class"     : "6"
+          },
+          {
+            "firstName" : "Aditya",
+            "lastName"  : "Verma",
+            "score"     : "3",
+            "school"    : "Narayana School, Marathahalli Bangalore",
+            "class"     : "6"
+          }
+        ],
+        [
+          {
+            "firstName" : "Shweta",
+            "lastName"  : "Jha",
+            "score"     : "3",
+            "school"    : "Ryan International School, Bannerghatta, Bangalore",
+            "class"     : "6"
+          },
+          {
+            "firstName" : "Rishi",
+            "lastName"  : "Arora",
+            "score"     : "3",
+            "school"    : "Ryan International School, Bannerghatta, Bangalore",
+            "class"     : "5"
+          }
+        ]
+        
+      ]
+  }
+]  

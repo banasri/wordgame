@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import {  fetchNdUpdateUserProfile} from '../../store/authSlice';
+import { fetchNdUpdateUserProfile } from '../../store/authSlice';
 import Dropdown from './Dropdown';
 
 function UpdateProfile() {
@@ -293,115 +293,120 @@ function UpdateProfile() {
     "Delhi",
     "Lakshadweep",
     "Puducherry"
-    ];
-    //const [selectedOption, setSelectedOption] = useState(null);
-    const userProfile = useSelector((state) => {
-        return state.auth.userProfile;
-    })
-    const user = useSelector((state) => {
-        return state.auth.user;
-    });
-    let error = useSelector((state) => {
-      return state.auth.error;
-    });
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const [showState, setShowState] = useState(true);
-    const [formData, setFormData] = useState({
-        // Initialize form fields
-        email: '',
-        firstName: '',
-        lastName : '',
-        school : '',
-        class : '',
-        phone : '',
-        country : '',
-        state : '',
-      });
-    useEffect(() => {
-        setFormData((prevData) => ({...prevData, ...userProfile}));
-    }, [userProfile]);
-    // const handleSelect = (option) => {
-    //   setSelectedOption(option);
-    //   formData.state = selectedOption;
-    //   // Do whatever you want with the selected option
-    //   console.log('Selected option:', option);
-    // };
-    function handleSubmit(e) {
-        console.log("In submit");
-        console.log(e);
-        e.preventDefault();
-        console.log("After submit, user, formData", user, formData);
-        dispatch(fetchNdUpdateUserProfile(user.uid, formData, true)) 
-          .then(() => {
-            if(!error) {
-              navigate("/game");
-            }
-          })
-          .catch((error) =>{
-            console.log("Error from fetch/update data");
-          })
-    }
+  ];
+  //const [selectedOption, setSelectedOption] = useState(null);
+  const userProfile = useSelector((state) => {
+    return state.auth.userProfile;
+  })
+  const user = useSelector((state) => {
+    return state.auth.user;
+  });
+  let error = useSelector((state) => {
+    return state.auth.error;
+  });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [showState, setShowState] = useState(true);
+  const [formData, setFormData] = useState({
+    // Initialize form fields
+    email: '',
+    firstName: '',
+    lastName: '',
+    school: '',
+    class: '',
+    phone: '',
+    country: '',
+    state: '',
+  });
+  useEffect(() => {
+    setFormData((prevData) => ({ ...prevData, ...userProfile }));
+  }, [userProfile]);
+  // const handleSelect = (option) => {
+  //   setSelectedOption(option);
+  //   formData.state = selectedOption;
+  //   // Do whatever you want with the selected option
+  //   console.log('Selected option:', option);
+  // };
+  function handleSubmit(e) {
+    console.log("In submit");
+    console.log(e);
+    e.preventDefault();
+    console.log("After submit, user, formData", user, formData);
+    dispatch(fetchNdUpdateUserProfile(user.uid, formData, true))
+      .then(() => {
+        if (!error) {
+          navigate("/game");
+        }
+      })
+      .catch((error) => {
+        console.log("Error from fetch/update data");
+      })
+  }
   function handleChange(e) {
     //console.log(e);
-    if(e.target){
+    if (e.target) {
       setFormData((prevData) => ({ ...prevData, [e.target.id]: e.target.value }));
     } else {
       setFormData((prevData) => ({ ...prevData, state: e }));
     }
     //console.log(e);
-    }
+  }
   function handleChangeCountry(e) {
     console.log(e);
     setFormData((prevData) => ({ ...prevData, country: e }));
-    if(e !== "India") {
+    if (e !== "India") {
       setShowState(false);
+    } else {
+      setShowState(true);
     }
     console.log("formData", formData);
   }
   return (
     <div className='form-container'>
-    <form className="profile-form" onSubmit={handleSubmit}>
-      <div className='image-container'>
-        <img src="/image/WCLogo.png" alt="Logo" className="logoForm" />
-      </div>
-      <h3>Update Profile</h3>
-      <div className='inlineContainer'>
-        <div>
-          <label htmlFor='firstName'>First Name</label>
-          <input type="text" id="firstName" value={formData.firstName} onChange={handleChange} />
-          <br />
+      <form className="profile-form" onSubmit={handleSubmit}>
+        <div className='image-container'>
+          <img src="/image/WCLogo.png" alt="Logo" className="logoForm" />
         </div>
-        <div>
-          <label htmlFor='lastName'>Last Name</label>
-          <input type="text" id="lastName" value={formData.lastName} onChange={handleChange} />
-          <br />
+        <h3>Update Profile</h3>
+        <label htmlFor='email'>Email</label>
+        <input type="text" id="email" value={formData.email} disabled={true} />
+        <br />
+        <div className='inlineContainer'>
+          <div>
+            <label htmlFor='firstName'>First Name</label>
+            <input type="text" id="firstName" value={formData.firstName} onChange={handleChange} />
+            <br />
+          </div>
+          <div>
+            <label htmlFor='lastName'>Last Name</label>
+            <input type="text" id="lastName" value={formData.lastName} onChange={handleChange} />
+            <br />
+          </div>
         </div>
-      </div>
-      
-      <label htmlFor='school'>Institute Name and Address</label>
-      <input type="text" id="school" value={formData.school} onChange={handleChange} placeholder='School/College/Organisation' />
-      <br />
-      <div className='inlineContainer'>
-        <div>
-          <label htmlFor='class'>Division</label>
-          <input type="text" id="class" value={formData.class} onChange={handleChange} placeholder='Class/Year/Department'/>
-          <br />
+
+        <label htmlFor='school'>Institute Name and Address</label>
+        <input type="text" id="school" value={formData.school} onChange={handleChange} placeholder='School/College/Organisation' />
+        <br />
+        <div className='inlineContainer'>
+          <div>
+            <label htmlFor='class'>Division</label>
+            <input type="text" id="class" value={formData.class} onChange={handleChange} placeholder='Class/Year/Department' />
+            <br />
+          </div>
+          <div>
+            <label htmlFor='phone'>Phone Number</label>
+            <input type="text" id="phone" value={formData.phone} onChange={handleChange} />
+            <br />
+          </div>
         </div>
-        <div>
-          <label htmlFor='phone'>Phone Number</label>
-          <input type="text" id="phone" value={formData.phone} onChange={handleChange} />
-          <br />
-        </div>
-      </div>
-      <label htmlFor='state'>Select your Country</label>
-      <Dropdown id="state" options={countryList} onSelect={handleChangeCountry} initialValue={"India"}/>
-      <br />
-      { showState ? <><label htmlFor='state'>Select your state</label>
-      <Dropdown id="state" options={states} onSelect={handleChange} initialValue={formData.state}/>
-      <br /></> : null}
-      <button type="submit" className='form-button'>Update</button>
-    </form>
+        <label htmlFor='state'>Select your Country</label>
+        <Dropdown id="state" options={countryList} onSelect={handleChangeCountry} initialValue={"India"} />
+        <br />
+        {showState ? <><label htmlFor='state'>Select your state</label>
+          <Dropdown id="state" options={states} onSelect={handleChange} initialValue={formData.state} />
+          <br /></> : null}
+        <button type="submit" className='form-button'>Update</button>
+      </form>
     </div>
   )
 }
