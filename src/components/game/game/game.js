@@ -15,6 +15,7 @@ import ConfettiExplosion from "react-confetti-explosion";
 const Game = (props) => {
   const lastPlayedDate = new Date().toISOString().slice(0, 10);
   const [isExploding, setIsExploding] = useState(false);
+  const [isTest, setIsTest] = useState(false);
   const bigExplodeProps = {
     force: 0.6,
     duration: 4000,
@@ -134,6 +135,11 @@ const Game = (props) => {
     console.log("game.js useEffect : wordIndex", wordIndex);
     console.log("game.js useEffect : userGame.current", userGame.Current);
     console.log("game.js useEffect : current", current);
+    if (user.email.indexOf("test.com") !== -1) {
+      setIsTest(true);
+    } else {
+      setIsTest(false);
+    }
     if (wordIndex > 2) {
       setShowSummary(true);
       dispatch({ type: "SET_GAME_SUMMARY" });
@@ -219,7 +225,7 @@ const Game = (props) => {
           if (pass) {
             Promise.all([
               dispatch(UpdateUserGameStat(user.uid, newUserGameStat)),
-              dispatch(UpdateUserScore(user.uid)),
+              dispatch(UpdateUserScore(user.uid, isTest)),
             ]).then(() => {
               dispatch({ type: "UPDATE_GAMEOVER" })
             }).catch((error) => {

@@ -594,9 +594,11 @@ export function UpdateUserGameStat(uid, game, dataFromDB, dataExists) {
   };
 }
 
-export function UpdateUserScore(uid) {
+export function UpdateUserScore(uid, isTest) {
   return async function UpdateUserScoreThunk(dispatch) {
     console.log("From Reducer - UpdateUserScore");
+    console.log("From Reducer - UpdateUserScore isTest :", isTest);
+    if (isTest) return;
     dispatch(setScoreStatus(STATUSES.LOADING));
     dispatch(setError(""));
     // Get today's date 
