@@ -72,7 +72,7 @@ function Leaderboard() {
             <th></th>
             <th>Name</th>
             <th>Score</th>
-            <th>Institute, Division</th>
+            <th>School, Class</th>
           </tr>
         </thead>
         <tbody>
@@ -82,8 +82,8 @@ function Leaderboard() {
               <td>{scores[index].firstName} {scores[index].lastName}
               </td>
               <td>{scores[index].score}</td>
-              {scores[index].school ? (scores[index].class ? <td>{splitAndTruncateString(scores[index].school)} , Division - {splitAndTruncateString(scores[index].class)} </td> : <td>{splitAndTruncateString(scores[index].school)}</td>)
-                : (scores[index].class ? <td>Division - {splitAndTruncateString(scores[index].class)}</td> :
+              {scores[index].school ? (scores[index].class ? <td>{splitAndTruncateString(scores[index].school)} , Class - {splitAndTruncateString(scores[index].class)} </td> : <td>{splitAndTruncateString(scores[index].school)}</td>)
+                : (scores[index].class ? <td>Class - {splitAndTruncateString(scores[index].class)}</td> :
                   <td>{user && user.uid === scores[index].uid ?
                     <Link to="/updateprofile"><FontAwesomeIcon icon={faPencil} /></Link> : null}</td>
                 )}
